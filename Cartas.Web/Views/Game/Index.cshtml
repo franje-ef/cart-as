@@ -1,4 +1,33 @@
-﻿@model dynamic
+﻿@using Cartas.Web.Domain
+@model Cartas.Web.Models.IndexViewModel
 
 
+<table class="table table-hover table-sm table-dark table-responsive-sm">
+    <thead class="thead-light">
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">Tipo</th>
+        <th scope="col">Jugadores</th>
+        <th scope="col"></th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var gameItem in Model.ActiveGames.OrderByDescending(x => x.CanJoin))
+    {
+        <tr class="table-secondary">
+            <td>@gameItem.Id</td>
+            <td>@gameItem.Type</td>
+            <td>@gameItem.PlayerCount/@Constants.MaxPlayers</td>
+            <td>
+                @if (gameItem.CanJoin)
+                {
+                    <button type="button" class="btn btn-success btn-sm">Unirse</button>
+                }
+                
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
 
+<button type="button" class="btn btn-info btn-lg">Crear nueva partida</button>
