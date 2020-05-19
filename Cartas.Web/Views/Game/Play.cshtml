@@ -1,41 +1,33 @@
-﻿@{
+﻿@using Cartas.Web.Domain
+@model Cartas.Web.Models.PlayGameViewModel
+@{
     Layout = null;
 }
 <html>
 
 
-
 <head>
-    <style type="text/css">
-        body {
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            background: #555;
-        }
-
-        canvas {
-            display: block;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            /* bring your own prefixes */
-            transform: translate(-50%, -50%);
-        }
-
-        .centered {
-        }
-    </style>
+    <link rel="stylesheet" href="~/Content/game.css"/>
 </head>
 <body>
-    
+
 <script type="text/javascript" src="~/Scripts/pixi.min.js"></script>
-<script type="text/javascript" src="~/Scripts/game/app.js"></script>
+<script type="text/javascript" src="~/Scripts/game/game.js"></script>
 <script type="text/javascript" src="~/Scripts/game/board.js"></script>
 <script type="text/javascript" src="~/Scripts/game/players.js"></script>
 <script type="text/javascript" src="~/Scripts/game/playerDeck.js"></script>
+@if (Model.Game.GameType == GameType.Romi)
+{
+    <script type="text/javascript" src="~/Scripts/game/romi.js"></script>
+}
 <script type="text/javascript">
-    const game = new Game().init();
+    const game = new Game();
+    game.init();
+
+    @if (Model.Game.GameType == GameType.Romi)
+    {
+        @:new Romi().init(game);
+    }
 </script>
 </body>
 

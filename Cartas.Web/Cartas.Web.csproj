@@ -156,12 +156,14 @@
     </Compile>
     <Compile Include="Models\GameItemViewModel.cs" />
     <Compile Include="Models\IndexViewModel.cs" />
+    <Compile Include="Models\PlayGameViewModel.cs" />
     <Compile Include="Models\RegisterPlayerViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\game.css" />
     <Content Include="Content\img\avatars\001-girl-10.png" />
     <Content Include="Content\img\avatars\002-girl-9.png" />
     <Content Include="Content\img\avatars\003-boy-20.png" />
@@ -222,7 +224,8 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\game\app.js" />
+    <Content Include="Scripts\game\game.js" />
+    <Content Include="Scripts\game\romi.js" />
     <Content Include="Scripts\game\board.js" />
     <Content Include="Scripts\game\playerDeck.js" />
     <Content Include="Scripts\game\players.js" />
@@ -250,6 +253,7 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\fonts\CabinSketch-Regular.ttf" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web.Mvc;
 using Cartas.Web.Domain;
 using Cartas.Web.Domain.Logic;
+using Cartas.Web.Domain.Models;
 using Cartas.Web.Models;
 
 namespace Cartas.Web.Controllers
@@ -40,7 +41,18 @@ namespace Cartas.Web.Controllers
 
         public ActionResult Play(string gameId)
         {
-            return View();
+            return View(new PlayGameViewModel
+            {
+                Game = new Game("1234", GameType.Romi, new Player())
+            });
+        }
+
+        public ActionResult Mock(string gameId)
+        {
+            return View("Play", new PlayGameViewModel
+            {
+                Game = new Game("1234", GameType.Romi, new Player())
+            });
         }
     }
 }

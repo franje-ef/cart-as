@@ -22,6 +22,7 @@
 
         this.board = new Board().init(app);
         this.playerDeck = new PlayerDeck().init(app.stage);
+        this.stage = app.stage;
         /**
          * DEMO
          */
