@@ -145,12 +145,14 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\GameController.cs" />
+    <Compile Include="Controllers\PlayerController.cs" />
     <Compile Include="Domain\Constants.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\GameItemViewModel.cs" />
     <Compile Include="Models\IndexViewModel.cs" />
+    <Compile Include="Models\RegisterPlayerViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -160,6 +162,56 @@
     <Content Include="Content\bootstrap-reboot.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\img\avatars\001-girl-10.png" />
+    <Content Include="Content\img\avatars\002-girl-9.png" />
+    <Content Include="Content\img\avatars\003-boy-20.png" />
+    <Content Include="Content\img\avatars\004-girl-8.png" />
+    <Content Include="Content\img\avatars\005-girl-7.png" />
+    <Content Include="Content\img\avatars\006-bald.png" />
+    <Content Include="Content\img\avatars\007-athlete-1.png" />
+    <Content Include="Content\img\avatars\008-girl-6.png" />
+    <Content Include="Content\img\avatars\009-ninja.png" />
+    <Content Include="Content\img\avatars\010-boy-19.png" />
+    <Content Include="Content\img\avatars\011-boy-18.png" />
+    <Content Include="Content\img\avatars\012-boy-17.png" />
+    <Content Include="Content\img\avatars\013-boy-16.png" />
+    <Content Include="Content\img\avatars\014-boy-15.png" />
+    <Content Include="Content\img\avatars\015-thief.png" />
+    <Content Include="Content\img\avatars\016-boy-14.png" />
+    <Content Include="Content\img\avatars\017-birthday.png" />
+    <Content Include="Content\img\avatars\018-boy-13.png" />
+    <Content Include="Content\img\avatars\019-girl-5.png" />
+    <Content Include="Content\img\avatars\020-girl-4.png" />
+    <Content Include="Content\img\avatars\021-king.png" />
+    <Content Include="Content\img\avatars\022-boy-12.png" />
+    <Content Include="Content\img\avatars\023-costume.png" />
+    <Content Include="Content\img\avatars\024-boy-11.png" />
+    <Content Include="Content\img\avatars\025-boy-10.png" />
+    <Content Include="Content\img\avatars\026-boy-9.png" />
+    <Content Include="Content\img\avatars\027-boy-8.png" />
+    <Content Include="Content\img\avatars\028-girl-3.png" />
+    <Content Include="Content\img\avatars\029-rich.png" />
+    <Content Include="Content\img\avatars\030-punk.png" />
+    <Content Include="Content\img\avatars\031-girl-2.png" />
+    <Content Include="Content\img\avatars\032-boy-7.png" />
+    <Content Include="Content\img\avatars\033-astronaut.png" />
+    <Content Include="Content\img\avatars\034-vampire.png" />
+    <Content Include="Content\img\avatars\035-boy-6.png" />
+    <Content Include="Content\img\avatars\036-viking.png" />
+    <Content Include="Content\img\avatars\037-girl-1.png" />
+    <Content Include="Content\img\avatars\038-athlete.png" />
+    <Content Include="Content\img\avatars\039-girl.png" />
+    <Content Include="Content\img\avatars\040-boy-5.png" />
+    <Content Include="Content\img\avatars\041-wrestler.png" />
+    <Content Include="Content\img\avatars\042-sheriff.png" />
+    <Content Include="Content\img\avatars\043-boy-4.png" />
+    <Content Include="Content\img\avatars\044-futuristic.png" />
+    <Content Include="Content\img\avatars\045-pirate.png" />
+    <Content Include="Content\img\avatars\046-troglodyte.png" />
+    <Content Include="Content\img\avatars\047-boy-3.png" />
+    <Content Include="Content\img\avatars\048-boy-2.png" />
+    <Content Include="Content\img\avatars\049-boy-1.png" />
+    <Content Include="Content\img\avatars\050-boy.png" />
     <Content Include="Content\img\logo.PNG" />
     <Content Include="Global.asax" />
     <Content Include="favicon.ico" />
@@ -299,6 +351,7 @@
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
     <Content Include="Views\Game\Index.cshtml" />
+    <Content Include="Views\Player\Register.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

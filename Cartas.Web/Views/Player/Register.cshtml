@@ -1,0 +1,77 @@
+﻿@model Cartas.Web.Models.RegisterPlayerViewModel
+
+<script type="text/javascript">
+    var avatars = [];
+    var avatarIndex = 0;
+
+    @foreach (var avatar in Model.AvatarList)
+    {
+        @:avatars.push("@avatar");
+    }
+
+    function previousAvatar() {
+        if (avatarIndex - 1 >= 0) {
+            avatarIndex--;
+        } else {
+            avatarIndex = avatars.length - 1;
+        }
+
+        setAvatar();
+    }
+
+    function nextAvatar() {
+        if (avatarIndex + 1 >= avatars.length) {
+            avatarIndex = 0;
+        } else {
+            avatarIndex++;
+        }
+
+        setAvatar();
+    }
+
+    function setAvatar() {
+        document.getElementById("avatarImg").setAttribute("src", "/Content/img/avatars/" + avatars[avatarIndex]);
+        document.getElementById("avatarValue").value = avatars[avatarIndex];
+    }
+</script>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-10 col-sm-10 col-md-6 col-lg-4 col-xl-4">
+            <div class="card mb-3">
+                <h3 class="card-header">Jugador</h3>
+                <div style="text-align: center">
+                    <img id="avatarImg" class="img-fluid" style="max-height: 200px;"
+                         src="/Content/img/avatars/@Model.AvatarList.First()" alt="Card image">
+                </div>
+                <div style="text-align: center">
+                    <button type="button" class="btn btn-success" onclick="previousAvatar()">
+                        <svg class="bi bi-arrow-left" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M5.854 4.646a.5.5 0 010 .708L3.207 8l2.647 2.646a.5.5 0 01-.708.708l-3-3a.5.5 0 010-.708l3-3a.5.5 0 01.708 0z" clip-rule="evenodd"/>
+                            <path fill-rule="evenodd" d="M2.5 8a.5.5 0 01.5-.5h10.5a.5.5 0 010 1H3a.5.5 0 01-.5-.5z" clip-rule="evenodd"/>
+                        </svg>
+                    </button>
+                    <button type="button" class="btn btn-success" onclick="nextAvatar()">
+                        <svg class="bi bi-arrow-right" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M10.146 4.646a.5.5 0 01.708 0l3 3a.5.5 0 010 .708l-3 3a.5.5 0 01-.708-.708L12.793 8l-2.647-2.646a.5.5 0 010-.708z" clip-rule="evenodd"/>
+                            <path fill-rule="evenodd" d="M2 8a.5.5 0 01.5-.5H13a.5.5 0 010 1H2.5A.5.5 0 012 8z" clip-rule="evenodd"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label class="col-form-label" for="inputDefault">Nombre</label>
+                        <input type="text" class="form-control" placeholder="Nombre del jugador" id="inputDefault">
+                    </div>
+                    <input type="hidden" id="avatarValue"/>
+                </div>
+
+
+                <div class="card-footer text-muted">
+                    <button type="button" class="btn btn-success">Guardar</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
