@@ -1,4 +1,5 @@
-﻿@model Cartas.Web.Models.RegisterPlayerViewModel
+﻿@using Cartas.Web.Domain
+@model Cartas.Web.Models.RegisterPlayerViewModel
 
 <script type="text/javascript">
     var avatars = [];
@@ -58,18 +59,26 @@
                         </svg>
                     </button>
                 </div>
-                <div class="card-body">
-                    <div class="form-group">
-                        <label class="col-form-label" for="inputDefault">Nombre</label>
-                        <input type="text" class="form-control" placeholder="Nombre del jugador" id="inputDefault">
+                @using (Html.BeginForm("Register", "Player", FormMethod.Post))
+                {
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label class="col-form-label" for="inputDefault">Nombre</label>
+                            <input type="text" name="Name" class="form-control" placeholder="Nombre del jugador" id="inputDefault">
+                        </div>
+                        <input type="hidden" name="Avatar" id="avatarValue" value="@Model.AvatarList.First()"/>
                     </div>
-                    <input type="hidden" id="avatarValue"/>
-                </div>
 
 
-                <div class="card-footer text-muted">
-                    <button type="button" class="btn btn-success">Guardar</button>
-                </div>
+                    <div class="card-footer text-muted">
+                        <button type="submit" class="btn btn-success">Guardar</button>
+                        @if (PlayerService.GetPlayer(Request.Cookies) != null)
+                        {
+                            <a href="/" role="button" class="btn btn-danger btn-sm">Cancelar</a>
+                        }
+
+                    </div>
+                }
             </div>
         </div>
 

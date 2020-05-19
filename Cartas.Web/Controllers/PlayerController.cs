@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Linq;
 using System.Web.Mvc;
+using Cartas.Web.Domain;
 using Cartas.Web.Models;
 
 namespace Cartas.Web.Controllers
@@ -17,9 +18,14 @@ namespace Cartas.Web.Controllers
             return View(model);
         }
 
-        //public ActionResult Register(RegisterPlayerViewModel model)
-        //{
+        [HttpPost]
+        public ActionResult Register(RegisterPlayerViewModel model)
+        {
+            var cookie = PlayerService.CreatePlayerCookie(model.Name, model.Avatar);
 
-        //}
+            Response.Cookies.Add(cookie);
+
+            return RedirectToAction("Index", "Game");
+        }
     }
 }

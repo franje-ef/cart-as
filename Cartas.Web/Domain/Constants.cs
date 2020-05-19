@@ -4,4 +4,9 @@
     {
         public static int MaxPlayers = 10;
     }
+
+    public enum GameType
+    {
+        Romi
+    }
 }

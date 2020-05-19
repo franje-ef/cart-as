@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using Cartas.Web.Domain
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8"/>
@@ -9,20 +10,30 @@
 </head>
 <body class="bg-secondary">
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-    <a class="navbar-brand" href="#">
+    <a class="navbar-brand" href="/">
         <img src="~/Content/img/logo.PNG" width="90" height="57" alt="">
     </a>
 
-        <ul class="navbar-nav mr-auto"></ul>
-        <div class="form-inline my-2 my-lg-0">
-            <img src="/Content/img/avatars/001-girl-10.png" style="max-height: 40px" />
-            <h2 class="text-light" style="margin-bottom: 0; margin-left: 10px ">Player</h2>
-        </div>
+    <ul class="navbar-nav mr-auto"></ul>
+    
+    @{
+        var player = PlayerService.GetPlayer(Request.Cookies);
+        if (player != null)
+        {
+            <a href="/Player/Register">
+                <div class="form-inline my-2 my-lg-0">
+                    <img src="/Content/img/avatars/@player.Avatar" style="max-height: 40px"/>
+                    <h2 class="text-light" style="margin-bottom: 0; margin-left: 10px">@player.PlayerName</h2>
+                </div>
+            </a>
+        }
+    }
+    
 </nav>
 <div class="container body-content">
     @RenderBody()
-    
-    
+
+
 </div>
 
 @Scripts.Render("~/bundles/jquery")
