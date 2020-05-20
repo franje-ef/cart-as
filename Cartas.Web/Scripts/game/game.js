@@ -12,6 +12,8 @@
             transparent: true
         });
 
+        this.app = app;
+
         const ratio = size[0] / size[1];
         //this.renderer = PIXI.autoDetectRenderer(size[0], size[1], null);
         document.body.appendChild(app.view);

@@ -216,6 +216,12 @@
     <Content Include="Content\img\avatars\050-boy.png" />
     <Content Include="Content\img\game\table_background_green.svg" />
     <Content Include="Content\img\game\table_frame.svg" />
+    <Content Include="Content\img\icons\dislike.svg" />
+    <Content Include="Content\img\icons\heart.svg" />
+    <Content Include="Content\img\icons\like.svg" />
+    <Content Include="Content\img\icons\middle.svg" />
+    <Content Include="Content\img\icons\poo.svg" />
+    <Content Include="Content\img\icons\super.svg" />
     <Content Include="Content\img\logo.PNG" />
     <Content Include="Global.asax" />
     <Content Include="favicon.ico" />
@@ -224,7 +230,9 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\easing\EasePack.min.js" />
     <Content Include="Scripts\game\game.js" />
+    <Content Include="Scripts\game\reactionService.js" />
     <Content Include="Scripts\game\romi.js" />
     <Content Include="Scripts\game\board.js" />
     <Content Include="Scripts\game\playerDeck.js" />
@@ -234,6 +242,8 @@
     <Content Include="Scripts\pixi.min.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\TimelineLite.min.js" />
+    <Content Include="Scripts\TweenLite.min.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

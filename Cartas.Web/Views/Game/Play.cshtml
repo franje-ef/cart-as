@@ -12,10 +12,14 @@
 <body>
 
 <script type="text/javascript" src="~/Scripts/pixi.min.js"></script>
+<script type="text/javascript" src="~/Scripts/TimelineLite.min.js"></script>
+<script type="text/javascript" src="~/Scripts/TweenLite.min.js"></script>
+<script type="text/javascript" src="~/Scripts/easing/EasePack.min.js"></script>
 <script type="text/javascript" src="~/Scripts/game/game.js"></script>
 <script type="text/javascript" src="~/Scripts/game/board.js"></script>
 <script type="text/javascript" src="~/Scripts/game/players.js"></script>
 <script type="text/javascript" src="~/Scripts/game/playerDeck.js"></script>
+<script type="text/javascript" src="~/Scripts/game/reactionService.js"></script>
 @if (Model.Game.GameType == GameType.Romi)
 {
     <script type="text/javascript" src="~/Scripts/game/romi.js"></script>
@@ -28,6 +32,9 @@
     {
         @:new Romi().init(game);
     }
+
+    var reactionService = new ReactionService(game);
+    reactionService.init();
 </script>
 </body>
 
