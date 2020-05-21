@@ -1,9 +1,14 @@
 ﻿class Romi {
-    init(game) {
-        var container = new PIXI.Container();
+    constructor(game) {
+        this.game = game;
+    }
+
+    init(initialGoal) {
+        let self = this;
+
 
         document.fonts.load('8pt "Cabin Sketch"').then(() => {
-            let text = new PIXI.Text("2 tríos y 1 seguidilla",
+            var goal = new PIXI.Text(initialGoal,
                 {
                     fontFamily: 'Cabin Sketch',
                     fontSize: 42,
@@ -11,7 +16,23 @@
                     fontWeight: "500",
                     lineHeight: 4
                 });
-            game.stage.addChild(text);
+
+
+            goal.x = 800;
+            goal.y = 200;
+
+            self.goal = goal;
+
+            self.game.stage.addChild(goal);
+
+            setTimeout(function() {
+                    self.onGoalChanged(self, "mojón");
+                },
+                1500);
         });
+    }
+
+    onGoalChanged(self, text) {
+        self.goal.text = text;
     }
 }

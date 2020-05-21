@@ -30,7 +30,7 @@
 
     @if (Model.Game.GameType == GameType.Romi)
     {
-        @:new Romi().init(game);
+        @:new Romi(game).init("2 tríos y una seguidilla");
     }
 
     var reactionService = new ReactionService(game);
