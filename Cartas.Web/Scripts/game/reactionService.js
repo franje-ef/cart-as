@@ -17,6 +17,8 @@
         this.game.app.loader.add('middle', '/Content/img/icons/middle.svg');
         this.game.app.loader.add('poo', '/Content/img/icons/poo.svg');
         this.game.app.loader.add('super', '/Content/img/icons/super.svg');
+        this.game.app.loader.add('yawning', '/Content/img/icons/yawning.svg');
+
         this.game.app.loader.add('bubble', '/Content/img/bubble.svg');
 
         this.game.app.loader.load((loader, resources) => this.onAssetsLoaded(resources, this.game, this));
@@ -30,8 +32,8 @@
         function timeout() {
             setTimeout(function () {
                 var randomNumber = Math.floor(Math.random() * (9 - 0 + 1)) + 0;
-                var randomReaction = Math.floor(Math.random() * (5 - 0 + 1)) + 0;
-                var reactions = ["dislike", "heart", "like", "middle", "poo", "super"];
+                var randomReaction = Math.floor(Math.random() * (6 - 0 + 1)) + 0;
+                var reactions = ["dislike", "heart", "like", "middle", "poo", "super", "yawning"];
                 self.onReactionReceived(randomNumber, reactions[randomReaction]);
 
                 timeout();
@@ -45,12 +47,13 @@
     onAssetsLoaded(resources, game, self) {
         self.resources = resources;
 
-        self._setUpReaction(self, 25, 830, "like");
-        self._setUpReaction(self, 25, 894, "heart");
-        self._setUpReaction(self, 25, 958, "super");
-        self._setUpReaction(self, 75, 830, "dislike");
-        self._setUpReaction(self, 75, 894, "poo");
-        self._setUpReaction(self, 75, 958, "middle");
+        self._setUpReaction(self, 25, 800, "like");
+        self._setUpReaction(self, 25, 864, "heart");
+        self._setUpReaction(self, 25, 928, "super");
+        self._setUpReaction(self, 75, 800, "dislike");
+        self._setUpReaction(self, 75, 864, "poo");
+        self._setUpReaction(self, 75, 928, "middle");
+        self._setUpReaction(self, 50, 992, "yawning");
 
         self._setUpBubbles(self, resources);
     }

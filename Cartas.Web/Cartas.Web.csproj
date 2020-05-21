@@ -223,6 +223,7 @@
     <Content Include="Content\img\icons\middle.svg" />
     <Content Include="Content\img\icons\poo.svg" />
     <Content Include="Content\img\icons\super.svg" />
+    <Content Include="Content\img\icons\yawning.svg" />
     <Content Include="Content\img\logo.PNG" />
     <Content Include="Global.asax" />
     <Content Include="favicon.ico" />

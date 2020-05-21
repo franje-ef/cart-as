@@ -47,13 +47,14 @@
     }
 
     _resize(app, ratio) {
-        if (window.visualViewport.width / window.visualViewport.height >= ratio) {
-            var w = window.visualViewport.height * ratio;
-            var h = window.visualViewport.height;
+        if (document.body.clientWidth / document.body.clientHeight >= ratio) {
+            var w = document.body.clientHeight * ratio;
+            var h = document.body.clientHeight;
         } else {
-            var w = window.visualViewport.width;
-            var h = window.visualViewport.width / ratio;
+            var w = document.body.clientWidth;
+            var h = document.body.clientWidth / ratio;
         }
+
         app.view.style.width = w + 'px';
         app.view.style.height = h + 'px';
     }
