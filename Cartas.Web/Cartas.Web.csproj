@@ -214,6 +214,7 @@
     <Content Include="Content\img\avatars\048-boy-2.png" />
     <Content Include="Content\img\avatars\049-boy-1.png" />
     <Content Include="Content\img\avatars\050-boy.png" />
+    <Content Include="Content\img\bubble.svg" />
     <Content Include="Content\img\game\table_background_green.svg" />
     <Content Include="Content\img\game\table_frame.svg" />
     <Content Include="Content\img\icons\dislike.svg" />
