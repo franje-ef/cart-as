@@ -20,6 +20,7 @@
 <script type="text/javascript" src="~/Scripts/game/reactionService.js"></script>
 <script type="text/javascript" src="~/Scripts/game/gameControls.js"></script>
 <script type="text/javascript" src="~/Scripts/game/confirmVictory.js"></script>
+<script type="text/javascript" src="~/Scripts/game/resourceLoader.js"></script>
 @if (Model.Game.GameType == GameType.Romi)
 {
     <script type="text/javascript" src="~/Scripts/game/romi.js"></script>
@@ -27,55 +28,73 @@
 <script type="text/javascript">
     var isMasterUser = true;
 
-    const game = new Game();
-    game.init();
+    var resourceLoader = new ResourceLoader();
+    resourceLoader.init(() => init(resourceLoader.resources));
 
-    const players = new Players(game, isMasterUser);
 
-    /**
-         * DEMO
+    function init(resources) {
+        const game = new Game();
+        game.init();
+
+        onImagesLoaded(resources, game);
+
+        const players = new Players(game, isMasterUser);
+
+        /**
+             * DEMO
+             */
+        players.addPlayer("Jesús", '/Content/img/avatars/038-athlete.png', 1, 0);
+        players.addPlayer("Adri", '/Content/img/avatars/005-girl-7.png', 2, 2);
+        players.addPlayer("3", '/Content/img/avatars/016-boy-14.png', 3, 0);
+        players.addPlayer("4", '/Content/img/avatars/026-boy-9.png', 4, 0);
+        players.addPlayer("5", '/Content/img/avatars/006-bald.png', 5, 0);
+        players.addPlayer("6", '/Content/img/avatars/007-athlete-1.png', 6, 5);
+        players.addPlayer("7", '/Content/img/avatars/036-viking.png', 7, 15);
+        players.addPlayer("EL NOMBRE LARGO", '/Content/img/avatars/042-sheriff.png', 8, 0);
+        players.addPlayer("9", '/Content/img/avatars/044-futuristic.png', 9, 0);
+        players.addPlayer("123456789012", '/Content/img/avatars/005-girl-7.png', 10, 0);
+        /**
+         *END DEMO
          */
-    players.addPlayer("Jesús", '/Content/img/avatars/038-athlete.png', 1,0);
-    players.addPlayer("Adri", '/Content/img/avatars/005-girl-7.png', 2, 2);
-    players.addPlayer("3", '/Content/img/avatars/016-boy-14.png', 3, 0);
-    players.addPlayer("4", '/Content/img/avatars/026-boy-9.png', 4, 0);
-    players.addPlayer("5", '/Content/img/avatars/006-bald.png', 5, 0);
-    players.addPlayer("6", '/Content/img/avatars/007-athlete-1.png', 6, 5);
-    players.addPlayer("7", '/Content/img/avatars/036-viking.png', 7, 15);
-    players.addPlayer("EL NOMBRE LARGO", '/Content/img/avatars/042-sheriff.png', 8, 0);
-    players.addPlayer("9", '/Content/img/avatars/044-futuristic.png', 9, 0);
-    players.addPlayer("123456789012", '/Content/img/avatars/005-girl-7.png', 10, 0);
-    /**
-     *END DEMO
-     */
 
-    @if (Model.Game.GameType == GameType.Romi)
-    {
-        @:new Romi(game, isMasterUser).init("2 tríos y una seguidilla");
+        @if (Model.Game.GameType == GameType.Romi)
+        {
+            @:new Romi(game, isMasterUser,resources).init("2 tríos y una seguidilla");
+        }
+
+        var reactionService = new ReactionService(game, resources);
+        reactionService.init();
+
+        var gameControls = new GameControls(game, isMasterUser, resources);
+        gameControls.init();
+
+        var confirmVictory = new ConfirmVictory(game, game.board, game.playerDeck.width);
+        confirmVictory.init();
+        confirmVictory.show("Jesús");
     }
 
-    var reactionService = new ReactionService(game);
-    reactionService.init();
 
-    var gameControls = new GameControls(game, isMasterUser);
-    gameControls.init();
-
-    var confirmVictory = new ConfirmVictory(game, game.board, game.playerDeck.width);
-    confirmVictory.init();
-    confirmVictory.show("Jesús");
     /**
          * /TESTS
          */
-    function timeout() {
-        setTimeout(function () {
-            var randomNumber = Math.floor(Math.random() * (10 - 1) + 1);
-            players.setCurrentTurn(randomNumber);
-            timeout();
-        }, 4000);
+    //function timeout() {
+    //    setTimeout(function() {
+    //            var randomNumber = Math.floor(Math.random() * (10 - 1) + 1);
+    //            players.setCurrentTurn(randomNumber);
+    //            timeout();
+    //        },
+    //        4000);
+    //}
+
+    //timeout();
+    /*END TESTS*/
+
+    function onImagesLoaded(resources, game) {
+        var bow = new PIXI.Sprite(resources["1_1"].texture);
+
+        game.app.stage.addChild(bow);
     }
 
-    timeout();
-    /*END TESTS*/
 </script>
 </body>
 

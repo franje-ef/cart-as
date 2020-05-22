@@ -1,5 +1,5 @@
 ﻿class ReactionService {
-    constructor(game) {
+    constructor(game, resources) {
         this.game = game;
         this.seats =
             [{ x: 680, y: 600 }, { x: 980, y: 600 }, { x: 1280, y: 600 }
@@ -8,27 +8,26 @@
             , { x: 430, y: 400 }, { x: 430, y: 200 }
         ];
         this.bubbles = [];
+        this.resources = resources;
     }
 
     init() {
-        this.game.app.loader.add('like', '/Content/img/icons/like.svg');
-        this.game.app.loader.add('dislike', '/Content/img/icons/dislike.svg');
-        this.game.app.loader.add('heart', '/Content/img/icons/heart.svg');
-        this.game.app.loader.add('middle', '/Content/img/icons/middle.svg');
-        this.game.app.loader.add('poo', '/Content/img/icons/poo.svg');
-        this.game.app.loader.add('super', '/Content/img/icons/super.svg');
-        this.game.app.loader.add('yawning', '/Content/img/icons/yawning.svg');
+        this._setUpReaction(this, 25, 800, "like");
+        this._setUpReaction(this, 25, 864, "heart");
+        this._setUpReaction(this, 25, 928, "super");
+        this._setUpReaction(this, 75, 800, "dislike");
+        this._setUpReaction(this, 75, 864, "poo");
+        this._setUpReaction(this, 75, 928, "middle");
+        this._setUpReaction(this, 50, 992, "yawning");
 
-        this.game.app.loader.add('bubble', '/Content/img/bubble.svg');
-
-        this.game.app.loader.load((loader, resources) => this.onAssetsLoaded(resources, this.game, this));
-
-        const self = this;
-
+        this._setUpBubbles(this, this.resources);
 
         /**
          * /TESTS
          */
+
+        const self = this;
+
         function timeout() {
             setTimeout(function () {
                 var randomNumber = Math.floor(Math.random() * (9 - 0 + 1)) + 0;
@@ -42,20 +41,6 @@
 
         timeout();
         /*END TESTS*/
-    }
-
-    onAssetsLoaded(resources, game, self) {
-        self.resources = resources;
-
-        self._setUpReaction(self, 25, 800, "like");
-        self._setUpReaction(self, 25, 864, "heart");
-        self._setUpReaction(self, 25, 928, "super");
-        self._setUpReaction(self, 75, 800, "dislike");
-        self._setUpReaction(self, 75, 864, "poo");
-        self._setUpReaction(self, 75, 928, "middle");
-        self._setUpReaction(self, 50, 992, "yawning");
-
-        self._setUpBubbles(self, resources);
     }
 
     onReactionReceived(seat, reactionId) {

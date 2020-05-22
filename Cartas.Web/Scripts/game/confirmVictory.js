@@ -22,13 +22,13 @@
         
         this.board.hide();
         
-        const snapshot = new PIXI.Sprite.from("/game/snapshot?gameid=" + game.gameId);
+        const snapshot = new PIXI.Sprite.from("/game/snapshot?gameid=" + this.game.gameId);
         snapshot.scale.x = 0.5;
         snapshot.scale.y = 0.5;
         snapshot.y = 50;
         this.container.addChild(snapshot);
 
-        document.fonts.load('8pt "Cabin Sketch"').then(() => this._showPlayerName(playerName, this.container, this.playerDeckWidth));
+        this._showPlayerName(playerName, this.container, this.playerDeckWidth);
 
         this.container.visible = true;
     }

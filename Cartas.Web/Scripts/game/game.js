@@ -28,7 +28,7 @@
         this.playerDeck = new PlayerDeck(this);
         this.playerDeck.init();
         this.stage = app.stage;
-        
+
 
 
         this._resize(app, ratio);

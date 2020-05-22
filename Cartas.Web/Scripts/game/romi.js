@@ -1,15 +1,20 @@
 ﻿class Romi {
-    constructor(game, isMasterUser) {
+    constructor(game, isMasterUser, resources) {
         this.game = game;
         this.isMasterUser = isMasterUser;
+        this.resources = resources;
     }
 
     init(initialGoal) {
-        const loader = new PIXI.Loader();
+        var container = new PIXI.Container();
+        this.container = container;
 
-        loader.add('target', '/Content/img/target.svg');
-        loader.add('bow', '/Content/img/bow.svg');
-        loader.load((_, resources) => this.onImagesLoaded(resources, this, initialGoal));
+        this._addBow(container, this.isMasterUser, this.resources);
+        this._addTarget(container, this.resources);
+        this._addGoal(container, initialGoal, this);
+        this.game.stage.addChild(container);
+        this.locateContainer(this);
+
 
         /**
          * /TESTS
@@ -29,22 +34,6 @@
         /*END TESTS*/
     }
 
-    onImagesLoaded(resources, self, initialGoal) {
-        document.fonts.load('8pt "Cabin Sketch"').then(() => self.onAssetsLoaded(resources, self, initialGoal));
-    }
-
-    onAssetsLoaded(resources, self, initialGoal) {
-        var container = new PIXI.Container();
-        self.container = container;
-
-        self._addBow(container, self.isMasterUser, resources);
-        self._addTarget(container, resources);
-        self._addGoal(container, initialGoal, self);
-        
-        self.game.stage.addChild(container);
-        self.locateContainer(self);
-    }
-    
     onGoalChanged(self, text) {
         self.goal.text = text;
         var originalHeight = self.goal.height;

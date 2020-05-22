@@ -1,32 +1,23 @@
 ﻿class GameControls {
-    constructor(game, isMasterUser) {
+    constructor(game, isMasterUser, resources) {
         this.game = game;
         this.isMasterUser = isMasterUser;
+        this.resources = resources;
     }
 
     init() {
-        const loader = new PIXI.Loader();
-
-        loader.add('exit', '/Content/img/game/exit.svg');
-        loader.add('shuffle', '/Content/img/game/shuffle.svg');
-        loader.add('victory', '/Content/img/game/victory.svg');
-        loader.add('start', '/Content/img/game/start.svg');
-        loader.load((_, resources) => this._onAssetsLoaded(resources, this));
-    }
-
-    _onAssetsLoaded(resources, self) {
         var container = new PIXI.Container();
-        container.x = self.game.width - 120;
+        container.x = this.game.width - 120;
 
-        self._createButton(resources, container, "exit", () => self._onExitPressed());
-        self._createButton(resources, container, "shuffle", () => null);
-        self._createButton(resources, container, "victory", () => null);
-        if (self.isMasterUser) {
-            self._createButton(resources, container, "start", () => null);    
+        this._createButton(this.resources, container, "exit", () => this._onExitPressed());
+        this._createButton(this.resources, container, "shuffle", () => null);
+        this._createButton(this.resources, container, "victory", () => null);
+        if (this.isMasterUser) {
+            this._createButton(this.resources, container, "start", () => null);
         }
-        
 
-        self.game.stage.addChild(container);
+
+        this.game.stage.addChild(container);
     }
 
     _createButton(resources, container, resourceId, func) {
