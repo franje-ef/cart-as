@@ -214,6 +214,7 @@
     <Content Include="Content\img\avatars\048-boy-2.png" />
     <Content Include="Content\img\avatars\049-boy-1.png" />
     <Content Include="Content\img\avatars\050-boy.png" />
+    <Content Include="Content\img\bow.svg" />
     <Content Include="Content\img\bubble.svg" />
     <Content Include="Content\img\game\table_background_green.svg" />
     <Content Include="Content\img\game\table_frame.svg" />
@@ -225,6 +226,7 @@
     <Content Include="Content\img\icons\super.svg" />
     <Content Include="Content\img\icons\yawning.svg" />
     <Content Include="Content\img\logo.PNG" />
+    <Content Include="Content\img\target.svg" />
     <Content Include="Global.asax" />
     <Content Include="favicon.ico" />
     <Content Include="Scripts\bootstrap.js" />
