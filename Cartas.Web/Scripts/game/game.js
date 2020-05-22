@@ -1,6 +1,6 @@
 ﻿class Game {
-    constructor() {
-        
+    constructor(gameId) {
+        this.gameId = gameId;
     }
 
     init() {
@@ -23,8 +23,10 @@
         window.addEventListener('resize', function() { game._resize(app, ratio); });
         window.onorientationchange = function() { game._resize(app, ratio); }
 
-        this.board = new Board().init(app);
-        this.playerDeck = new PlayerDeck().init(app.stage);
+        this.board = new Board();
+        this.board.init(app);
+        this.playerDeck = new PlayerDeck(this);
+        this.playerDeck.init();
         this.stage = app.stage;
         
 

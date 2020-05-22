@@ -19,6 +19,7 @@
 <script type="text/javascript" src="~/Scripts/game/playerDeck.js"></script>
 <script type="text/javascript" src="~/Scripts/game/reactionService.js"></script>
 <script type="text/javascript" src="~/Scripts/game/gameControls.js"></script>
+<script type="text/javascript" src="~/Scripts/game/confirmVictory.js"></script>
 @if (Model.Game.GameType == GameType.Romi)
 {
     <script type="text/javascript" src="~/Scripts/game/romi.js"></script>
@@ -59,7 +60,9 @@
     var gameControls = new GameControls(game, isMasterUser);
     gameControls.init();
 
-
+    var confirmVictory = new ConfirmVictory(game, game.board, game.playerDeck.width);
+    confirmVictory.init();
+    confirmVictory.show("Jesús");
     /**
          * /TESTS
          */

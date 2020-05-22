@@ -240,6 +240,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\easing\EasePack.min.js" />
+    <Content Include="Scripts\game\confirmVictory.js" />
     <Content Include="Scripts\game\game.js" />
     <Content Include="Scripts\game\gameControls.js" />
     <Content Include="Scripts\game\reactionService.js" />

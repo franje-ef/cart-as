@@ -11,6 +11,7 @@
         table.width = tableInitWidth * tableScale;
         table.position.x = parent.view.width / 2 - table.width / 2;
         table.position.y = (parent.view.height / 2 - table.height / 2) / 2;
+        this.table = table;
 
         parent.stage.addChild(table);
 
@@ -21,11 +22,21 @@
         tableFrame.width = tableInitWidth * tableScale;
         tableFrame.position.x = parent.view.width / 2 - tableFrame.width / 2;
         tableFrame.position.y = (parent.view.height / 2 - tableFrame.height / 2) / 2;
+        this.tableFrame = tableFrame;
 
         parent.stage.addChild(tableFrame);
 
         this._addPlayedCardPlaceHolder(table);
         this._addLogo(parent.stage);
+    }
+
+    hide() {
+        this.table.visible = false;
+        
+    }
+
+    show() {
+        this.table.visible = true;
     }
 
     _addPlayedCardPlaceHolder(parent) {
