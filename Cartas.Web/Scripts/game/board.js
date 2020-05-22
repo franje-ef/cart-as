@@ -25,6 +25,7 @@
         parent.stage.addChild(tableFrame);
 
         this._addPlayedCardPlaceHolder(table);
+        this._addLogo(parent.stage);
     }
 
     _addPlayedCardPlaceHolder(parent) {
@@ -38,5 +39,13 @@
         }
 
         parent.addChild(playedCardPlaceHolder);
+    }
+
+    _addLogo(parent) {
+        const logo = PIXI.Sprite.from("/Content/img/logo.PNG");
+        logo.scale.x = 0.45;
+        logo.scale.y = 0.45;
+
+        parent.addChild(logo);
     }
 }

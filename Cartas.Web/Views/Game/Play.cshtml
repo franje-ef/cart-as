@@ -20,21 +20,27 @@
 <script type="text/javascript" src="~/Scripts/game/players.js"></script>
 <script type="text/javascript" src="~/Scripts/game/playerDeck.js"></script>
 <script type="text/javascript" src="~/Scripts/game/reactionService.js"></script>
+<script type="text/javascript" src="~/Scripts/game/gameControls.js"></script>
 @if (Model.Game.GameType == GameType.Romi)
 {
     <script type="text/javascript" src="~/Scripts/game/romi.js"></script>
 }
 <script type="text/javascript">
+    var isMasterUser = false;
+
     const game = new Game();
     game.init();
 
     @if (Model.Game.GameType == GameType.Romi)
     {
-        @:new Romi(game, true).init("2 tríos y una seguidilla");
+        @:new Romi(game, isMasterUser).init("2 tríos y una seguidilla");
     }
 
     var reactionService = new ReactionService(game);
     reactionService.init();
+
+    var gameControls = new GameControls(game, isMasterUser);
+    gameControls.init();
 </script>
 </body>
 

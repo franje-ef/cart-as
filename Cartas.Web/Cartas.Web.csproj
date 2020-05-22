@@ -216,8 +216,12 @@
     <Content Include="Content\img\avatars\050-boy.png" />
     <Content Include="Content\img\bow.svg" />
     <Content Include="Content\img\bubble.svg" />
+    <Content Include="Content\img\game\exit.svg" />
+    <Content Include="Content\img\game\shuffle.svg" />
+    <Content Include="Content\img\game\start.svg" />
     <Content Include="Content\img\game\table_background_green.svg" />
     <Content Include="Content\img\game\table_frame.svg" />
+    <Content Include="Content\img\game\victory.svg" />
     <Content Include="Content\img\icons\dislike.svg" />
     <Content Include="Content\img\icons\heart.svg" />
     <Content Include="Content\img\icons\like.svg" />
@@ -236,6 +240,7 @@
     </Content>
     <Content Include="Scripts\easing\EasePack.min.js" />
     <Content Include="Scripts\game\game.js" />
+    <Content Include="Scripts\game\gameControls.js" />
     <Content Include="Scripts\game\reactionService.js" />
     <Content Include="Scripts\game\romi.js" />
     <Content Include="Scripts\game\board.js" />

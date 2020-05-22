@@ -61,9 +61,6 @@
     }
 
     locateContainer(self) {
-        console.log(self.container.width);
-        console.log(self.goal.width);
-
         self.container.x = (1920 - self.container.width) / 2;
         self.container.y = 200;
     }

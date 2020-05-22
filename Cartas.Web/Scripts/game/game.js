@@ -5,7 +5,8 @@
 
     init() {
         var size = [1920, 1080];
-
+        this.width = size[0];
+        
         const app = new PIXI.Application({
             height: size[1],
             width: size[0],
