@@ -12,9 +12,7 @@
 <body>
 
 <script type="text/javascript" src="~/Scripts/pixi.min.js"></script>
-<script type="text/javascript" src="~/Scripts/TimelineLite.min.js"></script>
-<script type="text/javascript" src="~/Scripts/TweenLite.min.js"></script>
-<script type="text/javascript" src="~/Scripts/easing/EasePack.min.js"></script>
+<script type="text/javascript" src="~/Scripts/gsap.min.js"></script>
 <script type="text/javascript" src="~/Scripts/game/game.js"></script>
 <script type="text/javascript" src="~/Scripts/game/board.js"></script>
 <script type="text/javascript" src="~/Scripts/game/players.js"></script>
@@ -26,10 +24,29 @@
     <script type="text/javascript" src="~/Scripts/game/romi.js"></script>
 }
 <script type="text/javascript">
-    var isMasterUser = false;
+    var isMasterUser = true;
 
     const game = new Game();
     game.init();
+
+    const players = new Players(game, isMasterUser);
+
+    /**
+         * DEMO
+         */
+    players.addPlayer("Jesús", '/Content/img/avatars/038-athlete.png', 1,0);
+    players.addPlayer("Adri", '/Content/img/avatars/005-girl-7.png', 2, 2);
+    players.addPlayer("3", '/Content/img/avatars/016-boy-14.png', 3, 0);
+    players.addPlayer("4", '/Content/img/avatars/026-boy-9.png', 4, 0);
+    players.addPlayer("5", '/Content/img/avatars/006-bald.png', 5, 0);
+    players.addPlayer("6", '/Content/img/avatars/007-athlete-1.png', 6, 5);
+    players.addPlayer("7", '/Content/img/avatars/036-viking.png', 7, 15);
+    players.addPlayer("8", '/Content/img/avatars/042-sheriff.png', 8, 0);
+    players.addPlayer("9", '/Content/img/avatars/044-futuristic.png', 9, 0);
+    players.addPlayer("10", '/Content/img/avatars/005-girl-7.png', 10, 0);
+    /**
+     *END DEMO
+     */
 
     @if (Model.Game.GameType == GameType.Romi)
     {
@@ -41,6 +58,21 @@
 
     var gameControls = new GameControls(game, isMasterUser);
     gameControls.init();
+
+
+    /**
+         * /TESTS
+         */
+    function timeout() {
+        setTimeout(function () {
+            var randomNumber = Math.floor(Math.random() * (10 - 0 + 1)) + 1;
+            players.setCurrentTurn(randomNumber);
+            timeout();
+        }, 4000);
+    }
+
+    timeout();
+    /*END TESTS*/
 </script>
 </body>
 

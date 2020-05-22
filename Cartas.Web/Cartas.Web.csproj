@@ -221,6 +221,7 @@
     <Content Include="Content\img\game\start.svg" />
     <Content Include="Content\img\game\table_background_green.svg" />
     <Content Include="Content\img\game\table_frame.svg" />
+    <Content Include="Content\img\game\trash.svg" />
     <Content Include="Content\img\game\victory.svg" />
     <Content Include="Content\img\icons\dislike.svg" />
     <Content Include="Content\img\icons\heart.svg" />
@@ -246,6 +247,7 @@
     <Content Include="Scripts\game\board.js" />
     <Content Include="Scripts\game\playerDeck.js" />
     <Content Include="Scripts\game\players.js" />
+    <Content Include="Scripts\gsap.min.js" />
     <Content Include="Scripts\jquery-3.5.1.js" />
     <Content Include="Scripts\jquery-3.5.1.min.js" />
     <Content Include="Scripts\pixi.min.js" />

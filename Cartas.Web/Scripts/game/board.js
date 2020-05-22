@@ -43,8 +43,8 @@
 
     _addLogo(parent) {
         const logo = PIXI.Sprite.from("/Content/img/logo.PNG");
-        logo.scale.x = 0.45;
-        logo.scale.y = 0.45;
+        logo.scale.x = 0.4;
+        logo.scale.y = 0.4;
 
         parent.addChild(logo);
     }
