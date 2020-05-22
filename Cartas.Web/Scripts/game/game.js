@@ -22,15 +22,9 @@
         const game = this;
         window.addEventListener('resize', function() { game._resize(app, ratio); });
         window.onorientationchange = function() { game._resize(app, ratio); }
-
-        this.board = new Board();
-        this.board.init(app);
-        this.playerDeck = new PlayerDeck(this);
-        this.playerDeck.init();
+        
         this.stage = app.stage;
-
-
-
+        
         this._resize(app, ratio);
     }
 

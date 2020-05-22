@@ -27,6 +27,11 @@
 }
 <script type="text/javascript">
     var isMasterUser = true;
+    var playerCards = [
+        { num: 5, suit: 1 }, { num: 6, suit: 2 }, { num: 1, suit: 0 }, { num: 9, suit: 1 }, { num: 11, suit: 4 },
+        { num: 5, suit: 2 }, { num: 5, suit: 2 }, { num: 7, suit: 1 }, { num: 13, suit: 3 }, { num: 5, suit: 4 }
+        
+    ];
 
     var resourceLoader = new ResourceLoader();
     resourceLoader.init(() => init(resourceLoader.resources));
@@ -36,8 +41,12 @@
         const game = new Game();
         game.init();
 
-        onImagesLoaded(resources, game);
+        const board = new Board();
+        board.init(game.app);
 
+        var playerDeck = new PlayerDeck(game, playerCards, resources);
+        playerDeck.init();
+        
         const players = new Players(game, isMasterUser);
 
         /**
@@ -68,9 +77,9 @@
         var gameControls = new GameControls(game, isMasterUser, resources);
         gameControls.init();
 
-        var confirmVictory = new ConfirmVictory(game, game.board, game.playerDeck.width);
+        var confirmVictory = new ConfirmVictory(game, board, playerDeck.width);
         confirmVictory.init();
-        confirmVictory.show("Jesús");
+        //confirmVictory.show("Jesús");
     }
 
 
@@ -88,12 +97,6 @@
 
     //timeout();
     /*END TESTS*/
-
-    function onImagesLoaded(resources, game) {
-        var bow = new PIXI.Sprite(resources["1_1"].texture);
-
-        game.app.stage.addChild(bow);
-    }
 
 </script>
 </body>

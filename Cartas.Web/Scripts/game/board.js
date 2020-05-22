@@ -43,7 +43,7 @@
         const playedCardPlaceHolder = new PIXI.Graphics();
         playedCardPlaceHolder.lineStyle(2, 0x5b9e34, 1);
         playedCardPlaceHolder.beginFill(0x650A5A, 0.15);
-        playedCardPlaceHolder.drawRoundedRect(800, 200, 150, 250, 16);
+        playedCardPlaceHolder.drawRoundedRect(800, 200, 160, 230, 16);
         playedCardPlaceHolder.endFill();
         playedCardPlaceHolder.update = function () {
 
