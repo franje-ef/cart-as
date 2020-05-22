@@ -41,9 +41,9 @@
     players.addPlayer("5", '/Content/img/avatars/006-bald.png', 5, 0);
     players.addPlayer("6", '/Content/img/avatars/007-athlete-1.png', 6, 5);
     players.addPlayer("7", '/Content/img/avatars/036-viking.png', 7, 15);
-    players.addPlayer("8", '/Content/img/avatars/042-sheriff.png', 8, 0);
+    players.addPlayer("EL NOMBRE LARGO", '/Content/img/avatars/042-sheriff.png', 8, 0);
     players.addPlayer("9", '/Content/img/avatars/044-futuristic.png', 9, 0);
-    players.addPlayer("10", '/Content/img/avatars/005-girl-7.png', 10, 0);
+    players.addPlayer("123456789012", '/Content/img/avatars/005-girl-7.png', 10, 0);
     /**
      *END DEMO
      */
@@ -65,7 +65,7 @@
          */
     function timeout() {
         setTimeout(function () {
-            var randomNumber = Math.floor(Math.random() * (10 - 0 + 1)) + 1;
+            var randomNumber = Math.floor(Math.random() * (10 - 1) + 1);
             players.setCurrentTurn(randomNumber);
             timeout();
         }, 4000);

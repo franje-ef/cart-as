@@ -59,18 +59,34 @@
         const playerNameBox = new PIXI.Graphics();
         playerNameBox.lineStyle(2, 0x5b9e34, 1);
         playerNameBox.beginFill(0xffffff, 1);
-        playerNameBox.drawRoundedRect(0, 110, 100, 50, 16);
+        playerNameBox.drawRoundedRect(-20, 110, 140, 55, 16);
         playerNameBox.endFill();
         playerNameBox.update = function () {
 
         }
         container.addChild(playerNameBox);
 
-        let name = new PIXI.Text(playerName,
-            { fontFamily: 'Arial', fontSize: 20, fill: 0xff1010, align: 'center' });
+        document.fonts.load('8pt "Cabin Sketch"').then(() => this._onPlayerFontLoaded(playerNameBox, playerName));
+    }
 
-        name.x = 1;
-        name.y = 110;
+    _onPlayerFontLoaded(playerNameBox, playerName) {
+        let name = new PIXI.Text(playerName,
+            {
+                fontFamily: 'Cabin Sketch',
+                fontSize: 25,
+                fill: 0x000000,
+                fontWeight: "600",
+                //lineHeight: 4,
+                breakWords: true,
+                wordWrap: true,
+                wordWrapWidth: playerNameBox.width - 2
+            });
+
+        name.x = (playerNameBox.width - name.width) / 2 - 22;
+
+        name.y = name.height > 30 ? 110 : 120;
+
+        
 
         playerNameBox.addChild(name);
     }
