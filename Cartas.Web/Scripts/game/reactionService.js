@@ -28,18 +28,18 @@
 
         const self = this;
 
-        function timeout() {
-            setTimeout(function () {
-                var randomNumber = Math.floor(Math.random() * (9 - 0 + 1)) + 0;
-                var randomReaction = Math.floor(Math.random() * (6 - 0 + 1)) + 0;
-                var reactions = ["dislike", "heart", "like", "middle", "poo", "super", "yawning"];
-                self.onReactionReceived(randomNumber, reactions[randomReaction]);
+        //function timeout() {
+        //    setTimeout(function () {
+        //        var randomNumber = Math.floor(Math.random() * (9 - 0 + 1)) + 0;
+        //        var randomReaction = Math.floor(Math.random() * (6 - 0 + 1)) + 0;
+        //        var reactions = ["dislike", "heart", "like", "middle", "poo", "super", "yawning"];
+        //        self.onReactionReceived(randomNumber, reactions[randomReaction]);
 
-                timeout();
-            }, 1000);
-        }
+        //        timeout();
+        //    }, 1000);
+        //}
 
-        timeout();
+        //timeout();
         /*END TESTS*/
     }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Cartas.Web.Domain.Models;
 
 namespace Cartas.Web.Domain.Logic
@@ -17,6 +18,11 @@ namespace Cartas.Web.Domain.Logic
             Games.Add(game);
 
             return game;
+        }
+
+        public static Game GetGame(string id)
+        {
+            return Games.SingleOrDefault(x => x.GameId == id);
         }
     }
 }

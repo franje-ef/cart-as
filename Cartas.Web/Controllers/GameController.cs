@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web.ClientServices.Providers;
 using System.Web.Mvc;
 using Cartas.Web.Domain;
 using Cartas.Web.Domain.Logic;
@@ -20,7 +21,7 @@ namespace Cartas.Web.Controllers
             model.ActiveGames = App.Games.Select(x => new GameItemViewModel
             {
                 Id = x.GameId,
-                PlayerCount = x.Players.Count,
+                PlayerCount = x.ActivePlayers.Count,
                 Type = x.GameType.ToString(),
                 MasterPlayer = x.MasterPlayer.PlayerName
             });
@@ -41,9 +42,18 @@ namespace Cartas.Web.Controllers
 
         public ActionResult Play(string gameId)
         {
+            var player = PlayerService.GetPlayer(Request.Cookies);
+            if (player == null) return RedirectToAction("Register", "Player");
+
+            var game = App.GetGame(gameId);
+            if (game == null) return RedirectToAction("Index");
+
+            if(game.AddPlayer(player) == false) return RedirectToAction("Index");
+
             return View(new PlayGameViewModel
             {
-                Game = new Game("1234", GameType.Romi, new Player())
+                Game = game,
+                ThisPlayer = player
             });
         }
 

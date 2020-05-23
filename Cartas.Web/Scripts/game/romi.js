@@ -19,18 +19,18 @@
         /**
          * /TESTS
          */
-        var self = this;
-        function timeout() {
-            setTimeout(function () {
-                var randomGoal = Math.floor(Math.random() * (4 - 0 + 1)) + 0;
-                var goals = ["1 trío y 1 seguidilla", "3 tríos", "2 seguidillas", "2 tríos y 1 seguidilla", "libre"];
-                self.onGoalChanged(self, goals[randomGoal]);
+        //var self = this;
+        //function timeout() {
+        //    setTimeout(function () {
+        //        var randomGoal = Math.floor(Math.random() * (4 - 0 + 1)) + 0;
+        //        var goals = ["1 trío y 1 seguidilla", "3 tríos", "2 seguidillas", "2 tríos y 1 seguidilla", "libre"];
+        //        self.onGoalChanged(self, goals[randomGoal]);
 
-                timeout();
-            }, 1500);
-        }
+        //        timeout();
+        //    }, 1500);
+        //}
 
-        timeout();
+        //timeout();
         /*END TESTS*/
     }
 

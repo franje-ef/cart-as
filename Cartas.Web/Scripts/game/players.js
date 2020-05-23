@@ -3,6 +3,7 @@
         this.game = game;
         this.isMasterUser = isMasterUser;
         this.tweens = [];
+        this.players = [];
     }
 
     playerPositions = [{ x: 600, y: 600, seat: 1}, { x: 900, y: 600, seat: 2 }, { x: 1200, y: 600, seat: 3}
@@ -11,7 +12,10 @@
         , { x: 600, y: 20, seat: 8 }, { x: 900, y: 20, seat: 7 }, { x: 1200, y: 20, seat: 6 }
     ];
 
-    addPlayer(playerName, avatarUrl, seat, winCount) {
+    addPlayer(playerId, playerName, avatarUrl, seat, winCount) {
+        if (this.players.includes(playerId))
+            return;
+        
         var container = new PIXI.Container();
 
         this._addAvatar(container, avatarUrl, seat);
@@ -29,6 +33,7 @@
         container.y = playerPosition.y;
         
         this.game.stage.addChild(container);
+        this.players.push(playerId);
     }
 
     setCurrentTurn(seat) {
