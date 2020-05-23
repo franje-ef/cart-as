@@ -45,6 +45,8 @@
         //jokers
         loader.add('1_0', '/Content/img/cards/standard/1_0.png');
         loader.add('2_0', '/Content/img/cards/standard/2_0.png');
+
+        loader.add('reverse', '/Content/img/cards/standard/reverse.png');
     }
 
     _onCompleteLoaderLoading(self, resources, onCompleteFunc) {

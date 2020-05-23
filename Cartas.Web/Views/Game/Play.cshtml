@@ -21,6 +21,8 @@
 <script type="text/javascript" src="~/Scripts/game/gameControls.js"></script>
 <script type="text/javascript" src="~/Scripts/game/confirmVictory.js"></script>
 <script type="text/javascript" src="~/Scripts/game/resourceLoader.js"></script>
+<script type="text/javascript" src="~/Scripts/game/playedCard.js"></script>
+<script type="text/javascript" src="~/Scripts/game/deck.js"></script>
 @if (Model.Game.GameType == GameType.Romi)
 {
     <script type="text/javascript" src="~/Scripts/game/romi.js"></script>
@@ -65,10 +67,12 @@
         /**
          *END DEMO
          */
+        var allowDragAndDropPlayedCard = false;
 
         @if (Model.Game.GameType == GameType.Romi)
         {
-            @:new Romi(game, isMasterUser,resources).init("2 tríos y una seguidilla");
+            @:new Romi(game, isMasterUser, resources).init("2 tríos y una seguidilla");
+            @:allowDragAndDropPlayedCard = true;
         }
 
         var reactionService = new ReactionService(game, resources);
@@ -80,6 +84,13 @@
         var confirmVictory = new ConfirmVictory(game, board, playerDeck.width);
         confirmVictory.init();
         //confirmVictory.show("Jesús");
+
+        var playedCard = new PlayedCard(game,players, resources, allowDragAndDropPlayedCard, playerDeck);
+        playedCard.setPlayedCard(0, 13, 4);
+        window.playedCard = playedCard;
+
+        var deck = new Deck(game, resources, playerDeck);
+        deck.init();
     }
 
 

@@ -22,6 +22,7 @@
         graphics.update = function() {
 
         }
+        this.graphics = graphics;
         //graphics.sortableChildren = true;
 
         //const shadowGroup = new PIXI.display.Group(1);
@@ -44,39 +45,45 @@
         this.game.app.stage.addChild(container);
     }
 
-    _initCards(cards, graphics, resources) {
+    _initCards(cards) {
         //cards are 150 width
         var nextX = 80;
-        var zIndex = 0;
 
         var sepparation = (this.width - nextX - (150 * cards.length)) / cards.length;
 
         for (var i = 0; i < cards.length; i++) {
-            var card = new PIXI.Sprite(resources[cards[i].num + "_" + cards[i].suit].texture);
-            card.scale.x = 0.30;
-            card.scale.y = 0.30;
-
-            card.x = card.initialX = nextX;
-            card.y = card.initialY = 120;
-            card.interactive = true;
-            card.buttonMode = true;
-            card.anchor.set(0.5);
-            card.zIndex = zIndex;
-            zIndex++;
-
-            card.on('pointerdown', this.onPlayerCardDragStart);
-            card.on('pointerup', this.onPlayerCardDragEnd);
-            card.on('pointerupoutside', this.onPlayerCardDragEnd);
-            card.on('pointermove', this.onPlayerCardDragMove);
-
-            nextX += card.width + sepparation;
-
-            graphics.addChild(card);
+            this.addCardToPlayer(cards[i].num, cards[i].suit, nextX);
+            nextX += 150 + sepparation;
         }
     }
 
     getSnapshotBase64() {
         return this.game.app.renderer.plugins.extract.base64(this.container);
+    }
+
+    addCardToPlayer(num, suit, x) {
+        var card = new PIXI.Sprite(this.resources[num + "_" + suit].texture);
+        card.scale.x = 0.30;
+        card.scale.y = 0.30;
+
+        card.x = card.initialX = x;
+        card.y = card.initialY = 120;
+        card.interactive = true;
+        card.buttonMode = true;
+        card.anchor.set(0.5);
+        this._adjustCardX(card);
+
+        card.on('pointerdown', this.onPlayerCardDragStart);
+        var self = this;
+        card.on('pointerup', function (event) {
+            self.onPlayerCardDragEnd(event, self);
+        });
+        card.on('pointerupoutside', function (event) {
+            self.onPlayerCardDragEnd(event, self);
+        });
+        card.on('pointermove', this.onPlayerCardDragMove);
+
+        this.graphics.addChild(card);
     }
 
     onPlayerCardDragStart(event) {
@@ -89,23 +96,21 @@
         this.parent.children.sort((itemA, itemB) => itemA.zIndex - itemB.zIndex);
     }
 
-    onPlayerCardDragEnd() {
-        this.alpha = 1;
-        this.dragging = false;
-        this.data = null;
+    onPlayerCardDragEnd(event, self) {
+        var card = event.currentTarget;
+
+        card.alpha = 1;
+        card.dragging = false;
+        card.data = null;
+
+        self._adjustCardX(card);
 
         
 
-        if (this.x < 75) {
-            this.x = 75;
-        } else if (this.x > 1590) {
-            this.x = 1590;
-        }
-
-        if (this.y < 110) {
-            this.y = 110;
-        } else if (this.y > 140) {
-            this.y = 140;
+        if (card.y < 110) {
+            card.y = 110;
+        } else if (card.y > 140) {
+            card.y = 140;
         }
 
         //if (this.position3d) {
@@ -138,6 +143,14 @@
 
             console.log("X = " + newPosition.x);
             console.log("Y = " + newPosition.y);
+        }
+    }
+
+    _adjustCardX(card) {
+        if (card.x < 75) {
+            card.x = 75;
+        } else if (card.x > 1590) {
+            card.x = 1590;
         }
     }
 }

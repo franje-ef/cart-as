@@ -270,6 +270,7 @@
     <Content Include="Content\img\cards\standard\9_2.png" />
     <Content Include="Content\img\cards\standard\9_3.png" />
     <Content Include="Content\img\cards\standard\9_4.png" />
+    <Content Include="Content\img\cards\standard\reverse.png" />
     <Content Include="Content\img\game\exit.svg" />
     <Content Include="Content\img\game\shuffle.svg" />
     <Content Include="Content\img\game\start.svg" />
@@ -295,8 +296,10 @@
     </Content>
     <Content Include="Scripts\easing\EasePack.min.js" />
     <Content Include="Scripts\game\confirmVictory.js" />
+    <Content Include="Scripts\game\deck.js" />
     <Content Include="Scripts\game\game.js" />
     <Content Include="Scripts\game\gameControls.js" />
+    <Content Include="Scripts\game\playedCard.js" />
     <Content Include="Scripts\game\reactionService.js" />
     <Content Include="Scripts\game\resourceLoader.js" />
     <Content Include="Scripts\game\romi.js" />
