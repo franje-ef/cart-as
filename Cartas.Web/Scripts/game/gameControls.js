@@ -10,7 +10,7 @@
         container.x = this.game.width - 120;
 
         this._createButton(this.resources, container, "exit", () => this._onExitPressed());
-        this._createButton(this.resources, container, "shuffle", () => null);
+        this._createButton(this.resources, container, "shuffle", () => this._onShufflePressed());
         this._createButton(this.resources, container, "victory", () => null);
         if (this.isMasterUser) {
             this._createButton(this.resources, container, "start", () => null);
@@ -49,5 +49,9 @@
 
     _onExitPressed() {
         window.location.href = "/";
+    }
+
+    _onShufflePressed() {
+        location.reload();
     }
 }
