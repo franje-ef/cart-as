@@ -20,18 +20,20 @@ namespace Cartas.Web.Domain.Logic
 
         public string GameId { get; }
         public GameType GameType { get; }
+        public bool Started { get; set; }
         public Player MasterPlayer { get; }
         public List<Player> ActivePlayers { get; private set; }
         public List<Player> WaitingPlayers { get; }
         
         public Card LastPlayedCard => _playedCards.Last();
         public int SeatTurn => ActivePlayers[_playerTurnIndex].Seat;
-        public bool Started { get; set; }
+        public string Goal => Constants.Goals[_goalIndex];
 
 
         private int _totalDecks;
         private Queue<Card> _deckCards;
         private int _playerTurnIndex;
+        private int _goalIndex;
         private List<Card> _playedCards = new List<Card>();
 
 
@@ -69,6 +71,33 @@ namespace Cartas.Web.Domain.Logic
             SetUpPlayers();
             _playedCards = new List<Card> { _deckCards.Dequeue() };
             Started = true;
+        }
+
+        public string ChangeGoal()
+        {
+            _goalIndex++;
+
+            if (_goalIndex >= Constants.Goals.Length)
+                _goalIndex = 0;
+
+            return Goal;
+        }
+
+        public bool PlayCard(Player player, Card card)
+        {
+            if (ActivePlayers[_playerTurnIndex].PlayerId != player.PlayerId)
+                return false;
+
+            if (player.Cards.Remove(card) == false)
+                return false;
+
+            _playedCards.Add(card);
+            _playerTurnIndex++;
+
+            if (_playerTurnIndex >= ActivePlayers.Count)
+                _playerTurnIndex = 0;
+
+            return true;
         }
 
         private void SetUpDecks()
@@ -120,5 +149,7 @@ namespace Cartas.Web.Domain.Logic
                 }
             }
         }
+
+        
     }
 }

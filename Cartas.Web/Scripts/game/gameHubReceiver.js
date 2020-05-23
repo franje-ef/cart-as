@@ -1,7 +1,9 @@
 ﻿class GameHubReceiver {
-    constructor(gameHub, players) {
+    constructor(gameHub, players, romi, playedCard) {
         this.gameHub = gameHub;
         this.players = players;
+        this.romi = romi;
+        this.playedCard = playedCard;
     }
 
     init() {
@@ -12,6 +14,18 @@
 
         this.gameHub.hub.client.onGameStarted = function() {
             location.reload();
+        }
+
+        this.gameHub.hub.client.onGoalChanged = function (goal) {
+            self.romi.onGoalChanged(goal);
+        }
+
+        this.gameHub.hub.client.onCardPlayed = function(seat, num, suit) {
+            self.playedCard.setPlayedCard(seat, num, suit);
+        }
+
+        this.gameHub.hub.client.onTurnChanged = function(seat) {
+            self.players.setCurrentTurn(seat); 
         }
     }
 }

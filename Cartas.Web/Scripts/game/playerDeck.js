@@ -1,9 +1,10 @@
 ﻿class PlayerDeck {
-    constructor(game, cards, resources) {
+    constructor(game, cards, resources, gameHubSender) {
         this.game = game;
         this.width = 1670;
         this.cards = cards;
         this.resources = resources;
+        this.gameHubSender = gameHubSender;
     }
 
     init() {
@@ -68,6 +69,8 @@
 
         card.x = card.initialX = x;
         card.y = card.initialY = 120;
+        card.num = num;
+        card.suit = suit;
         card.interactive = true;
         card.buttonMode = true;
         card.anchor.set(0.5);
@@ -91,6 +94,8 @@
         this.data = event.data;
         this.alpha = 0.5;
         this.dragging = true;
+        this.initialX = this.x;
+        this.initialY = this.y;
 
         this.zIndex = Math.max.apply(Math, this.parent.children.map(card => card.zIndex)) + 1;
         this.parent.children.sort((itemA, itemB) => itemA.zIndex - itemB.zIndex);
@@ -103,15 +108,28 @@
         card.dragging = false;
         card.data = null;
 
+        if (card.x > 1030 && card.x < 1130 && card.y < -340 && card.y > -460) {
+            self.gameHubSender.playCard(card.num, card.suit).done(function (result) {
+                if (result) {
+                    card.parent.removeChild(card);
+                } else {
+                    card.x = card.initialX;
+                    card.y = card.initialY;
+                }
+            });
+
+            return;
+        }
+
         self._adjustCardX(card);
-
         
-
         if (card.y < 110) {
             card.y = 110;
         } else if (card.y > 140) {
             card.y = 140;
         }
+
+        
 
         //if (this.position3d) {
         //    if (this.position3d.y > -200 && this.position3d.y < -80 && this.position3d.x > 35 && this.position3d.x < 135) {

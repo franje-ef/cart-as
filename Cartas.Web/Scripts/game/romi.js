@@ -1,15 +1,16 @@
 ﻿class Romi {
-    constructor(game, isMasterUser, resources) {
+    constructor(game, isMasterUser, resources, gameHubSender) {
         this.game = game;
         this.isMasterUser = isMasterUser;
         this.resources = resources;
+        this.gameHubSender = gameHubSender;
     }
 
     init(initialGoal) {
         var container = new PIXI.Container();
         this.container = container;
 
-        this._addBow(container, this.isMasterUser, this.resources);
+        this._addBow(container, this.isMasterUser, this.resources, this.gameHubSender);
         this._addTarget(container, this.resources);
         this._addGoal(container, initialGoal, this);
         this.game.stage.addChild(container);
@@ -34,19 +35,19 @@
         /*END TESTS*/
     }
 
-    onGoalChanged(self, text) {
-        self.goal.text = text;
-        var originalHeight = self.goal.height;
+    onGoalChanged(text) {
+        this.goal.text = text;
+        var originalHeight = this.goal.height;
         
-        self.goal.height = 0;
+        this.goal.height = 0;
 
-        TweenLite.to(self.goal, 1, {
+        TweenLite.to(this.goal, 1, {
             
             height: originalHeight,
             ease: Elastic.easeOut
         });
 
-        self.locateContainer(self);
+        this.locateContainer(this);
     }
 
     locateContainer(self) {
@@ -54,7 +55,7 @@
         self.container.y = 200;
     }
 
-    _addBow(container, isMasterUser, resources) {
+    _addBow(container, isMasterUser, resources, gameHubSender) {
         if (isMasterUser) {
             var bow = new PIXI.Sprite(resources.bow.texture);
             bow.height = 64;
@@ -65,7 +66,7 @@
             bow.buttonMode = true;
 
             bow.mousedown = bow.touchstart = function (event) {
-                //TODO send event to server
+                gameHubSender.changeGoal();
 
                 var button = event.target;
                 var original = button.height;

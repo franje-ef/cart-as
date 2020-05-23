@@ -43,7 +43,7 @@
         const board = new Board();
         board.init(game.app);
 
-        var playerDeck = new PlayerDeck(game, playerCards, resources);
+        var playerDeck = new PlayerDeck(game, playerCards, resources, gameHubSender);
         playerDeck.init();
 
         const players = new Players(game, isMasterUser);
@@ -55,13 +55,9 @@
             players.setCurrentTurn(@Model.Game.SeatTurn);    
         }
         
-        var allowDragAndDropPlayedCard = false;
-
-        @if (Model.Game.GameType == GameType.Romi)
-        {
-            @:new Romi(game, isMasterUser, resources).init("2 tríos y una seguidilla");
-            @:allowDragAndDropPlayedCard = true;
-        }
+        var allowDragAndDropPlayedCard = true;
+        var romi = new Romi(game, isMasterUser, resources, gameHubSender);
+        romi.init('@Html.Raw(Model.Game.Goal)');
 
         var reactionService = new ReactionService(game, resources);
         reactionService.init();
@@ -82,7 +78,7 @@
 
 
 
-        var gameHubReceiver = new GameHubReceiver(gameHub, players);
+        var gameHubReceiver = new GameHubReceiver(gameHub, players, romi, playedCard);
         gameHubReceiver.init();
 
         gameHub.connect();
