@@ -11,40 +11,32 @@
 </head>
 <body>
 
-    @Scripts.Render("~/bundles/jquery")
-    <script src="~/Scripts/jquery.signalR-2.4.1.min.js"></script>
-    <script src="~/signalr/hubs"></script>
+@Scripts.Render("~/bundles/jquery")
+<script src="~/Scripts/jquery.signalR-2.4.1.min.js"></script>
+<script src="~/signalr/hubs"></script>
+<script type="text/javascript" src="~/Scripts/pixi.min.js"></script>
+<script type="text/javascript" src="~/Scripts/gsap.min.js"></script>
+@Scripts.Render("~/bundles/game")
 
-    <script type="text/javascript" src="~/Scripts/pixi.min.js"></script>
-    <script type="text/javascript" src="~/Scripts/gsap.min.js"></script>
-    <script type="text/javascript" src="~/Scripts/game/game.js"></script>
-    <script type="text/javascript" src="~/Scripts/game/board.js"></script>
-    <script type="text/javascript" src="~/Scripts/game/players.js"></script>
-    <script type="text/javascript" src="~/Scripts/game/playerDeck.js"></script>
-    <script type="text/javascript" src="~/Scripts/game/reactionService.js"></script>
-    <script type="text/javascript" src="~/Scripts/game/gameControls.js"></script>
-    <script type="text/javascript" src="~/Scripts/game/confirmVictory.js"></script>
-    <script type="text/javascript" src="~/Scripts/game/resourceLoader.js"></script>
-    <script type="text/javascript" src="~/Scripts/game/playedCard.js"></script>
-    <script type="text/javascript" src="~/Scripts/game/deck.js"></script>
-    <script type="text/javascript" src="~/Scripts/game/gameHub.js"></script>
-    @if (Model.Game.GameType == GameType.Romi)
+<script type="text/javascript">
+    var gameStarted = @Html.Raw(Model.Game.Started.ToString().ToLower());
+    var isMasterUser = @Html.Raw((Model.Game.MasterPlayer.PlayerId == Model.ThisPlayer.PlayerId).ToString().ToLower());
+    var playerCards = [];
+    @foreach (var d in Model.ThisPlayer.Cards)
     {
-        <script type="text/javascript" src="~/Scripts/game/romi.js"></script>
+        @:playerCards.push({ num: @d.Num, suit: @d.Suit });
     }
-    <script type="text/javascript">
-    var isMasterUser = true;
-    var playerCards = [
-        { num: 5, suit: 1 }, { num: 6, suit: 2 }, { num: 1, suit: 0 }, { num: 9, suit: 1 }, { num: 11, suit: 4 },
-        { num: 5, suit: 2 }, { num: 5, suit: 2 }, { num: 7, suit: 1 }, { num: 13, suit: 3 }, { num: 5, suit: 4 }
-
-    ];
 
     var resourceLoader = new ResourceLoader();
     resourceLoader.init(() => init(resourceLoader.resources));
-
-
+    
     function init(resources) {
+        const gameHub = new GameHub('@Model.Game.GameId', '@Model.ThisPlayer.PlayerId');
+        gameHub.init();
+
+        const gameHubSender = new GameHubSender(gameHub);
+        gameHubSender.init();
+
         const game = new Game();
         game.init();
 
@@ -59,22 +51,10 @@
         {
             @:players.addPlayer('@player.PlayerId', '@Html.Raw(player.PlayerName)', '/Content/img/avatars/@player.Avatar', @player.Seat, @player.WinCount);
         }
-        /**
-             * DEMO
-             */
-        //players.addPlayer("Jesús", '/Content/img/avatars/038-athlete.png', 1, 0);
-        //players.addPlayer("Adri", '/Content/img/avatars/005-girl-7.png', 2, 2);
-        //players.addPlayer("3", '/Content/img/avatars/016-boy-14.png', 3, 0);
-        //players.addPlayer("4", '/Content/img/avatars/026-boy-9.png', 4, 0);
-        //players.addPlayer("5", '/Content/img/avatars/006-bald.png', 5, 0);
-        //players.addPlayer("6", '/Content/img/avatars/007-athlete-1.png', 6, 5);
-        //players.addPlayer("7", '/Content/img/avatars/036-viking.png', 7, 15);
-        //players.addPlayer("EL NOMBRE LARGO", '/Content/img/avatars/042-sheriff.png', 8, 0);
-        //players.addPlayer("9", '/Content/img/avatars/044-futuristic.png', 9, 0);
-        //players.addPlayer("123456789012", '/Content/img/avatars/005-girl-7.png', 10, 0);
-        /**
-         *END DEMO
-         */
+        if (gameStarted) {
+            players.setCurrentTurn(@Model.Game.SeatTurn);    
+        }
+        
         var allowDragAndDropPlayedCard = false;
 
         @if (Model.Game.GameType == GameType.Romi)
@@ -86,22 +66,26 @@
         var reactionService = new ReactionService(game, resources);
         reactionService.init();
 
-        var gameControls = new GameControls(game, isMasterUser, resources);
+        var gameControls = new GameControls(game, isMasterUser, resources, gameHubSender);
         gameControls.init();
 
         var confirmVictory = new ConfirmVictory(game, board, playerDeck.width);
         confirmVictory.init();
         //confirmVictory.show("Jesús");
 
-        var playedCard = new PlayedCard(game,players, resources, allowDragAndDropPlayedCard, playerDeck);
+        var playedCard = new PlayedCard(game, players, resources, allowDragAndDropPlayedCard, playerDeck);
         playedCard.setPlayedCard(0, 13, 4);
         window.playedCard = playedCard;
 
         var deck = new Deck(game, resources, playerDeck);
         deck.init();
 
-        var gameHub = new GameHub('@Model.Game.GameId', '@Model.ThisPlayer.PlayerId', players);
-        gameHub.init();
+
+
+        var gameHubReceiver = new GameHubReceiver(gameHub, players);
+        gameHubReceiver.init();
+
+        gameHub.connect();
     }
 
 
@@ -120,7 +104,7 @@
     //timeout();
     /*END TESTS*/
 
-    </script>
+</script>
 </body>
 
 </html>

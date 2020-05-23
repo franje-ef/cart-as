@@ -1,5 +1,4 @@
-﻿using System.Web;
-using System.Web.Optimization;
+﻿using System.Web.Optimization;
 
 namespace Cartas.Web
 {
@@ -18,6 +17,9 @@ namespace Cartas.Web
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.min.css"
                       ));
+
+            bundles.Add(new ScriptBundle("~/bundles/game").IncludeDirectory(
+                    "~/Scripts/game", "*.js"));
         }
     }
 }

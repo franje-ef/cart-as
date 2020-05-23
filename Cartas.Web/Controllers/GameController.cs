@@ -53,7 +53,7 @@ namespace Cartas.Web.Controllers
             return View(new PlayGameViewModel
             {
                 Game = game,
-                ThisPlayer = player
+                ThisPlayer = game.GetPlayer(player.PlayerId)
             });
         }
 

@@ -20,5 +20,18 @@ namespace Cartas.Web.Hubs
 
             return base.OnConnected();
         }
+
+        public void StartGame()
+        {
+            var playerId = Context.QueryString["PlayerId"];
+            var gameId = Context.QueryString["GameId"];
+            var game = App.GetGame(gameId);
+
+            if (game.MasterPlayer.PlayerId == playerId)
+            {
+                game.Start();
+                Clients.Group(gameId).onGameStarted();
+            }
+        }
     }
 }

@@ -168,6 +168,8 @@
     <Compile Include="Domain\Constants.cs" />
     <Compile Include="Domain\Logic\App.cs" />
     <Compile Include="Domain\Logic\Game.cs" />
+    <Compile Include="Domain\Logic\Tools.cs" />
+    <Compile Include="Domain\Models\Card.cs" />
     <Compile Include="Domain\Models\Player.cs" />
     <Compile Include="Domain\PlayerService.cs" />
     <Compile Include="Global.asax.cs">
@@ -321,6 +323,8 @@
     <Content Include="Scripts\game\game.js" />
     <Content Include="Scripts\game\gameControls.js" />
     <Content Include="Scripts\game\gameHub.js" />
+    <Content Include="Scripts\game\gameHubReceiver.js" />
+    <Content Include="Scripts\game\gameHubSender.js" />
     <Content Include="Scripts\game\playedCard.js" />
     <Content Include="Scripts\game\reactionService.js" />
     <Content Include="Scripts\game\resourceLoader.js" />

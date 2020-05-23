@@ -1,8 +1,9 @@
 ﻿class GameControls {
-    constructor(game, isMasterUser, resources) {
+    constructor(game, isMasterUser, resources, gameHubSender) {
         this.game = game;
         this.isMasterUser = isMasterUser;
         this.resources = resources;
+        this.gameHubSender = gameHubSender;
     }
 
     init() {
@@ -13,7 +14,7 @@
         this._createButton(this.resources, container, "shuffle", () => this._onShufflePressed());
         this._createButton(this.resources, container, "victory", () => null);
         if (this.isMasterUser) {
-            this._createButton(this.resources, container, "start", () => null);
+            this._createButton(this.resources, container, "start", () => this._onStartPressed());
         }
 
 
@@ -53,5 +54,9 @@
 
     _onShufflePressed() {
         location.reload();
+    }
+
+    _onStartPressed() {
+        this.gameHubSender.startGame();
     }
 }
