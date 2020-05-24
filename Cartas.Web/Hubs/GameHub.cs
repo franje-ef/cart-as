@@ -59,7 +59,8 @@ namespace Cartas.Web.Hubs
 
             if (result)
             {
-                Clients.Group(gameId).onCardPlayed(player.Seat, num, suit);
+                Clients.OthersInGroup(gameId).onCardPlayed(player.Seat, num, suit);
+                Clients.Caller.onCardPlayed(0, num, suit);
                 Clients.Group(gameId).onTurnChanged(game.SeatTurn);
             }
 

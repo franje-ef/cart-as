@@ -8,6 +8,23 @@
             document.getElementById("gameTypeInput").value = gameType;
             document.getElementById("createGameForm").submit();
         }
+
+        function initRefresh() {
+            setTimeout(function() {
+                    refresh();
+                },
+                5000);
+        }
+
+        function refresh() {
+            if (!$("#newGameModal").hasClass("show")) {
+                window.location.reload();    
+            }
+
+            initRefresh();
+        }
+
+        initRefresh();
     </script>
     
 }
@@ -32,9 +49,9 @@
             <td>@gameItem.PlayerCount/@Constants.MaxPlayers</td>
             <td>
                 @if (gameItem.CanJoin)
-        {
-            <a href="/Game/Play?gameId=@gameItem.Id" role="button" class="btn btn-success btn-sm">Unirse</a>
-}
+                {
+                    <a href="/Game/Play?gameId=@gameItem.Id" role="button" class="btn btn-success btn-sm">Unirse</a>
+                }
             </td>
         </tr>
     }

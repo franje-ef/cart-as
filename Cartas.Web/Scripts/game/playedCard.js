@@ -23,7 +23,7 @@
             this._initDragAndDrop(card);
         }
 
-        this.game.app.stage.addChild(card);
+        this.game.app.stage.addChildAt(card,5);
         this._initAnimation(card, seat);
     }
 
@@ -54,7 +54,10 @@
             to.y = card.y;
         }
 
-        gsap.fromTo(card, from, to);    
+        var tl = gsap.timeline();
+        tl.to(this.card, {alpha : 0, duration: 0.7})
+            .fromTo(card, from, to, "-=0.7"); 
+        
     }
 
     _replaceCard(self, newCard) {

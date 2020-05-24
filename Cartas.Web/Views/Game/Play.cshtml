@@ -43,8 +43,7 @@
         const board = new Board();
         board.init(game.app);
 
-        var playerDeck = new PlayerDeck(game, playerCards, resources, gameHubSender);
-        playerDeck.init();
+        
 
         const players = new Players(game, isMasterUser, gameHubSender, '@Model.ThisPlayer.PlayerId');
         @foreach (var player in Model.Game.ActivePlayers.Union(Model.Game.WaitingPlayers))
@@ -65,6 +64,9 @@
         var gameControls = new GameControls(game, isMasterUser, resources, gameHubSender);
         gameControls.init();
 
+        var playerDeck = new PlayerDeck(game, playerCards, resources, gameHubSender);
+        playerDeck.init();
+        
         var confirmVictory = new ConfirmVictory(game, board, playerDeck.width);
         confirmVictory.init();
         //confirmVictory.show("Jesús");
@@ -78,6 +80,7 @@
                 @:playedCard.setPlayedCard(0, @lastPlayedCard.Num, @lastPlayedCard.Suit);
             }
         }
+
 
         window.playedCard = playedCard;
 
