@@ -26,4 +26,8 @@
     takePlayedCard() {
         return this.gameHub.hub.server.takePlayedCard();
     }
+
+    sendReaction(reactionId) {
+        this.gameHub.hub.server.sendReaction(reactionId);
+    }
 }

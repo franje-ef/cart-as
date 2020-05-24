@@ -94,5 +94,16 @@ namespace Cartas.Web.Hubs
 
             return result;
         }
+
+        public void SendReaction(string reactionId)
+        {
+            var playerId = Context.QueryString["PlayerId"];
+            var gameId = Context.QueryString["GameId"];
+
+            var game = App.GetGame(gameId);
+            var player = game.GetPlayer(playerId);
+
+            Clients.Group(gameId).onReactionSent(player.Seat, reactionId);
+        }
     }
 }

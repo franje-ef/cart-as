@@ -1,14 +1,17 @@
 ﻿class ReactionService {
-    constructor(game, resources) {
+    constructor(game, resources, gameHubSender) {
         this.game = game;
         this.seats =
-            [{ x: 680, y: 600 }, { x: 980, y: 600 }, { x: 1280, y: 600 }
-            , { x: 1580, y: 200 }, { x: 1580, y: 400 }
-            , { x: 1280, y: 20 }, { x: 980, y: 20 }, { x: 680, y: 20 }
-            , { x: 430, y: 400 }, { x: 430, y: 200 }
-        ];
+            [{ x: 680, y: 600, seat: 1 }, { x: 980, y: 600, seat: 2 }, { x: 1280, y: 600, seat: 3 }
+            , { x: 1580, y: 200, seat: 5 }, { x: 1580, y: 400, seat: 4 }
+            , { x: 1280, y: 20, seat: 6 }, { x: 980, y: 20, seat: 7 }, { x: 680, y: 20, seat: 8 }
+            , { x: 430, y: 400, seat: 10 }, { x: 430, y: 200, seat: 9 }
+            ];
+
+
         this.bubbles = [];
         this.resources = resources;
+        this.gameHubSender = gameHubSender;
     }
 
     init() {
@@ -21,30 +24,10 @@
         this._setUpReaction(this, 50, 992, "yawning");
 
         this._setUpBubbles(this, this.resources);
-
-        /**
-         * /TESTS
-         */
-
-        const self = this;
-
-        //function timeout() {
-        //    setTimeout(function () {
-        //        var randomNumber = Math.floor(Math.random() * (9 - 0 + 1)) + 0;
-        //        var randomReaction = Math.floor(Math.random() * (6 - 0 + 1)) + 0;
-        //        var reactions = ["dislike", "heart", "like", "middle", "poo", "super", "yawning"];
-        //        self.onReactionReceived(randomNumber, reactions[randomReaction]);
-
-        //        timeout();
-        //    }, 1000);
-        //}
-
-        //timeout();
-        /*END TESTS*/
     }
 
-    onReactionReceived(seat, reactionId) {
-        var bubble = this.bubbles[seat];
+    onReactionSent(seat, reactionId) {
+        var bubble = this.bubbles.find(x=> x.seat === seat);
         bubble.removeChildren();
         bubble.visible = true;
         bubble.hideAt = Date.now() + 1500;
@@ -95,6 +78,8 @@
                 width: original,
                 ease: Elastic.easeOut
             });
+
+            self.gameHubSender.sendReaction(reactionId);
         }
 
         self.game.stage.addChild(reaction);
@@ -105,6 +90,7 @@
             var bubble = new PIXI.Sprite(resources.bubble.texture);
             bubble.x = self.seats[i].x;
             bubble.y = self.seats[i].y;
+            bubble.seat = self.seats[i].seat;
             bubble.height = 150;
             bubble.width = 150;
             bubble.visible = false;

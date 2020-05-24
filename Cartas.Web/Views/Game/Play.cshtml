@@ -59,7 +59,7 @@
         var romi = new Romi(game, isMasterUser, resources, gameHubSender);
         romi.init('@Html.Raw(Model.Game.Goal)');
 
-        var reactionService = new ReactionService(game, resources);
+        var reactionService = new ReactionService(game, resources, gameHubSender);
         reactionService.init();
 
         var gameControls = new GameControls(game, isMasterUser, resources, gameHubSender);
@@ -86,7 +86,7 @@
 
 
 
-        var gameHubReceiver = new GameHubReceiver(gameHub, players, romi, playedCard);
+        var gameHubReceiver = new GameHubReceiver(gameHub, players, romi, playedCard, reactionService);
         gameHubReceiver.init();
 
         gameHub.connect();
