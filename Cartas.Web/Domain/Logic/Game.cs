@@ -45,7 +45,8 @@ namespace Cartas.Web.Domain.Logic
             if (WaitingPlayers.Any(x => x.PlayerId == player.PlayerId)) return true;
             if (PlayerCount > Constants.MaxPlayers) return false;
 
-            player.Seat = Constants.Seats[PlayerCount];
+            var takenSeats = ActivePlayers.Union(WaitingPlayers).Select(x => x.Seat).ToList();
+            player.Seat = Constants.Seats.First(x => !takenSeats.Contains(x));
 
             if (Started)
             {
@@ -97,10 +98,7 @@ namespace Cartas.Web.Domain.Logic
 
             _playedCards.Add(card);
             LastPlayedCard = card;
-            _playerTurnIndex++;
-
-            if (_playerTurnIndex >= ActivePlayers.Count)
-                _playerTurnIndex = 0;
+            ChangeTurn();
 
             return true;
         }
@@ -141,6 +139,40 @@ namespace Cartas.Web.Domain.Logic
             player.Cards.Add(card);
 
             return card;
+        }
+
+        public string RemovePlayer(int seat)
+        {
+            var playerInActive = ActivePlayers.SingleOrDefault(x => x.Seat == seat);
+            var playerInWaiting = WaitingPlayers.SingleOrDefault(x => x.Seat == seat);
+
+            if (playerInWaiting == null && playerInActive == null)
+                return null;
+
+            if (playerInWaiting != null)
+            {
+                WaitingPlayers.RemoveAll(x => x.PlayerId == playerInWaiting.PlayerId);
+            }
+
+            if (playerInActive != null)
+            {
+                if (ActivePlayers[_playerTurnIndex].PlayerId == playerInActive.PlayerId) 
+                    ChangeTurn();
+
+                _playedCards.AddRange(playerInActive.Cards);
+
+                ActivePlayers.RemoveAll(x => x.PlayerId == playerInActive.PlayerId);
+            }
+
+            return playerInActive?.PlayerId ?? playerInWaiting?.PlayerId;
+        }
+
+        private void ChangeTurn()
+        {
+            _playerTurnIndex++;
+
+            if (_playerTurnIndex >= ActivePlayers.Count)
+                _playerTurnIndex = 0;
         }
 
         private void SetUpDecks()

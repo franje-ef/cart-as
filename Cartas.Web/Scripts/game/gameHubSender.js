@@ -30,4 +30,8 @@
     sendReaction(reactionId) {
         this.gameHub.hub.server.sendReaction(reactionId);
     }
+
+    removePlayer(seat) {
+        this.gameHub.hub.server.removePlayer(seat);
+    }
 }

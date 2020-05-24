@@ -105,5 +105,22 @@ namespace Cartas.Web.Hubs
 
             Clients.Group(gameId).onReactionSent(player.Seat, reactionId);
         }
+
+        public void RemovePlayer(int seat)
+        {
+            var playerId = Context.QueryString["PlayerId"];
+            var gameId = Context.QueryString["GameId"];
+
+            var game = App.GetGame(gameId);
+            if (game.MasterPlayer.PlayerId == playerId)
+            {
+                var removedPlayerId = game.RemovePlayer(seat);
+
+                Clients.Group(gameId).onPlayerRemoved(seat, removedPlayerId);
+
+                if(game.Started)
+                    Clients.Group(gameId).onTurnChanged(game.SeatTurn);
+            }
+        }
     }
 }

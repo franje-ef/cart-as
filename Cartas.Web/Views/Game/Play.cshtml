@@ -46,7 +46,7 @@
         var playerDeck = new PlayerDeck(game, playerCards, resources, gameHubSender);
         playerDeck.init();
 
-        const players = new Players(game, isMasterUser);
+        const players = new Players(game, isMasterUser, gameHubSender, '@Model.ThisPlayer.PlayerId');
         @foreach (var player in Model.Game.ActivePlayers.Union(Model.Game.WaitingPlayers))
         {
             @:players.addPlayer('@player.PlayerId', '@Html.Raw(player.PlayerName)', '/Content/img/avatars/@player.Avatar', @player.Seat, @player.WinCount);

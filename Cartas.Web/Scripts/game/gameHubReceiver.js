@@ -36,5 +36,9 @@
         this.gameHub.hub.client.onReactionSent = function(seat, reactionId) {
             self.reactionService.onReactionSent(seat, reactionId);
         }
+
+        this.gameHub.hub.client.onPlayerRemoved = function (seat, removedPlayerId) {
+            self.players.onPlayerRemoved(seat, removedPlayerId);
+        }
     }
 }

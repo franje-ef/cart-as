@@ -1,9 +1,11 @@
 ﻿class Players {
-    constructor(game, isMasterUser) {
+    constructor(game, isMasterUser, gameHubSender, thisPlayerId) {
         this.game = game;
         this.isMasterUser = isMasterUser;
         this.tweens = [];
         this.players = [];
+        this.gameHubSender = gameHubSender;
+        this.thisPlayerId = thisPlayerId;
     }
 
     playerPositions = [{ x: 600, y: 600, seat: 1}, { x: 900, y: 600, seat: 2 }, { x: 1200, y: 600, seat: 3}
@@ -20,8 +22,8 @@
 
         this._addAvatar(container, avatarUrl, seat);
         this._addPlayerName(container, playerName);
-        if (this.isMasterUser) {
-            this._addDeleteButton(container);    
+        if (this.isMasterUser && this.thisPlayerId !== playerId) {
+            this._addDeleteButton(container, seat);    
         }
 
         if (winCount > 0) {
@@ -31,6 +33,7 @@
         var playerPosition = this.playerPositions.find(x => x.seat === seat);
         container.x = playerPosition.x;
         container.y = playerPosition.y;
+        container.playerId = playerId;
         
         this.game.stage.addChild(container);
         this.players.push(playerId);
@@ -44,6 +47,20 @@
 
         var tween = this.tweens.find(x => x.seat === seat);
         tween.resume();
+    }
+
+    onPlayerRemoved(seat, removedPlayerId) {
+        if (removedPlayerId === this.thisPlayerId) {
+            window.location.href = "/";
+        }
+
+        var index = this.players.indexOf(removedPlayerId);
+        this.players.splice(index, 1);
+
+        var container = this.game.stage.children.find(x => x.playerId === removedPlayerId);
+        if (container != null) {
+            this.game.stage.removeChild(container);
+        }
     }
 
     _addAvatar(container, avatarUrl, seat) {
@@ -71,7 +88,7 @@
         }
         container.addChild(playerNameBox);
 
-        document.fonts.load('8pt "Cabin Sketch"').then(() => this._onPlayerFontLoaded(playerNameBox, playerName));
+        this._onPlayerFontLoaded(playerNameBox, playerName);
     }
 
     _onPlayerFontLoaded(playerNameBox, playerName) {
@@ -96,7 +113,7 @@
         playerNameBox.addChild(name);
     }
 
-    _addDeleteButton(container) {
+    _addDeleteButton(container, seat) {
         const button = PIXI.Sprite.from("/Content/img/game/trash.svg");
         button.height = 48;
         button.width = 48;
@@ -105,6 +122,7 @@
         button.interactive = true;
         button.buttonMode = true;
 
+        const self = this;
         button.mousedown = button.touchstart = function (event) {
             var target = event.target;
             var original = target.height;
@@ -118,7 +136,7 @@
                 ease: Elastic.easeOut
             });
 
-            //TODO logic
+            self.gameHubSender.removePlayer(seat);
         }
 
         container.addChild(button);
