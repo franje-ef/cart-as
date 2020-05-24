@@ -65,5 +65,34 @@ namespace Cartas.Web.Hubs
 
             return result;
         }
+
+        public Card TakeDeckCard()
+        {
+            var playerId = Context.QueryString["PlayerId"];
+            var gameId = Context.QueryString["GameId"];
+
+            var game = App.GetGame(gameId);
+            var player = game.GetPlayer(playerId);
+            var result = game.TakeDeckCard(player);
+
+            return result;
+        }
+
+        public Card TakePlayedCard()
+        {
+            var playerId = Context.QueryString["PlayerId"];
+            var gameId = Context.QueryString["GameId"];
+
+            var game = App.GetGame(gameId);
+            var player = game.GetPlayer(playerId);
+            var result = game.TakePlayedCard(player);
+
+            if (result != null)
+            {
+                Clients.Group(gameId).onPlayedCardTaken();
+            }
+
+            return result;
+        }
     }
 }

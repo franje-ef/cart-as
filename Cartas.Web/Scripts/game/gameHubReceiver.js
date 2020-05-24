@@ -27,5 +27,9 @@
         this.gameHub.hub.client.onTurnChanged = function(seat) {
             self.players.setCurrentTurn(seat); 
         }
+
+        this.gameHub.hub.client.onPlayedCardTaken = function() {
+            self.playedCard.removePlayedCard();
+        }
     }
 }

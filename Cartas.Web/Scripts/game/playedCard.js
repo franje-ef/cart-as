@@ -1,11 +1,12 @@
 ﻿class PlayedCard {
-    constructor(game, players, resources, allowDragAndDrop, playerDeck) {
+    constructor(game, players, resources, allowDragAndDrop, playerDeck, gameHubSender) {
         this.game = game;
         this.players = players;
         this.resources = resources;
         this.card = null;
         this.allowDragAndDrop = allowDragAndDrop;
         this.playerDeck = playerDeck;
+        this.gameHubSender = gameHubSender;
     }
 
     setPlayedCard(seat, num, suit) {
@@ -24,6 +25,13 @@
 
         this.game.app.stage.addChild(card);
         this._initAnimation(card, seat);
+    }
+
+    removePlayedCard() {
+        if (this.card != null) {
+            this.card.parent.removeChild(this.card);
+            this.card = null;
+        }
     }
 
     _initAnimation(card, seat) {
@@ -89,8 +97,16 @@
 
         //card grabbed to players Deck
         if (card.y >= 800 && card.x >= 150 && card.x <= 1810) {
-            self.playerDeck.addCardToPlayer(card.num, card.suit, card.x - 150);
-            self._replaceCard(self, null);
+            self.gameHubSender.takePlayedCard().done(function(playedCard) {
+                if (playedCard != null) {
+                    self.playerDeck.addCardToPlayer(playedCard.Num, playedCard.Suit, card.x - 150);
+                    self._replaceCard(self, null);
+                } else {
+                    card.x = card.initialX;
+                    card.y = card.initialY;
+                }
+            });
+
         } else {
             card.x = card.initialX;
             card.y = card.initialY;

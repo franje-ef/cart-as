@@ -29,7 +29,7 @@
 
     var resourceLoader = new ResourceLoader();
     resourceLoader.init(() => init(resourceLoader.resources));
-    
+
     function init(resources) {
         const gameHub = new GameHub('@Model.Game.GameId', '@Model.ThisPlayer.PlayerId');
         gameHub.init();
@@ -52,9 +52,9 @@
             @:players.addPlayer('@player.PlayerId', '@Html.Raw(player.PlayerName)', '/Content/img/avatars/@player.Avatar', @player.Seat, @player.WinCount);
         }
         if (gameStarted) {
-            players.setCurrentTurn(@Model.Game.SeatTurn);    
+            players.setCurrentTurn(@Model.Game.SeatTurn);
         }
-        
+
         var allowDragAndDropPlayedCard = true;
         var romi = new Romi(game, isMasterUser, resources, gameHubSender);
         romi.init('@Html.Raw(Model.Game.Goal)');
@@ -69,11 +69,19 @@
         confirmVictory.init();
         //confirmVictory.show("Jesús");
 
-        var playedCard = new PlayedCard(game, players, resources, allowDragAndDropPlayedCard, playerDeck);
-        playedCard.setPlayedCard(0, 13, 4);
+        var playedCard = new PlayedCard(game, players, resources, allowDragAndDropPlayedCard, playerDeck, gameHubSender);
+        @{
+            var lastPlayedCard = Model.Game.LastPlayedCard;
+
+            if (Model.Game.LastPlayedCard != null)
+            {
+                @:playedCard.setPlayedCard(0, @lastPlayedCard.Num, @lastPlayedCard.Suit);
+            }
+        }
+
         window.playedCard = playedCard;
 
-        var deck = new Deck(game, resources, playerDeck);
+        var deck = new Deck(game, resources, playerDeck, gameHubSender);
         deck.init();
 
 

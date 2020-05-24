@@ -18,4 +18,12 @@
     playCard(num, suit) {
         return this.gameHub.hub.server.playCard(num, suit);
     }
+
+    takeDeckCard() {
+        return this.gameHub.hub.server.takeDeckCard();
+    }
+
+    takePlayedCard() {
+        return this.gameHub.hub.server.takePlayedCard();
+    }
 }

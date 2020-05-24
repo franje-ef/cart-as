@@ -25,7 +25,7 @@ namespace Cartas.Web.Domain.Logic
         public List<Player> ActivePlayers { get; private set; }
         public List<Player> WaitingPlayers { get; }
         
-        public Card LastPlayedCard => _playedCards.Last();
+        public Card LastPlayedCard;
         public int SeatTurn => ActivePlayers[_playerTurnIndex].Seat;
         public string Goal => Constants.Goals[_goalIndex];
 
@@ -69,7 +69,8 @@ namespace Cartas.Web.Domain.Logic
         {
             SetUpDecks();
             SetUpPlayers();
-            _playedCards = new List<Card> { _deckCards.Dequeue() };
+            LastPlayedCard = _deckCards.Dequeue();
+            _playedCards = new List<Card> { LastPlayedCard };
             Started = true;
         }
 
@@ -88,16 +89,58 @@ namespace Cartas.Web.Domain.Logic
             if (ActivePlayers[_playerTurnIndex].PlayerId != player.PlayerId)
                 return false;
 
+            if (player.Cards.Count == Constants.MinCards)
+                return false;
+
             if (player.Cards.Remove(card) == false)
                 return false;
 
             _playedCards.Add(card);
+            LastPlayedCard = card;
             _playerTurnIndex++;
 
             if (_playerTurnIndex >= ActivePlayers.Count)
                 _playerTurnIndex = 0;
 
             return true;
+        }
+
+        public Card TakeDeckCard(Player player)
+        {
+            if (ActivePlayers[_playerTurnIndex].PlayerId != player.PlayerId)
+                return null;
+
+            if (player.Cards.Count == Constants.MaxCards)
+                return null;
+
+            if (!_deckCards.Any())
+                ReShufflePlayedCards();
+
+            var card = _deckCards.Dequeue();
+
+            player.Cards.Add(card);
+
+            return card;
+        }
+
+        public Card TakePlayedCard(Player player)
+        {
+            if (ActivePlayers[_playerTurnIndex].PlayerId != player.PlayerId)
+                return null;
+
+            if (player.Cards.Count == Constants.MaxCards)
+                return null;
+
+            if (LastPlayedCard == null)
+                return null;
+
+            var card = _playedCards.Last();
+            _playedCards.Remove(card);
+            LastPlayedCard = null;
+
+            player.Cards.Add(card);
+
+            return card;
         }
 
         private void SetUpDecks()
@@ -150,6 +193,19 @@ namespace Cartas.Web.Domain.Logic
             }
         }
 
-        
+        private void ReShufflePlayedCards()
+        {
+            var tmp = _playedCards.Take(_playedCards.Count - 1).OrderBy(x => Guid.NewGuid()).ThenBy(x => Guid.NewGuid()).ToList();
+
+            foreach (var card in tmp)
+            {
+                _deckCards.Enqueue(card);
+            }
+
+            _playedCards = new List<Card>
+            {
+                _playedCards.Last()
+            };
+        }
     }
 }

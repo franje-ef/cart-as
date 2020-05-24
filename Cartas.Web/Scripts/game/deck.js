@@ -1,8 +1,9 @@
 ﻿class Deck {
-    constructor(game, resources, playerDeck) {
+    constructor(game, resources, playerDeck, gameHubSender) {
         this.game = game;
         this.resources = resources;
         this.playerDeck = playerDeck;
+        this.gameHubSender = gameHubSender;
     }
 
     init() {
@@ -70,12 +71,15 @@
 
         //card grabbed to players Deck
         if (card.y >= 750 && card.x >= 150 && card.x <= 1810) {
-            //DEMO
-            self.playerDeck.addCardToPlayer(1, 0, card.x - 150);
-        }
+            self.gameHubSender.takeDeckCard().done(function(takenCard) {
+                if (takenCard != null) {
+                    self.playerDeck.addCardToPlayer(takenCard.Num, takenCard.Suit, card.x - 150);
+                }
 
-        card.x = card.initialX;
-        card.y = card.initialY;
+                card.x = card.initialX;
+                card.y = card.initialY;
+            });
+        }
     }
 
     _onCardDragMove(event) {
@@ -86,8 +90,8 @@
             card.x = newPosition.x;
             card.y = newPosition.y;
 
-            console.log("X = " + newPosition.x);
-            console.log("Y = " + newPosition.y);
+            //console.log("X = " + newPosition.x);
+            //console.log("Y = " + newPosition.y);
         }
     }
 }
