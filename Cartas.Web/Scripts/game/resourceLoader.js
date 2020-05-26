@@ -8,8 +8,17 @@
         this._loadReactions(this.loader);
         this._loadRomi(this.loader);
         this._loadGameControls(this.loader);
+        this._loadWinnerResources(this.loader);
 
         this.loader.load((_, resources) => this._onCompleteLoaderLoading(this, resources, onCompleteFunc));
+    }
+
+    _loadWinnerResources(loader) {
+        loader.add('logo', '/Content/img/logo.PNG');
+        loader.add('frame', '/Content/img/game/frame.png');
+        loader.add('glasses', '/Content/img/game/glasses.png');
+        loader.add('crown', '/Content/img/game/crown.png');
+        loader.add('winnerSong', '/Content/winnerSong.mp3');
     }
 
     _loadGameControls(loader) {

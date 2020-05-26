@@ -188,6 +188,7 @@
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\winnerSong.mp3" />
     <Content Include="Content\game.css" />
     <Content Include="Content\img\avatars\001-girl-10.png" />
     <Content Include="Content\img\avatars\002-girl-9.png" />
@@ -296,7 +297,10 @@
     <Content Include="Content\img\cards\standard\9_3.png" />
     <Content Include="Content\img\cards\standard\9_4.png" />
     <Content Include="Content\img\cards\standard\reverse.png" />
+    <Content Include="Content\img\game\crown.png" />
     <Content Include="Content\img\game\exit.svg" />
+    <Content Include="Content\img\game\frame.png" />
+    <Content Include="Content\img\game\glasses.png" />
     <Content Include="Content\img\game\shuffle.svg" />
     <Content Include="Content\img\game\start.svg" />
     <Content Include="Content\img\game\table_background_green.svg" />
@@ -311,6 +315,7 @@
     <Content Include="Content\img\icons\super.svg" />
     <Content Include="Content\img\icons\yawning.svg" />
     <Content Include="Content\img\logo.PNG" />
+    <Content Include="Content\img\Sparks.png" />
     <Content Include="Content\img\target.svg" />
     <Content Include="Global.asax" />
     <Content Include="favicon.ico" />
@@ -334,11 +339,14 @@
     <Content Include="Scripts\game\board.js" />
     <Content Include="Scripts\game\playerDeck.js" />
     <Content Include="Scripts\game\players.js" />
+    <Content Include="Scripts\game\winner.js" />
     <Content Include="Scripts\gsap.min.js" />
     <Content Include="Scripts\jquery-3.5.1.js" />
     <Content Include="Scripts\jquery-3.5.1.min.js" />
     <Content Include="Scripts\jquery.signalR-2.4.1.js" />
     <Content Include="Scripts\jquery.signalR-2.4.1.min.js" />
+    <Content Include="Scripts\pixi-particles.js" />
+    <Content Include="Scripts\pixi-sound.js" />
     <Content Include="Scripts\pixi.min.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />

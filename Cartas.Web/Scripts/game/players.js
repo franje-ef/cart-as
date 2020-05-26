@@ -142,7 +142,7 @@
         container.addChild(button);
     }
 
-    _addWinCount(container, winCount) {
+    _addVictories(container, winCount) {
         const winIcon = PIXI.Sprite.from("/Content/img/game/victory.svg");
         winIcon.height = 48;
         winIcon.width = 48;

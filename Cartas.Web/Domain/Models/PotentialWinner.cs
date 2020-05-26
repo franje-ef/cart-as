@@ -14,6 +14,7 @@ namespace Cartas.Web.Domain.Models
 
         public Player Player { get; set; }
         public string Snapshot { get; set; }
+        public bool HasWon => _votes >= _votesNeeded;
 
         private int _votes;
         private readonly List<string> _voters = new List<string>();

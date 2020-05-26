@@ -1,10 +1,11 @@
 ﻿class GameControls {
-    constructor(game, isMasterUser, resources, gameHubSender, playerDeck) {
+    constructor(game, isMasterUser, resources, gameHubSender, playerDeck, isGameFinished) {
         this.game = game;
         this.isMasterUser = isMasterUser;
         this.resources = resources;
         this.gameHubSender = gameHubSender;
         this.playerDeck = playerDeck;
+        this.isGameFinished = isGameFinished;
     }
 
     init() {
@@ -12,8 +13,12 @@
         container.x = this.game.width - 120;
 
         this._createButton(this.resources, container, "exit", () => this._onExitPressed());
-        this._createButton(this.resources, container, "shuffle", () => this._onShufflePressed());
-        this._createButton(this.resources, container, "victory", () => this._onVictoryPressed());
+
+        if (this.isGameFinished !== true) {
+            this._createButton(this.resources, container, "shuffle", () => this._onShufflePressed());
+            this._createButton(this.resources, container, "victory", () => this._onVictoryPressed());
+        }
+        
         if (this.isMasterUser) {
             this._createButton(this.resources, container, "start", () => this._onStartPressed());
         }

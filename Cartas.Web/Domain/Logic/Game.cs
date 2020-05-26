@@ -20,6 +20,7 @@ namespace Cartas.Web.Domain.Logic
         public string GameId { get; }
         public GameType GameType { get; }
         public bool Started { get; set; }
+        public bool Finished { get; set; }
         public Player MasterPlayer { get; }
         public List<Player> ActivePlayers { get; private set; }
         public List<Player> WaitingPlayers { get; }
@@ -144,11 +145,11 @@ namespace Cartas.Web.Domain.Logic
 
         public void SetSnapshot(Player player, string snapshot)
         {
-            PotentialWinner = new PotentialWinner
-            {
-                Player = player,
-                Snapshot = snapshot
-            };
+            //PotentialWinner = new PotentialWinner
+            //{
+            //    Player = player,
+            //    Snapshot = snapshot
+            //};
         }
 
         public string RemovePlayer(int seat)
