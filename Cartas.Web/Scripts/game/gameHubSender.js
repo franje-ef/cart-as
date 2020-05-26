@@ -34,4 +34,8 @@
     removePlayer(seat) {
         this.gameHub.hub.server.removePlayer(seat);
     }
+
+    claimVictory() {
+        this.gameHub.hub.server.claimVictory();
+    }
 }

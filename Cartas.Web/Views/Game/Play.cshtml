@@ -37,13 +37,13 @@
         const gameHubSender = new GameHubSender(gameHub);
         gameHubSender.init();
 
-        const game = new Game();
+        const game = new Game('@Model.Game.GameId');
         game.init();
 
         const board = new Board();
         board.init(game.app);
 
-        
+
 
         const players = new Players(game, isMasterUser, gameHubSender, '@Model.ThisPlayer.PlayerId');
         @foreach (var player in Model.Game.ActivePlayers.Union(Model.Game.WaitingPlayers))
@@ -61,15 +61,14 @@
         var reactionService = new ReactionService(game, resources, gameHubSender);
         reactionService.init();
 
-        var gameControls = new GameControls(game, isMasterUser, resources, gameHubSender);
-        gameControls.init();
-
         var playerDeck = new PlayerDeck(game, playerCards, resources, gameHubSender);
         playerDeck.init();
-        
-        var confirmVictory = new ConfirmVictory(game, board, playerDeck.width);
-        confirmVictory.init();
-        //confirmVictory.show("Jesús");
+
+        var gameControls = new GameControls(game, isMasterUser, resources, gameHubSender, playerDeck, '@Model.Game.GameId');
+        gameControls.init();
+
+
+
 
         var playedCard = new PlayedCard(game, players, resources, allowDragAndDropPlayedCard, playerDeck, gameHubSender);
         @{
@@ -87,9 +86,14 @@
         var deck = new Deck(game, resources, playerDeck, gameHubSender);
         deck.init();
 
+        var confirmVictory = new ConfirmVictory(game, board, playerDeck.width, deck, playedCard);
+        confirmVictory.init();
+        @if (Model.Game.PotentialWinner != null)
+        {
+            @:confirmVictory.show('@Html.Raw(Model.Game.PotentialWinner.Player.PlayerName)');
+        }
 
-
-        var gameHubReceiver = new GameHubReceiver(gameHub, players, romi, playedCard, reactionService);
+        var gameHubReceiver = new GameHubReceiver(gameHub, players, romi, playedCard, reactionService, confirmVictory);
         gameHubReceiver.init();
 
         gameHub.connect();

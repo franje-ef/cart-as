@@ -104,6 +104,14 @@ namespace Cartas.Web.Hubs
             var game = App.GetGame(gameId);
             var player = game.GetPlayer(playerId);
 
+            if (game.PotentialWinner != null)
+            {
+                if (game.PotentialWinner.React(playerId, reactionId))
+                {
+                    Clients.Group(gameId).onPlayerWon(player.Seat, reactionId);
+                }
+            }
+
             Clients.Group(gameId).onReactionSent(player.Seat, reactionId);
         }
 
@@ -121,6 +129,19 @@ namespace Cartas.Web.Hubs
 
                 if(game.Started)
                     Clients.Group(gameId).onTurnChanged(game.SeatTurn);
+            }
+        }
+
+        public void ClaimVictory()
+        {
+            var playerId = Context.QueryString["PlayerId"];
+            var gameId = Context.QueryString["GameId"];
+
+            var game = App.GetGame(gameId);
+
+            if (game.PotentialWinner != null && game.PotentialWinner.Player.PlayerId == playerId)
+            {
+                Clients.Group(gameId).onPlayerClaimedVictory(game.PotentialWinner.Player.PlayerName);
             }
         }
     }

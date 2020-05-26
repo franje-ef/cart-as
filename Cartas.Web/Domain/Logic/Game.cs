@@ -14,7 +14,6 @@ namespace Cartas.Web.Domain.Logic
             MasterPlayer = masterPlayer;
             ActivePlayers = new List<Player>();
             WaitingPlayers = new List<Player>();
-
             AddPlayer(masterPlayer);
         }
 
@@ -24,6 +23,7 @@ namespace Cartas.Web.Domain.Logic
         public Player MasterPlayer { get; }
         public List<Player> ActivePlayers { get; private set; }
         public List<Player> WaitingPlayers { get; }
+        public PotentialWinner PotentialWinner { get; private set; }
         
         public Card LastPlayedCard;
         public int SeatTurn => ActivePlayers[_playerTurnIndex].Seat;
@@ -73,6 +73,7 @@ namespace Cartas.Web.Domain.Logic
             LastPlayedCard = _deckCards.Dequeue();
             _playedCards = new List<Card> { LastPlayedCard };
             Started = true;
+            PotentialWinner = null;
         }
 
         public string ChangeGoal()
@@ -139,6 +140,15 @@ namespace Cartas.Web.Domain.Logic
             player.Cards.Add(card);
 
             return card;
+        }
+
+        public void SetSnapshot(Player player, string snapshot)
+        {
+            PotentialWinner = new PotentialWinner
+            {
+                Player = player,
+                Snapshot = snapshot
+            };
         }
 
         public string RemovePlayer(int seat)

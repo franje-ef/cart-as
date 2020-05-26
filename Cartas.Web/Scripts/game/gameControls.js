@@ -1,9 +1,10 @@
 ﻿class GameControls {
-    constructor(game, isMasterUser, resources, gameHubSender) {
+    constructor(game, isMasterUser, resources, gameHubSender, playerDeck) {
         this.game = game;
         this.isMasterUser = isMasterUser;
         this.resources = resources;
         this.gameHubSender = gameHubSender;
+        this.playerDeck = playerDeck;
     }
 
     init() {
@@ -12,7 +13,7 @@
 
         this._createButton(this.resources, container, "exit", () => this._onExitPressed());
         this._createButton(this.resources, container, "shuffle", () => this._onShufflePressed());
-        this._createButton(this.resources, container, "victory", () => null);
+        this._createButton(this.resources, container, "victory", () => this._onVictoryPressed());
         if (this.isMasterUser) {
             this._createButton(this.resources, container, "start", () => this._onStartPressed());
         }
@@ -58,5 +59,20 @@
 
     _onStartPressed() {
         this.gameHubSender.startGame();
+    }
+
+    _onVictoryPressed() {
+        const snapshot = this.playerDeck.getSnapshotBase64();
+        const self = this;
+        $.post("/game/snapshot",
+                {
+                    gameId: this.game.gameId,
+                    base64: snapshot
+                })
+            .done(function (data) {
+                console.log("claim victory");
+
+                self.gameHubSender.claimVictory();
+            });
     }
 }

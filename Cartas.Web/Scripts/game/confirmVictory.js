@@ -1,8 +1,10 @@
 ﻿class ConfirmVictory {
-    constructor(game, board, playerDeckWidth) {
+    constructor(game, board, playerDeckWidth, deck, playedCard) {
         this.game = game;
         this.board = board;
         this.playerDeckWidth = playerDeckWidth;
+        this.deck = deck;
+        this.playedCard = playedCard;
     }
 
     init() {
@@ -21,7 +23,9 @@
         };
         
         this.board.hide();
-        
+        this.deck.hide();
+        this.playedCard.hide();
+
         const snapshot = new PIXI.Sprite.from("/game/snapshot?gameid=" + this.game.gameId);
         snapshot.scale.x = 0.5;
         snapshot.scale.y = 0.5;
@@ -35,6 +39,8 @@
 
     hide() {
         this.board.show();
+        this.deck.show();
+        this.playedCard.show();
 
         this.container.visible = false;
     }

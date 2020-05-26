@@ -14,6 +14,7 @@
         dummyCard1.y = 420;
         dummyCard1.anchor.set(0.5);
 
+        this.dummyCard1 = dummyCard1;
         this.game.app.stage.addChild(dummyCard1);
 
         var dummyCard2 = new PIXI.Sprite(this.resources["reverse"].texture);
@@ -23,6 +24,7 @@
         dummyCard2.y = 420;
         dummyCard2.anchor.set(0.5);
 
+        this.dummyCard2 = dummyCard2;
         this.game.app.stage.addChild(dummyCard2);
 
 
@@ -32,9 +34,23 @@
         card.x = card.initialX = 720;
         card.y = card.initialY = 420;
         card.anchor.set(0.5);
+
+        this.card = card;
         this.game.app.stage.addChild(card);
 
         this._initDragAndDrop(card);
+    }
+
+    hide() {
+        this.dummyCard1.visible = false;
+        this.dummyCard2.visible = false;
+        this.card.visible = false;
+    }
+
+    show() {
+        this.dummyCard1.visible = true;
+        this.dummyCard2.visible = true;
+        this.card.visible = true;
     }
 
     _initDragAndDrop(card) {

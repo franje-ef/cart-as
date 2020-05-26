@@ -19,6 +19,9 @@
         card.x = card.initialX = 1225;
         card.y = card.initialY = 425;
 
+        if (this.card == null)
+            this.card = card;
+
         if (this.allowDragAndDrop) {
             this._initDragAndDrop(card);
         }
@@ -32,6 +35,16 @@
             this.card.parent.removeChild(this.card);
             this.card = null;
         }
+    }
+
+    hide() {
+        if (this.card != null)
+            this.card.visible = false;
+    }
+
+    show() {
+        if (this.card != null)
+            this.card.visible = true;
     }
 
     _initAnimation(card, seat) {

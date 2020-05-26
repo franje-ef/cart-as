@@ -1,10 +1,11 @@
 ﻿class GameHubReceiver {
-    constructor(gameHub, players, romi, playedCard, reactionService) {
+    constructor(gameHub, players, romi, playedCard, reactionService, confirmVictory) {
         this.gameHub = gameHub;
         this.players = players;
         this.romi = romi;
         this.playedCard = playedCard;
         this.reactionService = reactionService;
+        this.ConfirmVictory = confirmVictory;
     }
 
     init() {
@@ -39,6 +40,10 @@
 
         this.gameHub.hub.client.onPlayerRemoved = function (seat, removedPlayerId) {
             self.players.onPlayerRemoved(seat, removedPlayerId);
+        }
+
+        this.gameHub.hub.client.onPlayerClaimedVictory = function(playerName) {
+            self.ConfirmVictory.show(playerName);
         }
     }
 }
