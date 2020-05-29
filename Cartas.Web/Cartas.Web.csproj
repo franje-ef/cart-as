@@ -335,7 +335,7 @@
     <TypeScriptCompile Include="Scripts_ts\game\reactionService.ts" />
     <TypeScriptCompile Include="Scripts_ts\game\romi.ts" />
     <TypeScriptCompile Include="Scripts_ts\game\board.ts" />
-    <Content Include="Scripts\game\playerDeck.js" />
+    <TypeScriptCompile Include="Scripts_ts\game\playerDeck.ts" />
     <Content Include="Scripts\game\players.js" />
     <Content Include="Scripts\game\winner.js" />
     <Content Include="Scripts\gsap.min.js" />
