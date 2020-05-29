@@ -1,5 +1,16 @@
-﻿class Players {
-    constructor(game, isMasterUser, gameHubSender, thisPlayerId) {
+﻿class Player extends PIXI.Container{
+    playerId: string
+}
+
+class Players {
+    game: Game;
+    isMasterUser: boolean;
+    tweens: Array<any>;
+    players: Array<Player>;
+    gameHubSender: GameHubSender;
+    thisPlayerId: string;
+
+    constructor(game: Game, isMasterUser: boolean, gameHubSender: GameHubSender, thisPlayerId: string) {
         this.game = game;
         this.isMasterUser = isMasterUser;
         this.tweens = [];
@@ -14,29 +25,29 @@
         , { x: 600, y: 20, seat: 8 }, { x: 900, y: 20, seat: 7 }, { x: 1200, y: 20, seat: 6 }
     ];
 
-    addPlayer(playerId, playerName, avatarUrl, seat, winCount) {
-        if (this.players.includes(playerId))
+    addPlayer(playerId, playerName, avatarUrl, seat, winCount) { 
+        if (this.players.includes(playerId)) 
             return;
         
-        var container = new PIXI.Container();
+        var player = new Player();
 
-        this._addAvatar(container, avatarUrl, seat);
-        this._addPlayerName(container, playerName);
+        this.addAvatar(player, avatarUrl, seat);
+        this.addPlayerName(player, playerName);
         if (this.isMasterUser && this.thisPlayerId !== playerId) {
-            this._addDeleteButton(container, seat);    
+            this.addDeleteButton(player, seat);    
         }
 
         if (winCount > 0) {
-            this._addWinCount(container, winCount);    
+            this.addVictories(player, winCount);    
         }
 
         var playerPosition = this.playerPositions.find(x => x.seat === seat);
-        container.x = playerPosition.x;
-        container.y = playerPosition.y;
-        container.playerId = playerId;
+        player.x = playerPosition.x;
+        player.y = playerPosition.y;
+        player.playerId = playerId;
         
-        this.game.stage.addChild(container);
-        this.players.push(playerId);
+        this.game.stage.addChild(player);
+        this.players.push(player);
     }
 
     setCurrentTurn(seat) {
@@ -54,44 +65,35 @@
             window.location.href = "/";
         }
 
-        var index = this.players.indexOf(removedPlayerId);
+        var index = this.players.map(x => x.playerId).indexOf(removedPlayerId);
+        var player = this.players[index];
         this.players.splice(index, 1);
 
-        var container = this.game.stage.children.find(x => x.playerId === removedPlayerId);
-        if (container != null) {
-            this.game.stage.removeChild(container);
-        }
+        this.game.stage.removeChild(player);
     }
 
-    _addAvatar(container, avatarUrl, seat) {
+    addAvatar(container, avatarUrl, seat) {
         const avatar = PIXI.Sprite.from(avatarUrl);
         avatar.height = 100;
         avatar.width = 100;
         avatar.x = 0;
         avatar.y = 0;
 
-        var tween = gsap.fromTo(avatar, { alpha: 1 }, { duration: 1, alpha: 0, yoyo: true, repeat: -1, paused: true });
+        var tween:any = gsap.fromTo(avatar, { alpha: 1 }, { duration: 1, alpha: 0, yoyo: true, repeat: -1, paused: true });
         tween.seat = seat;
         this.tweens.push(tween);
 
         container.addChild(avatar);
     }
 
-    _addPlayerName(container, playerName) {
+    addPlayerName(container, playerName) {
         const playerNameBox = new PIXI.Graphics();
         playerNameBox.lineStyle(2, 0x5b9e34, 1);
         playerNameBox.beginFill(0xffffff, 1);
         playerNameBox.drawRoundedRect(-20, 110, 140, 55, 16);
         playerNameBox.endFill();
-        playerNameBox.update = function () {
-
-        }
         container.addChild(playerNameBox);
 
-        this._onPlayerFontLoaded(playerNameBox, playerName);
-    }
-
-    _onPlayerFontLoaded(playerNameBox, playerName) {
         let name = new PIXI.Text(playerName,
             {
                 fontFamily: 'Cabin Sketch',
@@ -105,15 +107,12 @@
             });
 
         name.x = (playerNameBox.width - name.width) / 2 - 22;
-
         name.y = name.height > 30 ? 110 : 120;
-
-        
 
         playerNameBox.addChild(name);
     }
 
-    _addDeleteButton(container, seat) {
+    addDeleteButton(container, seat) {
         const button = PIXI.Sprite.from("/Content/img/game/trash.svg");
         button.height = 48;
         button.width = 48;
@@ -121,28 +120,29 @@
         button.y = 50;
         button.interactive = true;
         button.buttonMode = true;
-
-        const self = this;
-        button.mousedown = button.touchstart = function (event) {
-            var target = event.target;
-            var original = target.height;
-
-            target.height = original * 2;
-            target.width = original * 2;
-
-            TweenLite.to(target, 0.4, {
-                height: original,
-                width: original,
-                ease: Elastic.easeOut
-            });
-
-            self.gameHubSender.removePlayer(seat);
-        }
+        button.on("mousedown", event => this.onDeleteClicked(event, seat, this.gameHubSender));
+        button.on("touchstart", event => this.onDeleteClicked(event, seat, this.gameHubSender));
 
         container.addChild(button);
     }
 
-    _addVictories(container, winCount) {
+    private onDeleteClicked(event, seat, gameHubSender: GameHubSender) {
+        var target = event.target;
+        var original = target.height;
+
+        target.height = original * 2;
+        target.width = original * 2;
+
+        TweenLite.to(target, 0.4, {
+            height: original,
+            width: original,
+            ease: Elastic.easeOut
+        });
+
+        gameHubSender.removePlayer(seat);
+    }
+
+    addVictories(container, winCount) {
         const winIcon = PIXI.Sprite.from("/Content/img/game/victory.svg");
         winIcon.height = 48;
         winIcon.width = 48;
@@ -155,4 +155,6 @@
 
         container.addChild(winIcon, counter);
     }
+
+    
 }
