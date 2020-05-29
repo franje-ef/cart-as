@@ -327,7 +327,6 @@
     <Content Include="Scripts\easing\EasePack.min.js" />
     <Content Include="Scripts\game\confirmVictory.js" />
     <Content Include="Scripts\game\deck.js" />
-    <Content Include="Scripts\game\game.js" />
     <Content Include="Scripts\game\gameControls.js" />
     <Content Include="Scripts\game\gameHub.js" />
     <Content Include="Scripts\game\gameHubReceiver.js" />
@@ -375,12 +374,15 @@
     <Content Include="Content\fonts\CabinSketch-Regular.ttf" />
     <None Include="packages.config" />
     <Content Include="Scripts_ts\tsconfig.json" />
+    <Content Include="Scripts_ts\typings\globals\pixi.js\typings.json" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="Scripts_ts\app.ts" />
+    <TypeScriptCompile Include="Scripts_ts\game\game.ts" />
+    <TypeScriptCompile Include="Scripts_ts\typings\globals\pixi.js\index.d.ts" />
+    <TypeScriptCompile Include="Scripts_ts\typings\index.d.ts" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
