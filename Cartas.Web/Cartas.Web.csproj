@@ -325,7 +325,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\easing\EasePack.min.js" />
-    <Content Include="Scripts\game\confirmVictory.js" />
+    <TypeScriptCompile Include="Scripts_ts\game\confirmVictory.ts" />
     <TypeScriptCompile Include="Scripts_ts\game\deck.ts" />
     <TypeScriptCompile Include="Scripts_ts\game\gameControls.ts" />
     <Content Include="Scripts\game\gameHubReceiver.js" />

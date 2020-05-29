@@ -1,5 +1,13 @@
 ﻿class ConfirmVictory {
-    constructor(game, board, playerDeckWidth, deck, playedCard) {
+    game: Game;
+    board: Board;
+    playerDeckWidth: number;
+    deck: Deck;
+    playedCard: PlayedCard;
+    container: PIXI.Container;
+
+
+    constructor(game: Game, board: Board, playerDeckWidth: number, deck: Deck, playedCard: PlayedCard) {
         this.game = game;
         this.board = board;
         this.playerDeckWidth = playerDeckWidth;
@@ -26,13 +34,14 @@
         this.deck.hide();
         this.playedCard.hide();
 
-        const snapshot = new PIXI.Sprite.from("/game/snapshot?gameid=" + this.game.gameId);
+        const snapshot = PIXI.Sprite.from("/game/snapshot?gameid=" + this.game.gameId);
         snapshot.scale.x = 0.5;
         snapshot.scale.y = 0.5;
         snapshot.y = 50;
         this.container.addChild(snapshot);
 
-        this._showPlayerName(playerName, this.container, this.playerDeckWidth);
+        this.
+            showPlayerName(playerName, this.container, this.playerDeckWidth);
 
         this.container.visible = true;
     }
@@ -45,7 +54,7 @@
         this.container.visible = false;
     }
 
-    _showPlayerName(playerName, container, width) {
+    showPlayerName(playerName, container, width) {
         var potentialWinner = new PIXI.Text("¡" + playerName + " dice que ha ganado!",
             {
                 fontFamily: 'Cabin Sketch',
@@ -59,5 +68,6 @@
 
         container.addChild(potentialWinner);
     }
+
 
 }
