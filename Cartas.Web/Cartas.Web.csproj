@@ -333,7 +333,7 @@
     <Content Include="Scripts\game\playedCard.js" />
     <Content Include="Scripts\game\reactionService.js" />
     <Content Include="Scripts\game\romi.js" />
-    <Content Include="Scripts\game\board.js" />
+    <TypeScriptCompile Include="Scripts_ts\game\board.ts" />
     <Content Include="Scripts\game\playerDeck.js" />
     <Content Include="Scripts\game\players.js" />
     <Content Include="Scripts\game\winner.js" />
@@ -369,7 +369,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Scripts_js\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\fonts\CabinSketch-Regular.ttf" />

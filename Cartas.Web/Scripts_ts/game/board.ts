@@ -1,11 +1,14 @@
 ﻿class Board {
+    table: PIXI.Sprite;
+    tableFrame: PIXI.Sprite;
+
     init(parent) {
         var tableInitHeight = 428;
         var tableInitWidth = 820;
         var tableScale = 1.5;
 
         var tableSvg = '/Content/img/game/table_background_green.svg';
-        var tableTexture = new PIXI.Texture.from(tableSvg, { resourceOptions: { scale: tableScale } });
+        var tableTexture = PIXI.Texture.from(tableSvg, { resourceOptions: { scale: tableScale } });
         const table = new PIXI.Sprite(tableTexture);
         table.height = tableInitHeight * tableScale;
         table.width = tableInitWidth * tableScale;
@@ -16,7 +19,7 @@
         parent.stage.addChild(table);
 
         var tableFrameSvg = '/Content/img/game/table_frame.svg';
-        var tableFrameTexture = new PIXI.Texture.from(tableFrameSvg, { resourceOptions: { scale: tableScale } });
+        var tableFrameTexture = PIXI.Texture.from(tableFrameSvg, { resourceOptions: { scale: tableScale } });
         const tableFrame = new PIXI.Sprite(tableFrameTexture);
         tableFrame.height = tableInitHeight * tableScale;
         tableFrame.width = tableInitWidth * tableScale;
@@ -26,8 +29,8 @@
 
         parent.stage.addChild(tableFrame);
 
-        this._addPlayedCardPlaceHolder(table);
-        this._addLogo(parent.stage);
+        this.addPlayedCardPlaceHolder(table);
+        this.addLogo(parent.stage);
     }
 
     hide() {
@@ -39,20 +42,18 @@
         this.table.visible = true;
     }
 
-    _addPlayedCardPlaceHolder(parent) {
+    private addPlayedCardPlaceHolder(parent) {
         const playedCardPlaceHolder = new PIXI.Graphics();
         playedCardPlaceHolder.lineStyle(2, 0x5b9e34, 1);
         playedCardPlaceHolder.beginFill(0x650A5A, 0.15);
         playedCardPlaceHolder.drawRoundedRect(800, 200, 160, 230, 16);
         playedCardPlaceHolder.endFill();
-        playedCardPlaceHolder.update = function () {
-
-        }
+        
 
         parent.addChild(playedCardPlaceHolder);
     }
 
-    _addLogo(parent) {
+    private addLogo(parent) {
         const logo = PIXI.Sprite.from("/Content/img/logo.PNG");
         logo.scale.x = 0.4;
         logo.scale.y = 0.4;
