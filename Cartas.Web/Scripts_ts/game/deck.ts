@@ -1,5 +1,18 @@
-﻿class Deck {
-    constructor(game, resources, playerDeck, gameHubSender) {
+﻿class Card extends PIXI.Sprite {
+    initialX: number;
+    initialY: number;
+}
+
+class Deck {
+    game: Game;
+    resources: any;
+    playerDeck: any;
+    gameHubSender: GameHubSender;
+    dummyCard1: PIXI.Sprite;
+    dummyCard2: PIXI.Sprite;
+    card: any;
+
+    constructor(game: Game, resources, playerDeck, gameHubSender: GameHubSender) {
         this.game = game;
         this.resources = resources;
         this.playerDeck = playerDeck;
@@ -28,7 +41,7 @@
         this.game.app.stage.addChild(dummyCard2);
 
 
-        var card = new PIXI.Sprite(this.resources["reverse"].texture);
+        var card = new Card(this.resources["reverse"].texture);
         card.scale.x = 0.30;
         card.scale.y = 0.30;
         card.x = card.initialX = 720;
@@ -38,7 +51,7 @@
         this.card = card;
         this.game.app.stage.addChild(card);
 
-        this._initDragAndDrop(card);
+        this.initDragAndDrop(card);
     }
 
     hide() {
@@ -53,24 +66,23 @@
         this.card.visible = true;
     }
 
-    _initDragAndDrop(card) {
+    private initDragAndDrop(card) {
         card.interactive = true;
         card.buttonMode = true;
 
-        var self = this;
-        card.on('pointerdown', this._onCardDragStart);
+        card.on('pointerdown', this.onCardDragStart);
         card.on('pointerup',
-            function(event) {
-                self._onCardDragEnd(event, self);
+            event => {
+                this.onCardDragEnd(event, this);
             });
         card.on('pointerupoutside',
-            function(event) {
-                self._onCardDragEnd(event, self);
+            event => {
+                this.onCardDragEnd(event, this);
             });
-        card.on('pointermove', this._onCardDragMove);
+        card.on('pointermove', this.onCardDragMove);
     }
 
-    _onCardDragStart(event) {
+    private onCardDragStart(event) {
         var card = event.currentTarget;
 
         card.data = event.data;
@@ -78,7 +90,7 @@
         card.dragging = true;
     }
 
-    _onCardDragEnd(event, self) {
+    private onCardDragEnd(event, self) {
         var card = event.currentTarget;
 
         card.alpha = 1;
@@ -87,7 +99,7 @@
 
         //card grabbed to players Deck
         if (card.y >= 750 && card.x >= 150 && card.x <= 1810) {
-            self.gameHubSender.takeDeckCard().done(function(takenCard) {
+            self.gameHubSender.takeDeckCard().done(takenCard => {
                 if (takenCard != null) {
                     self.playerDeck.addCardToPlayer(takenCard.Num, takenCard.Suit, card.x - 150);
                 }
@@ -98,7 +110,7 @@
         }
     }
 
-    _onCardDragMove(event) {
+    private onCardDragMove(event) {
         var card = event.currentTarget;
 
         if (card.dragging) {

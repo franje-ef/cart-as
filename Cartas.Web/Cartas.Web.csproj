@@ -326,7 +326,7 @@
     </Content>
     <Content Include="Scripts\easing\EasePack.min.js" />
     <Content Include="Scripts\game\confirmVictory.js" />
-    <Content Include="Scripts\game\deck.js" />
+    <TypeScriptCompile Include="Scripts_ts\game\deck.ts" />
     <TypeScriptCompile Include="Scripts_ts\game\gameControls.ts" />
     <Content Include="Scripts\game\gameHubReceiver.js" />
     <TypeScriptCompile Include="Scripts_ts\game\gameHubSender.ts" />
