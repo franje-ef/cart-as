@@ -7,7 +7,8 @@
     "lib": [ "es6", "dom" ],
     "sourceMap": true,
     "target": "es6",
-    "outDir": "../Scripts_js"
+    "outDir": "../Scripts_js",
+    "rootDir": "./"
   },
   "exclude": [
     "node_modules",

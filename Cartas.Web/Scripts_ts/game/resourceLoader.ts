@@ -1,19 +1,23 @@
 ﻿class ResourceLoader {
-    constructor() {
-        this.loader = new PIXI.Loader();
+    private loader: PIXI.loaders.Loader;
+    private document;
+
+    constructor(document: any) {
+        this.loader = new PIXI.loaders.Loader();
+        this.document = document;
     }
 
     init(onCompleteFunc) {
-        this._loadCardImages(this.loader);
-        this._loadReactions(this.loader);
-        this._loadRomi(this.loader);
-        this._loadGameControls(this.loader);
-        this._loadWinnerResources(this.loader);
+        this.loadCardImages(this.loader);
+        this.loadReactions(this.loader);
+        this.loadRomi(this.loader);
+        this.loadGameControls(this.loader);
+        this.loadWinnerResources(this.loader);
 
-        this.loader.load((_, resources) => this._onCompleteLoaderLoading(this, resources, onCompleteFunc));
+        this.loader.load((_, resources) => this.onCompleteLoaderLoading(this, resources, onCompleteFunc));
     }
 
-    _loadWinnerResources(loader) {
+    private loadWinnerResources(loader) {
         loader.add('logo', '/Content/img/logo.PNG');
         loader.add('frame', '/Content/img/game/frame.png');
         loader.add('glasses', '/Content/img/game/glasses.png');
@@ -21,19 +25,19 @@
         loader.add('winnerSong', '/Content/winnerSong.mp3');
     }
 
-    _loadGameControls(loader) {
+    private loadGameControls(loader) {
         loader.add('exit', '/Content/img/game/exit.svg');
         loader.add('shuffle', '/Content/img/game/shuffle.svg');
         loader.add('victory', '/Content/img/game/victory.svg');
         loader.add('start', '/Content/img/game/start.svg');
     }
 
-    _loadRomi(loader) {
+    private loadRomi(loader) {
         loader.add('target', '/Content/img/target.svg');
         loader.add('bow', '/Content/img/bow.svg');
     }
 
-    _loadReactions(loader) {
+    private loadReactions(loader) {
         loader.add('like', '/Content/img/icons/like.svg');
         loader.add('dislike', '/Content/img/icons/dislike.svg');
         loader.add('heart', '/Content/img/icons/heart.svg');
@@ -44,7 +48,7 @@
         loader.add('bubble', '/Content/img/bubble.svg');
     }
 
-    _loadCardImages(loader) {
+    private loadCardImages(loader) {
         for (var suit = 1; suit < 5; suit++) {
             for (var num = 1; num < 14; num++) {
                 loader.add(num + "_" + suit, '/Content/img/cards/standard/' + num + "_" + suit + ".png");
@@ -58,13 +62,13 @@
         loader.add('reverse', '/Content/img/cards/standard/reverse.png');
     }
 
-    _onCompleteLoaderLoading(self, resources, onCompleteFunc) {
+    private onCompleteLoaderLoading(self, resources, onCompleteFunc) {
         self.resources = resources;
 
-        document.fonts.load('8pt "Cabin Sketch"').then(() => self._onCompleteAllLoading(self, onCompleteFunc));
+        this.document.fonts.load('8pt "Cabin Sketch"').then(() => self.onCompleteAllLoading(self, onCompleteFunc));
     }
 
-    _onCompleteAllLoading(self, onCompleteFunc) {
+    private onCompleteAllLoading(self, onCompleteFunc) {
         onCompleteFunc();
     }
 }

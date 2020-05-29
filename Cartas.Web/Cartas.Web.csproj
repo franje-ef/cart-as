@@ -333,7 +333,6 @@
     <Content Include="Scripts\game\gameHubSender.js" />
     <Content Include="Scripts\game\playedCard.js" />
     <Content Include="Scripts\game\reactionService.js" />
-    <Content Include="Scripts\game\resourceLoader.js" />
     <Content Include="Scripts\game\romi.js" />
     <Content Include="Scripts\game\board.js" />
     <Content Include="Scripts\game\playerDeck.js" />
@@ -351,6 +350,7 @@
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\TimelineLite.min.js" />
     <Content Include="Scripts\TweenLite.min.js" />
+    <TypeScriptCompile Include="Scripts_ts\game\resourceLoader.ts" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

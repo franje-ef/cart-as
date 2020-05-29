@@ -29,7 +29,7 @@
         @:playerCards.push({ num: @d.Num, suit: @d.Suit });
     }
 
-    var resourceLoader = new ResourceLoader();
+    var resourceLoader = new ResourceLoader(document);
     resourceLoader.init(() => init(resourceLoader.resources));
 
     function init(resources) {
