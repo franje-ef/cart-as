@@ -27,7 +27,7 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-    <TypeScriptToolsVersion>2.5</TypeScriptToolsVersion>
+    <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -328,7 +328,6 @@
     <Content Include="Scripts\game\confirmVictory.js" />
     <Content Include="Scripts\game\deck.js" />
     <Content Include="Scripts\game\gameControls.js" />
-    <Content Include="Scripts\game\gameHub.js" />
     <Content Include="Scripts\game\gameHubReceiver.js" />
     <Content Include="Scripts\game\gameHubSender.js" />
     <Content Include="Scripts\game\playedCard.js" />
@@ -351,6 +350,7 @@
     <Content Include="Scripts\TimelineLite.min.js" />
     <Content Include="Scripts\TweenLite.min.js" />
     <TypeScriptCompile Include="Scripts_ts\game\resourceLoader.ts" />
+    <TypeScriptCompile Include="Scripts_ts\game\gameHub.ts" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -372,6 +372,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\fonts\CabinSketch-Regular.ttf" />
+    <Content Include="package.json" />
     <None Include="packages.config" />
     <Content Include="Scripts_ts\tsconfig.json" />
     <Content Include="Scripts_ts\typings\globals\pixi.js\typings.json" />
@@ -382,7 +383,6 @@
   <ItemGroup>
     <TypeScriptCompile Include="Scripts_ts\game\game.ts" />
     <TypeScriptCompile Include="Scripts_ts\typings\globals\pixi.js\index.d.ts" />
-    <TypeScriptCompile Include="Scripts_ts\typings\index.d.ts" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

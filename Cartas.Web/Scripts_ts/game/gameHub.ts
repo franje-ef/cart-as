@@ -1,11 +1,15 @@
 ﻿class GameHub {
-    constructor(gameId, playerId) {
+    hub: any;
+    gameId: string;
+    playerId: string;
+
+    constructor(gameId: string, playerId: string) {
         this.gameId = gameId;
         this.playerId = playerId;
     }
 
     init() {
-        this.hub = $.connection.gameHub;
+        this.hub = $.connection["gameHub"];
         
 
         //hub.client.playerDisconnected = function (playerId) {
@@ -26,4 +30,6 @@
             //lobby.server.playerConnected('@Model.ThisPlayer.PlayerId', '@Model.ThisPlayer.Name', '@Model.GameId');
         });
     }
+
+   
 }
