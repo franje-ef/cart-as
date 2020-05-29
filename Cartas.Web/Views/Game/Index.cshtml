@@ -10,15 +10,15 @@
         }
 
         function initRefresh() {
-            setTimeout(function() {
-                    refresh();
-                },
+            setTimeout(function () {
+                refresh();
+            },
                 5000);
         }
 
         function refresh() {
             if (!$("#newGameModal").hasClass("show")) {
-                window.location.reload();    
+                window.location.reload();
             }
 
             initRefresh();
@@ -26,37 +26,45 @@
 
         initRefresh();
     </script>
-    
+
 }
+
+<script src="~/Scripts_js/app.js"></script>
 
 <table class="table table-hover table-sm table-dark table-responsive-sm">
     <thead class="thead-light">
-    <tr>
-        <th scope="col">#</th>
-        <th scope="col">Creador</th>
-        <th scope="col">Tipo</th>
-        <th scope="col">Jugadores</th>
-        <th scope="col"></th>
-    </tr>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Creador</th>
+            <th scope="col">Tipo</th>
+            <th scope="col">Jugadores</th>
+            <th scope="col"></th>
+        </tr>
     </thead>
     <tbody>
-    @foreach (var gameItem in Model.ActiveGames.OrderByDescending(x => x.CanJoin))
-    {
-        <tr class="table-secondary">
-            <td>@gameItem.Id</td>
-            <td>@gameItem.MasterPlayer</td>
-            <td>@gameItem.Type</td>
-            <td>@gameItem.PlayerCount/@Constants.MaxPlayers</td>
-            <td>
-                @if (gameItem.CanJoin)
-                {
-                    <a href="/Game/Play?gameId=@gameItem.Id" role="button" class="btn btn-success btn-sm">Unirse</a>
-                }
-            </td>
-        </tr>
-    }
+        @foreach (var gameItem in Model.ActiveGames.OrderByDescending(x => x.CanJoin))
+        {
+            <tr class="table-secondary">
+                <td>@gameItem.Id</td>
+                <td>@gameItem.MasterPlayer</td>
+                <td>@gameItem.Type</td>
+                <td>@gameItem.PlayerCount/@Constants.MaxPlayers</td>
+                <td>
+                    @if (gameItem.CanJoin)
+                    {
+                        <a href="/Game/Play?gameId=@gameItem.Id" role="button" class="btn btn-success btn-sm">Unirse</a>
+                    }
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+
+<div id="divMsg"></div>
+<br />
+<button type="button" class="btn btn-primary btn-md" onclick="clickMeButton()">
+    Show Message
+</button>
 
 <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#newGameModal">Crear nueva partida</button>
 
@@ -71,11 +79,11 @@
             </div>
             <div class="modal-body">
                 @using (Html.BeginForm("Create", "Game", FormMethod.Post, new { id = "createGameForm" }))
-                { 
+                {
                     <button type="button" class="btn btn-primary btn-lg" onclick="createGame('Romi')">Romi</button>
-                    <input type="hidden" name="GameType" id="gameTypeInput"/>
+                    <input type="hidden" name="GameType" id="gameTypeInput" />
                 }
-                
+
             </div>
         </div>
     </div>
