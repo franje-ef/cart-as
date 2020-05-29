@@ -327,7 +327,7 @@
     <Content Include="Scripts\easing\EasePack.min.js" />
     <Content Include="Scripts\game\confirmVictory.js" />
     <Content Include="Scripts\game\deck.js" />
-    <Content Include="Scripts\game\gameControls.js" />
+    <TypeScriptCompile Include="Scripts_ts\game\gameControls.ts" />
     <Content Include="Scripts\game\gameHubReceiver.js" />
     <TypeScriptCompile Include="Scripts_ts\game\gameHubSender.ts" />
     <Content Include="Scripts\game\playedCard.js" />
@@ -366,6 +366,35 @@
     <Content Include="Views\Player\Register.cshtml" />
     <Content Include="Views\Game\Play.cshtml" />
     <TypeScriptCompile Include="Scripts_ts\typings\globals\pixi.js\pixi.js.d.ts" />
+    <TypeScriptCompile Include="Scripts_ts\typings\gsap\animation.d.ts" />
+    <TypeScriptCompile Include="Scripts_ts\typings\gsap\css-plugin.d.ts" />
+    <TypeScriptCompile Include="Scripts_ts\typings\gsap\css-rule-plugin.d.ts" />
+    <TypeScriptCompile Include="Scripts_ts\typings\gsap\custom-bounce.d.ts" />
+    <TypeScriptCompile Include="Scripts_ts\typings\gsap\custom-ease.d.ts" />
+    <TypeScriptCompile Include="Scripts_ts\typings\gsap\custom-wiggle.d.ts" />
+    <TypeScriptCompile Include="Scripts_ts\typings\gsap\draggable.d.ts" />
+    <TypeScriptCompile Include="Scripts_ts\typings\gsap\draw-svg-plugin.d.ts" />
+    <TypeScriptCompile Include="Scripts_ts\typings\gsap\ease.d.ts" />
+    <TypeScriptCompile Include="Scripts_ts\typings\gsap\easel-plugin.d.ts" />
+    <TypeScriptCompile Include="Scripts_ts\typings\gsap\gs-dev-tools.d.ts" />
+    <TypeScriptCompile Include="Scripts_ts\typings\gsap\gsap-core.d.ts" />
+    <TypeScriptCompile Include="Scripts_ts\typings\gsap\gsap-plugins.d.ts" />
+    <TypeScriptCompile Include="Scripts_ts\typings\gsap\gsap-utils.d.ts" />
+    <TypeScriptCompile Include="Scripts_ts\typings\gsap\index.d.ts" />
+    <TypeScriptCompile Include="Scripts_ts\typings\gsap\inertia-plugin.d.ts" />
+    <TypeScriptCompile Include="Scripts_ts\typings\gsap\morph-svg-plugin.d.ts" />
+    <TypeScriptCompile Include="Scripts_ts\typings\gsap\motion-path-helper.d.ts" />
+    <TypeScriptCompile Include="Scripts_ts\typings\gsap\motion-path-plugin.d.ts" />
+    <TypeScriptCompile Include="Scripts_ts\typings\gsap\physics-2d-plugin.d.ts" />
+    <TypeScriptCompile Include="Scripts_ts\typings\gsap\physics-props-plugin.d.ts" />
+    <TypeScriptCompile Include="Scripts_ts\typings\gsap\pixi-plugin.d.ts" />
+    <TypeScriptCompile Include="Scripts_ts\typings\gsap\scramble-text-plugin.d.ts" />
+    <TypeScriptCompile Include="Scripts_ts\typings\gsap\scroll-to-plugin.d.ts" />
+    <TypeScriptCompile Include="Scripts_ts\typings\gsap\split-text.d.ts" />
+    <TypeScriptCompile Include="Scripts_ts\typings\gsap\text-plugin.d.ts" />
+    <TypeScriptCompile Include="Scripts_ts\typings\gsap\timeline.d.ts" />
+    <TypeScriptCompile Include="Scripts_ts\typings\gsap\tween.d.ts" />
+    <TypeScriptCompile Include="Scripts_ts\typings\gsap\utils\velocity-tracker.d.ts" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
