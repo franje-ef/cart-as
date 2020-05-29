@@ -1,9 +1,9 @@
 ﻿class ResourceLoader {
-    private loader: PIXI.loaders.Loader;
+    private loader: PIXI.Loader;
     private document;
 
     constructor(document: any) {
-        this.loader = new PIXI.loaders.Loader();
+        this.loader = new PIXI.Loader();
         this.document = document;
     }
 
@@ -17,7 +17,7 @@
         this.loader.load((_, resources) => this.onCompleteLoaderLoading(this, resources, onCompleteFunc));
     }
 
-    private loadTableImages(loader: PIXI.loaders.Loader) {
+    private loadTableImages(loader: PIXI.Loader) {
         loader.add('table', '/Content/img/game/table_background_green.svg' );
         loader.add('tableFrame', '/Content/img/game/table_frame.svg');
     }
