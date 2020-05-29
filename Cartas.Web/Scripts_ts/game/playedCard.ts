@@ -1,5 +1,13 @@
 ﻿class PlayedCard {
-    constructor(game, players, resources, allowDragAndDrop, playerDeck, gameHubSender) {
+    game: Game;
+    players;
+    resources;
+    card: any;
+    allowDragAndDrop: boolean;
+    playerDeck;
+    gameHubSender: GameHubSender;
+
+    constructor(game: Game, players, resources, allowDragAndDrop: boolean, playerDeck, gameHubSender: GameHubSender) {
         this.game = game;
         this.players = players;
         this.resources = resources;
@@ -10,7 +18,7 @@
     }
 
     setPlayedCard(seat, num, suit) {
-        var card = new PIXI.Sprite(this.resources[num + "_" + suit].texture);
+        var card = new Card(this.resources[num + "_" + suit].texture);
         card.num = num;
         card.suit = suit;
         card.scale.x = 0.30;
@@ -23,11 +31,11 @@
             this.card = card;
 
         if (this.allowDragAndDrop) {
-            this._initDragAndDrop(card);
+            this.initDragAndDrop(card);
         }
 
-        this.game.app.stage.addChildAt(card,5);
-        this._initAnimation(card, seat);
+        this.game.app.stage.addChildAt(card, 5);
+        this.initAnimation(card, seat);
     }
 
     removePlayedCard() {
@@ -47,15 +55,23 @@
             this.card.visible = true;
     }
 
-    _initAnimation(card, seat) {
+    private initAnimation(card, seat) {
         var width = card.width;
         var height = card.height;
 
         card.width = 0;
         card.height = 0;
 
-        var from = { width: 15, height: 35, alpha: 0 };
-        var to = { duration: 1, width: width, height: height, alpha: 1, ease: "back.inOut(1.7)", onComplete: this._replaceCard, onCompleteParams: [this, card] };
+        var from: any = { width: 15, height: 35, alpha: 0 };
+        var to: any = {
+            duration: 1,
+            width: width,
+            height: height,
+            alpha: 1,
+            ease: "back.inOut(1.7)",
+            onComplete: this.replaceCard,
+            onCompleteParams: [this, card]
+        };
 
         if (seat > 0) {
             var seatCoordinades = this.players.playerPositions.find(x => x.seat === seat);
@@ -68,12 +84,12 @@
         }
 
         var tl = gsap.timeline();
-        tl.to(this.card, {alpha : 0, duration: 0.7})
-            .fromTo(card, from, to, "-=0.7"); 
-        
+        tl.to(this.card, { alpha: 0, duration: 0.7 })
+            .fromTo(card, from, to, "-=0.7");
+
     }
 
-    _replaceCard(self, newCard) {
+    private replaceCard(self, newCard) {
         if (self.card != null) {
             self.card.parent.removeChild(self.card);
         }
@@ -81,22 +97,24 @@
         self.card = newCard;
     }
 
-    _initDragAndDrop(card) {
+    private initDragAndDrop(card) {
         card.interactive = true;
         card.buttonMode = true;
 
         var self = this;
-        card.on('pointerdown', this._onCardDragStart);
-        card.on('pointerup', function (event) {
-            self._onCardDragEnd(event, self);
-        });
-        card.on('pointerupoutside', function (event) {
-            self._onCardDragEnd(event, self);
-        });
-        card.on('pointermove', this._onCardDragMove);
+        card.on('pointerdown', this.onCardDragStart);
+        card.on('pointerup',
+            function(event) {
+                self.onCardDragEnd(event, self);
+            });
+        card.on('pointerupoutside',
+            function(event) {
+                self.onCardDragEnd(event, self);
+            });
+        card.on('pointermove', this.onCardDragMove);
     }
 
-    _onCardDragStart(event) {
+    private onCardDragStart(event) {
         var card = event.currentTarget;
 
         card.data = event.data;
@@ -104,7 +122,7 @@
         card.dragging = true;
     }
 
-    _onCardDragEnd(event, self) {
+    private onCardDragEnd(event, self) {
         var card = event.currentTarget;
 
         card.alpha = 1;
@@ -128,10 +146,10 @@
             card.y = card.initialY;
         }
 
-        
+
     }
 
-    _onCardDragMove(event) {
+    private onCardDragMove(event) {
         var card = event.currentTarget;
 
         if (card.dragging) {
@@ -139,8 +157,10 @@
             card.x = newPosition.x;
             card.y = newPosition.y;
 
-            console.log("X = " + newPosition.x);
-            console.log("Y = " + newPosition.y);
+            //console.log("X = " + newPosition.x);
+            //console.log("Y = " + newPosition.y);
         }
     }
+
+
 }

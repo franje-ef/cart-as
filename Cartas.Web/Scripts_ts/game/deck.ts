@@ -1,9 +1,4 @@
-﻿class Card extends PIXI.Sprite {
-    initialX: number;
-    initialY: number;
-}
-
-class Deck {
+﻿class Deck {
     game: Game;
     resources: any;
     playerDeck: any;

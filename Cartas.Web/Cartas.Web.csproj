@@ -330,7 +330,8 @@
     <TypeScriptCompile Include="Scripts_ts\game\gameControls.ts" />
     <Content Include="Scripts\game\gameHubReceiver.js" />
     <TypeScriptCompile Include="Scripts_ts\game\gameHubSender.ts" />
-    <Content Include="Scripts\game\playedCard.js" />
+    <TypeScriptCompile Include="Scripts_ts\game\card.ts" />
+    <TypeScriptCompile Include="Scripts_ts\game\playedCard.ts" />
     <TypeScriptCompile Include="Scripts_ts\game\reactionService.ts" />
     <Content Include="Scripts\game\romi.js" />
     <TypeScriptCompile Include="Scripts_ts\game\board.ts" />
