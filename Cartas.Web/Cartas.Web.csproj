@@ -337,7 +337,7 @@
     <TypeScriptCompile Include="Scripts_ts\game\board.ts" />
     <TypeScriptCompile Include="Scripts_ts\game\playerDeck.ts" />
     <TypeScriptCompile Include="Scripts_ts\game\players.ts" />
-    <Content Include="Scripts\game\winner.js" />
+    <TypeScriptCompile Include="Scripts_ts\game\winner.ts" />
     <Content Include="Scripts\gsap.min.js" />
     <Content Include="Scripts\jquery-3.5.1.js" />
     <Content Include="Scripts\jquery-3.5.1.min.js" />
@@ -396,6 +396,8 @@
     <TypeScriptCompile Include="Scripts_ts\typings\gsap\timeline.d.ts" />
     <TypeScriptCompile Include="Scripts_ts\typings\gsap\tween.d.ts" />
     <TypeScriptCompile Include="Scripts_ts\typings\gsap\utils\velocity-tracker.d.ts" />
+    <TypeScriptCompile Include="Scripts_ts\typings\pixi-particles\ambient.d.ts" />
+    <TypeScriptCompile Include="Scripts_ts\typings\pixi-particles\index.d.ts" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

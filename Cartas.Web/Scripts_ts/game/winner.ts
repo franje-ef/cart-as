@@ -1,5 +1,11 @@
 ﻿class Winner {
-    constructor(game, resources, name, avatar, winCount) {
+    avatar: string;
+    winCount: number;
+    resources: any;
+    game: Game;
+    name: string;
+
+    constructor(game: Game, resources, name: string, avatar: string, winCount: number) {
         this.game = game;
         this.name = name;
         this.avatar = avatar;
@@ -17,15 +23,14 @@
         const crown = this._addCrown(container);
         const glasses = this._addGlasses(container);
 
-        //this._addWinnerName(this.name, this.game.app.stage, container.height - 100);
-        this._addWinnerName('el nombre super largo de alguien', this.game.app.stage, container.height - 100);
+        this._addWinnerName(this.name, this.game.app.stage, container.height - 100);
         this._addVictories(this.game.app.stage, this.winCount, container.height - 50);
 
         container.position.x = this.game.app.view.width / 2 - container.width / 2;
 
         this.game.app.stage.addChild(container);
 
-        this._initAnimations(crown, glasses);
+        this.initAnimations(crown, glasses);
 
         this._addEffects(this.game.app.stage, (this.game.app.view.width / 2 - container.width), container.height - 150);
         this._addEffects(this.game.app.stage, (this.game.app.view.width / 2 + container.width), container.height - 150);
@@ -33,7 +38,7 @@
         this._playSong(this.resources);
     }
 
-    _initAnimations(crown, glasses) {
+    private initAnimations(crown, glasses) {
         var tl = gsap.timeline();
         
         gsap
@@ -43,7 +48,7 @@
 
     }
 
-    _addLogo(parent) {
+    private _addLogo(parent) {
         const logo = PIXI.Sprite.from(this.resources['logo'].texture);
         logo.scale.x = 0.4;
         logo.scale.y = 0.4;
@@ -51,7 +56,7 @@
         parent.addChild(logo);
     }
 
-    _addAvatar(container, avatarUrl) {
+    private _addAvatar(container, avatarUrl) {
         const avatar = PIXI.Sprite.from(avatarUrl);
         avatar.height = 400;
         avatar.width = 400;
@@ -67,7 +72,7 @@
         container.addChild(avatar);
     }
 
-    _addWinnerName(playerName, container, y) {
+    private _addWinnerName(playerName, container, y) {
         var winner = new PIXI.Text("¡" + playerName + " ha ganado esta partida!",
             {
                 fontFamily: 'Cabin Sketch',
@@ -82,7 +87,7 @@
         container.addChild(winner);
     }
 
-    _addVictories(container, winCount, y) {
+    private _addVictories(container, winCount, y) {
         
         //winIcon.height = 48;
         //winIcon.width = 48;
@@ -105,13 +110,13 @@
         container.addChild(victoryContainer);
     }
 
-    _addFrame(container) {
+    private _addFrame(container) {
         const frame = PIXI.Sprite.from(this.resources['frame'].texture);
         
         container.addChild(frame);
     }
 
-    _addGlasses(container) {
+    private _addGlasses(container) {
         const glasses = PIXI.Sprite.from(this.resources['glasses'].texture);
         glasses.y = -100;
         glasses.x = 25;
@@ -122,7 +127,7 @@
         return glasses;
     }
 
-    _addCrown(container) {
+    private _addCrown(container) {
         const crown = PIXI.Sprite.from(this.resources['crown'].texture);
         crown.height = 200;
         crown.width = 200;
@@ -135,15 +140,15 @@
         return crown;
     }
 
-    _playSong(resources) {
+    private _playSong(resources) {
         resources.winnerSong.sound.play();
         //const sound = PIXI.sound.Sound.from('Content/winnerSong.mp3');
         //sound.play();
     }
 
-    _addEffects(container, x, y) {
+    private _addEffects(container, x, y) {
         var emitter = new PIXI.particles.Emitter(
-            container,[PIXI.Texture.fromImage('/Content/img/Sparks.PNG')],
+            container,[PIXI.Texture.from('/Content/img/Sparks.PNG')],
             {
                 "alpha": {
                     "start": 1,
@@ -204,4 +209,6 @@
 
         update();
     }
+
+    
 }
