@@ -1,10 +1,8 @@
 ﻿class GameHubSender {
-    constructor(gameHub) {
-        this.gameHub = gameHub;
-    }
+    gameHub: GameHub;
 
-    init() {
-        
+    constructor(gameHub : GameHub) {
+        this.gameHub = gameHub;
     }
 
     startGame() {
@@ -38,4 +36,5 @@
     claimVictory() {
         this.gameHub.hub.server.claimVictory();
     }
+
 }

@@ -10,18 +10,6 @@
 
     init() {
         this.hub = $.connection["gameHub"];
-        
-
-        //hub.client.playerDisconnected = function (playerId) {
-        //    removePlayer(playerId);
-        //}
-
-        //hub.client.redirectToGame = function () {
-        //    redirectToGame();
-        //}
-
-        // Start the connection.
-        
     }
 
     connect() {

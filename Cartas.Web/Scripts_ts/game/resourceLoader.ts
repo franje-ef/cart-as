@@ -17,6 +17,11 @@
         this.loader.load((_, resources) => this.onCompleteLoaderLoading(this, resources, onCompleteFunc));
     }
 
+    private loadTableImages(loader: PIXI.loaders.Loader) {
+        loader.add('table', '/Content/img/game/table_background_green.svg' );
+        loader.add('tableFrame', '/Content/img/game/table_frame.svg');
+    }
+
     private loadWinnerResources(loader) {
         loader.add('logo', '/Content/img/logo.PNG');
         loader.add('frame', '/Content/img/game/frame.png');
