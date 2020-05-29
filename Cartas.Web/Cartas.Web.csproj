@@ -331,7 +331,7 @@
     <Content Include="Scripts\game\gameHubReceiver.js" />
     <TypeScriptCompile Include="Scripts_ts\game\gameHubSender.ts" />
     <Content Include="Scripts\game\playedCard.js" />
-    <Content Include="Scripts\game\reactionService.js" />
+    <TypeScriptCompile Include="Scripts_ts\game\reactionService.ts" />
     <Content Include="Scripts\game\romi.js" />
     <TypeScriptCompile Include="Scripts_ts\game\board.ts" />
     <Content Include="Scripts\game\playerDeck.js" />

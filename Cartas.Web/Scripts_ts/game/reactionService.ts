@@ -1,5 +1,22 @@
-﻿class ReactionService {
-    constructor(game, resources, gameHubSender) {
+﻿class Seat {
+    x: number;
+    y: number;
+    seat: number;
+}
+
+class Bubble extends PIXI.Sprite {
+    seat: number;
+    hideAt: number;
+}
+
+class ReactionService {
+    game: Game;
+    seats: Array<any>;
+    bubbles: Array<Bubble>;
+    resources;
+    gameHubSender: GameHubSender;
+
+    constructor(game : Game, resources, gameHubSender: GameHubSender) {
         this.game = game;
         this.seats =
             [{ x: 680, y: 600, seat: 1 }, { x: 980, y: 600, seat: 2 }, { x: 1280, y: 600, seat: 3 }
@@ -15,15 +32,15 @@
     }
 
     init() {
-        this._setUpReaction(this, 25, 800, "like");
-        this._setUpReaction(this, 25, 864, "heart");
-        this._setUpReaction(this, 25, 928, "super");
-        this._setUpReaction(this, 75, 800, "dislike");
-        this._setUpReaction(this, 75, 864, "poo");
-        this._setUpReaction(this, 75, 928, "middle");
-        this._setUpReaction(this, 50, 992, "yawning");
+        this.setUpReaction(this, 25, 800, "like");
+        this.setUpReaction(this, 25, 864, "heart");
+        this.setUpReaction(this, 25, 928, "super");
+        this.setUpReaction(this, 75, 800, "dislike");
+        this.setUpReaction(this, 75, 864, "poo");
+        this.setUpReaction(this, 75, 928, "middle");
+        this.setUpReaction(this, 50, 992, "yawning");
 
-        this._setUpBubbles(this, this.resources);
+        this.setUpBubbles(this, this.resources);
     }
 
     onReactionSent(seat, reactionId) {
@@ -57,7 +74,7 @@
         }, 1510);
     }
 
-    _setUpReaction(self, x, y, reactionId) {
+    private setUpReaction(self: ReactionService, x, y, reactionId) {
         var reaction = new PIXI.Sprite(self.resources[reactionId].texture);
         reaction.height = 64;
         reaction.width = 64;
@@ -66,28 +83,38 @@
         reaction.interactive = true;
         reaction.buttonMode = true;
 
-        reaction.mousedown = reaction.touchstart = function (event) {
-            var button = event.target;
-            var original = button.height;
-
-            button.height = original * 2;
-            button.width = original * 2;
-
-            TweenLite.to(button, 0.4, {
-                height: original,
-                width: original,
-                ease: Elastic.easeOut
+        reaction.on("mousedown",
+            (event) => {
+                self.reactionClicked(event, self, reactionId);
             });
 
-            self.gameHubSender.sendReaction(reactionId);
-        }
+        reaction.on("touchstart",
+            (event) => {
+                self.reactionClicked(event, self, reactionId);
+            });
 
         self.game.stage.addChild(reaction);
     }
 
-    _setUpBubbles(self, resources) {
+    private reactionClicked(event, self, reactionId) {
+        var button = event.target;
+        var original = button.height;
+
+        button.height = original * 2;
+        button.width = original * 2;
+
+        TweenLite.to(button, 0.4, {
+            height: original,
+            width: original,
+            ease: Elastic.easeOut
+        });
+
+        self.gameHubSender.sendReaction(reactionId);
+    }
+
+    private setUpBubbles(self, resources) {
         for (var i = 0; i < self.seats.length; i++) {
-            var bubble = new PIXI.Sprite(resources.bubble.texture);
+            var bubble = new Bubble(resources.bubble.texture);
             bubble.x = self.seats[i].x;
             bubble.y = self.seats[i].y;
             bubble.seat = self.seats[i].seat;
