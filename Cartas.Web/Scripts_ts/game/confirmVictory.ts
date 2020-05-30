@@ -34,7 +34,7 @@
         this.deck.hide();
         this.playedCard.hide();
 
-        const snapshot = PIXI.Sprite.from("/game/snapshot?gameid=" + this.game.gameId);
+        const snapshot = PIXI.Sprite.from("/game/snapshot?gameid=" + this.game.gameId + "&rand=" + Math.random());
         snapshot.scale.x = 0.60;
         snapshot.scale.y = 0.60;
         snapshot.x = -80;
