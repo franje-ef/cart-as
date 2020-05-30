@@ -15,5 +15,6 @@ namespace Cartas.Web.Domain.Models
         public int Seat { get; set; }
         public int WinCount { get; set; }
         public List<Card> Cards { get; set; }
+        public bool IsPlaying { get; set; }
     }
 }

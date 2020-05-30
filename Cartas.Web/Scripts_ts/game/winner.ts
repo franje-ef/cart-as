@@ -5,11 +5,11 @@
     game: Game;
     name: string;
 
-    constructor(game: Game, resources, name: string, avatar: string, winCount: number) {
+    constructor(game: Game, resources, player: Player) {
         this.game = game;
-        this.name = name;
-        this.avatar = avatar;
-        this.winCount = winCount;
+        this.name = player.playerName;
+        this.avatar = player.avatar;
+        this.winCount = player.winCount;
         this.resources = resources;
     }
 
@@ -24,7 +24,7 @@
         const glasses = this._addGlasses(container);
 
         this._addWinnerName(this.name, this.game.app.stage, container.height - 100);
-        this._addVictories(this.game.app.stage, this.winCount, container.height - 50);
+        this._addVictories(this.game.app.stage, this.winCount + 1, container.height - 50);
 
         container.position.x = this.game.app.view.width / 2 - container.width / 2;
 
@@ -43,7 +43,7 @@
         
         gsap
         tl.to(crown, { alpha: 1, duration: 2 })
-            .to(glasses, { y: 315, duration: 5 }, "+=3");
+            .to(glasses, { y: 315, duration: 5.5 });
 
 
     }
@@ -60,14 +60,8 @@
         const avatar = PIXI.Sprite.from(avatarUrl);
         avatar.height = 400;
         avatar.width = 400;
-        //avatar.height = 100;
-        //avatar.width = 100;
         avatar.x = container.width / 2 - avatar.width / 2;
         avatar.y = 250;
-
-        //var tween = gsap.fromTo(avatar, { alpha: 1 }, { duration: 1, alpha: 0, yoyo: true, repeat: -1, paused: true });
-        //tween.seat = seat;
-        //this.tweens.push(tween);
 
         container.addChild(avatar);
     }
@@ -89,9 +83,6 @@
 
     private _addVictories(container, winCount, y) {
         
-        //winIcon.height = 48;
-        //winIcon.width = 48;
-        //winIcon.x = -30;
         var victoryContainer = new PIXI.Container();
 
         var x = 0;
@@ -118,8 +109,8 @@
 
     private _addGlasses(container) {
         const glasses = PIXI.Sprite.from(this.resources['glasses'].texture);
-        glasses.y = -100;
-        glasses.x = 25;
+        glasses.y = -150;
+        glasses.x = 20;
         //glasses.alpha = 0;
 
         container.addChild(glasses);
@@ -142,8 +133,6 @@
 
     private _playSong(resources) {
         resources.winnerSong.sound.play();
-        //const sound = PIXI.sound.Sound.from('Content/winnerSong.mp3');
-        //sound.play();
     }
 
     private _addEffects(container, x, y) {

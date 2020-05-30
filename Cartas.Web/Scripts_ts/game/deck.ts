@@ -1,4 +1,5 @@
 ﻿class Deck {
+    private gameStarted: boolean;
     game: Game;
     resources: any;
     playerDeck: any;
@@ -7,7 +8,8 @@
     dummyCard2: PIXI.Sprite;
     card: any;
 
-    constructor(game: Game, resources, playerDeck, gameHubSender: GameHubSender) {
+    constructor(game: Game, resources, playerDeck, gameHubSender: GameHubSender, gameStarted: boolean) {
+        this.gameStarted = gameStarted;
         this.game = game;
         this.resources = resources;
         this.playerDeck = playerDeck;
@@ -36,7 +38,7 @@
         this.game.app.stage.addChild(dummyCard2);
 
 
-        var card = new Card(this.resources["reverse"].texture);
+        var card = new CardSprite(this.resources["reverse"].texture);
         card.scale.x = 0.30;
         card.scale.y = 0.30;
         card.x = card.initialX = 720;
@@ -46,7 +48,9 @@
         this.card = card;
         this.game.app.stage.addChild(card);
 
-        this.initDragAndDrop(card);
+        if (this.gameStarted) {
+            this.initDragAndDrop(card);
+        }
     }
 
     hide() {
@@ -98,11 +102,11 @@
                 if (takenCard != null) {
                     self.playerDeck.addCardToPlayer(takenCard.Num, takenCard.Suit, card.x - 150);
                 }
-
-                card.x = card.initialX;
-                card.y = card.initialY;
             });
         }
+
+        card.x = card.initialX;
+        card.y = card.initialY;
     }
 
     private onCardDragMove(event) {

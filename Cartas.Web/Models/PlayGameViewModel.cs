@@ -1,4 +1,5 @@
-﻿using Cartas.Web.Domain.Logic;
+﻿using System.Collections.Generic;
+using Cartas.Web.Domain.Logic;
 using Cartas.Web.Domain.Models;
 
 namespace Cartas.Web.Models
@@ -7,5 +8,6 @@ namespace Cartas.Web.Models
     {
         public Game Game { get; set; }
         public Player ThisPlayer { get; set; }
+        public List<string> AvatarList { get; set; }
     }
 }

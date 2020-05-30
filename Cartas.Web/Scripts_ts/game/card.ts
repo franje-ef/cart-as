@@ -1,6 +1,9 @@
-﻿class Card extends PIXI.Sprite {
-    initialX: number;
-    initialY: number;
+﻿class Card{
     num: number;
     suit: number;
+
+    constructor(num: number, suit: number) {
+        this.suit = suit;
+        this.num = num;
+    }
 }

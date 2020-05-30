@@ -325,13 +325,15 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\easing\EasePack.min.js" />
+    <TypeScriptCompile Include="Scripts_ts\game\card.ts" />
     <TypeScriptCompile Include="Scripts_ts\game\confirmVictory.ts" />
     <TypeScriptCompile Include="Scripts_ts\game\deck.ts" />
     <TypeScriptCompile Include="Scripts_ts\game\gameControls.ts" />
     <TypeScriptCompile Include="Scripts_ts\game\gameHubReceiver.ts" />
     <TypeScriptCompile Include="Scripts_ts\game\gameHubSender.ts" />
-    <TypeScriptCompile Include="Scripts_ts\game\card.ts" />
+    <TypeScriptCompile Include="Scripts_ts\game\cardSprite.ts" />
     <TypeScriptCompile Include="Scripts_ts\game\playedCard.ts" />
+    <TypeScriptCompile Include="Scripts_ts\game\player.ts" />
     <TypeScriptCompile Include="Scripts_ts\game\reactionService.ts" />
     <TypeScriptCompile Include="Scripts_ts\game\romi.ts" />
     <TypeScriptCompile Include="Scripts_ts\game\board.ts" />

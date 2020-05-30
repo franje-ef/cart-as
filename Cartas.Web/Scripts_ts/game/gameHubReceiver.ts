@@ -1,4 +1,5 @@
 ﻿class GameHubReceiver {
+    game: Game;
     gameHub: GameHub;
     players: Players;
     romi: Romi;
@@ -6,18 +7,19 @@
     reactionService: ReactionService;
     confirmVictory: ConfirmVictory;
 
-    constructor(gameHub : GameHub, players: Players, romi: Romi, playedCard: PlayedCard, reactionService: ReactionService, confirmVictory: ConfirmVictory) {
+    constructor(game: Game, gameHub : GameHub, players: Players, romi: Romi, playedCard: PlayedCard, reactionService: ReactionService, confirmVictory: ConfirmVictory) {
         this.gameHub = gameHub;
         this.players = players;
         this.romi = romi;
         this.playedCard = playedCard;
         this.reactionService = reactionService;
         this.confirmVictory = confirmVictory;
+        this.game = game;
     }
 
     init() {
         this.gameHub.hub.client.playerConnected = player => {
-            this.players.addPlayer(player.PlayerId, player.PlayerName, '/Content/img/avatars/' + player.Avatar, player.Seat, player.WinCount);
+            this.players.addPlayer(player.PlayerId, player.PlayerName, player.Avatar, player.Seat, player.WinCount);
         }
 
         this.gameHub.hub.client.onGameStarted = () => {
@@ -48,8 +50,16 @@
             this.players.onPlayerRemoved(seat, removedPlayerId);
         }
 
-        this.gameHub.hub.client.onPlayerClaimedVictory = playerName => {
-            this.confirmVictory.show(playerName);
+        this.gameHub.hub.client.onPlayerClaimedVictory = playerId => {
+            this.game.showPotentialWinner(playerId);
+        }
+
+        this.gameHub.hub.client.onPlayerClaimingVictoryLost = () =>{
+            this.confirmVictory.hide();
+        }
+
+        this.gameHub.hub.client.onPlayerWon = playerId =>{
+            this.game.showWinner(playerId);
         }
     }
 }

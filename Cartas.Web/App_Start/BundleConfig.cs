@@ -19,8 +19,7 @@ namespace Cartas.Web
                       ));
 
             bundles.Add(new ScriptBundle("~/bundles/game")
-                .IncludeDirectory("~/Scripts_js/game", "*.js")
-                .IncludeDirectory("~/Scripts/game", "*.js"));
+                .IncludeDirectory("~/Scripts_js/game", "*.js"));
 
         }
     }

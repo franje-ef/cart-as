@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
+using Cartas.Web.Domain;
 using Cartas.Web.Domain.Logic;
 using Cartas.Web.Domain.Models;
 using Microsoft.AspNet.SignalR;
@@ -104,15 +106,19 @@ namespace Cartas.Web.Hubs
             var game = App.GetGame(gameId);
             var player = game.GetPlayer(playerId);
 
-            if (game.PotentialWinner != null)
-            {
-                if (game.PotentialWinner.React(playerId, reactionId))
-                {
-                    Clients.Group(gameId).onPlayerWon(player.Seat, reactionId);
-                }
-            }
-
             Clients.Group(gameId).onReactionSent(player.Seat, reactionId);
+
+            var response = game.React(playerId, reactionId);
+
+            switch (response)
+            {
+                case ReactResponse.PotentialWinnerWon:
+                    Clients.Group(gameId).onPlayerWon(game.PotentialWinner.Player.PlayerId);
+                    break;
+                case ReactResponse.PotentialWinnerLost:
+                    Clients.Group(gameId).onPlayerClaimingVictoryLost();
+                    break;
+            }
         }
 
         public void RemovePlayer(int seat)
@@ -141,7 +147,7 @@ namespace Cartas.Web.Hubs
 
             if (game.PotentialWinner != null && game.PotentialWinner.Player.PlayerId == playerId)
             {
-                Clients.Group(gameId).onPlayerClaimedVictory(game.PotentialWinner.Player.PlayerName);
+                Clients.Group(gameId).onPlayerClaimedVictory(game.PotentialWinner.Player.PlayerId);
             }
         }
     }

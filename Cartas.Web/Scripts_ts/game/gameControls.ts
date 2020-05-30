@@ -1,5 +1,7 @@
 ﻿
 class GameControls {
+    private isPlaying: boolean;
+    isGameStarted: boolean;
     game: Game;
     isMasterUser: boolean;
     resources: any;
@@ -7,13 +9,15 @@ class GameControls {
     gameHubSender: GameHubSender;
     isGameFinished: boolean;
 
-    constructor(game : Game, isMasterUser: boolean, resources: any, gameHubSender: GameHubSender, playerDeck: any, isGameFinished: boolean) {
+    constructor(game : Game, isMasterUser: boolean, resources: any, gameHubSender: GameHubSender, playerDeck: any, isGameFinished: boolean, isGameStarted: boolean, isPlaying: boolean) {
+        this.isPlaying = isPlaying;
         this.game = game;
         this.isMasterUser = isMasterUser;
         this.resources = resources;
         this.gameHubSender = gameHubSender;
         this.playerDeck = playerDeck;
         this.isGameFinished = isGameFinished;
+        this.isGameStarted = isGameStarted;
     }
 
     init() {
@@ -22,7 +26,7 @@ class GameControls {
 
         this.createButton(this.resources, container, "exit", () => this.onExitPressed());
 
-        if (!this.isGameFinished) {
+        if (!this.isGameFinished && this.isGameStarted && this.isPlaying) {
             this.createButton(this.resources, container, "shuffle", () => this.onShufflePressed());
             this.createButton(this.resources, container, "victory", () => this.onVictoryPressed());
         }

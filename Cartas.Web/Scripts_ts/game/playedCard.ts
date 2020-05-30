@@ -1,13 +1,14 @@
 ﻿class PlayedCard {
     game: Game;
-    players;
+    players:Players;
     resources;
     card: any;
     allowDragAndDrop: boolean;
     playerDeck;
     gameHubSender: GameHubSender;
-
-    constructor(game: Game, players, resources, allowDragAndDrop: boolean, playerDeck, gameHubSender: GameHubSender) {
+    container: PIXI.Container;
+    
+    constructor(game: Game, players: Players, resources, allowDragAndDrop: boolean, playerDeck, gameHubSender: GameHubSender) {
         this.game = game;
         this.players = players;
         this.resources = resources;
@@ -15,10 +16,11 @@
         this.allowDragAndDrop = allowDragAndDrop;
         this.playerDeck = playerDeck;
         this.gameHubSender = gameHubSender;
+        this.container = this.game.app.stage;
     }
 
-    setPlayedCard(seat, num, suit) {
-        var card = new Card(this.resources[num + "_" + suit].texture);
+    setPlayedCard(seat: number, num: number, suit:number) {
+        var card = new CardSprite(this.resources[num + "_" + suit].texture);
         card.num = num;
         card.suit = suit;
         card.scale.x = 0.30;
@@ -27,15 +29,11 @@
         card.x = card.initialX = 1225;
         card.y = card.initialY = 425;
 
-        if (this.card == null)
-            this.card = card;
-
         if (this.allowDragAndDrop) {
             this.initDragAndDrop(card);
         }
 
-        this.game.app.stage.addChildAt(card, 5);
-        this.initAnimation(card, seat);
+        this.initAnimation(card, seat); 
     }
 
     removePlayedCard() {
@@ -55,22 +53,22 @@
             this.card.visible = true;
     }
 
-    private initAnimation(card, seat) {
+    private initAnimation(card: CardSprite, seat: number) {
         var width = card.width;
         var height = card.height;
 
         card.width = 0;
         card.height = 0;
 
-        var from: any = { width: 15, height: 35, alpha: 0 };
+        var from: any = { width: 15, height: 35, alpha: 0};
         var to: any = {
-            duration: 1,
+            duration: 0.5,
             width: width,
             height: height,
-            alpha: 1,
             ease: "back.inOut(1.7)",
-            onComplete: this.replaceCard,
-            onCompleteParams: [this, card]
+            alpha: 1
+            //onComplete: this.replaceCard,
+            //onCompleteParams: [this, card] 
         };
 
         if (seat > 0) {
@@ -81,23 +79,25 @@
 
             to.x = card.x;
             to.y = card.y;
+            to.duration = 1.5;
         }
+
+        this.removeCard(this);
+        this.card = card;
+        this.container.addChildAt(card, 5);
 
         var tl = gsap.timeline();
-        tl.to(this.card, { alpha: 0, duration: 0.7 })
-            .fromTo(card, from, to, "-=0.7");
+        tl.fromTo(card, from, to);
 
     }
 
-    private replaceCard(self, newCard) {
+    private removeCard(self: PlayedCard) {
         if (self.card != null) {
-            self.card.parent.removeChild(self.card);
+            self.container.removeChild(self.card);
         }
-
-        self.card = newCard;
     }
 
-    private initDragAndDrop(card) {
+    private initDragAndDrop(card: CardSprite) {
         card.interactive = true;
         card.buttonMode = true;
 
@@ -122,7 +122,7 @@
         card.dragging = true;
     }
 
-    private onCardDragEnd(event, self) {
+    private onCardDragEnd(event, self: PlayedCard) {
         var card = event.currentTarget;
 
         card.alpha = 1;
@@ -134,7 +134,7 @@
             self.gameHubSender.takePlayedCard().done(function(playedCard) {
                 if (playedCard != null) {
                     self.playerDeck.addCardToPlayer(playedCard.Num, playedCard.Suit, card.x - 150);
-                    self._replaceCard(self, null);
+                    self.removeCard(self);
                 } else {
                     card.x = card.initialX;
                     card.y = card.initialY;

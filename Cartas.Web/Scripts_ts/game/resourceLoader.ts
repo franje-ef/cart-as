@@ -1,8 +1,10 @@
 ﻿class ResourceLoader {
+    private avatars: string[];
     private loader: PIXI.Loader;
     private document;
 
-    constructor(document: any) {
+    constructor(document: any, avatars: string[]) {
+        this.avatars = avatars;
         this.loader = new PIXI.Loader();
         this.document = document;
     }
@@ -13,6 +15,7 @@
         this.loadRomi(this.loader);
         this.loadGameControls(this.loader);
         this.loadWinnerResources(this.loader);
+        this.loadAvatars(this.loader, this.avatars);
 
         this.loader.load((_, resources) => this.onCompleteLoaderLoading(this, resources, onCompleteFunc));
     }
@@ -20,6 +23,10 @@
     private loadTableImages(loader: PIXI.Loader) {
         loader.add('table', '/Content/img/game/table_background_green.svg' );
         loader.add('tableFrame', '/Content/img/game/table_frame.svg');
+    }
+
+    private loadAvatars(loader: PIXI.Loader, avatars: string[]) {
+        avatars.forEach(avatar => loader.add(avatar, '/Content/img/avatars/'+ avatar)); 
     }
 
     private loadWinnerResources(loader) {

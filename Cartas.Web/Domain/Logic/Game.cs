@@ -38,7 +38,7 @@ namespace Cartas.Web.Domain.Logic
         private List<Card> _playedCards = new List<Card>();
 
 
-        private int PlayerCount => ActivePlayers.Count + WaitingPlayers.Count;
+        public int PlayerCount => ActivePlayers.Count + WaitingPlayers.Count;
 
         public bool AddPlayer(Player player)
         {
@@ -51,10 +51,12 @@ namespace Cartas.Web.Domain.Logic
 
             if (Started)
             {
+                player.IsPlaying = false;
                 WaitingPlayers.Add(player);
             }
             else
             {
+                player.IsPlaying = true;
                 ActivePlayers.Add(player);
             }
 
@@ -74,6 +76,7 @@ namespace Cartas.Web.Domain.Logic
             LastPlayedCard = _deckCards.Dequeue();
             _playedCards = new List<Card> { LastPlayedCard };
             Started = true;
+            Finished = false;
             PotentialWinner = null;
         }
 
@@ -145,11 +148,11 @@ namespace Cartas.Web.Domain.Logic
 
         public void SetSnapshot(Player player, string snapshot)
         {
-            //PotentialWinner = new PotentialWinner
-            //{
-            //    Player = player,
-            //    Snapshot = snapshot
-            //};
+            PotentialWinner = new PotentialWinner(PlayerCount)
+            {
+                Player = player,
+                Snapshot = snapshot
+            };
         }
 
         public string RemovePlayer(int seat)
@@ -167,15 +170,38 @@ namespace Cartas.Web.Domain.Logic
 
             if (playerInActive != null)
             {
-                if (ActivePlayers[_playerTurnIndex].PlayerId == playerInActive.PlayerId) 
-                    ChangeTurn();
-
                 _playedCards.AddRange(playerInActive.Cards);
 
                 ActivePlayers.RemoveAll(x => x.PlayerId == playerInActive.PlayerId);
+
+                if (_playerTurnIndex >= ActivePlayers.Count)
+                    _playerTurnIndex = 0;
             }
 
             return playerInActive?.PlayerId ?? playerInWaiting?.PlayerId;
+        }
+
+        public ReactResponse React(string playerId, string reactionId)
+        {
+            if (PotentialWinner == null || PotentialWinner.Player.PlayerId == playerId)
+                return ReactResponse.Neutral;
+
+            PotentialWinner.React(playerId, reactionId);
+
+            if (PotentialWinner.HasWon)
+            {
+                Finished = true;
+                ActivePlayers.Single(x => x.PlayerId == PotentialWinner.Player.PlayerId).WinCount++;
+                return ReactResponse.PotentialWinnerWon;
+            }
+
+            if (PotentialWinner.HasLost)
+            {
+                PotentialWinner = null;
+                return ReactResponse.PotentialWinnerLost;
+            }
+
+            return ReactResponse.Neutral;
         }
 
         private void ChangeTurn()
@@ -228,6 +254,7 @@ namespace Cartas.Web.Domain.Logic
                 var player = ActivePlayers[i];
                 player.Seat = seats[i];
                 player.Cards = new List<Card>();
+                player.IsPlaying = true;
 
                 for (int j = 0; j < Constants.InitialCardCount; j++)
                 {

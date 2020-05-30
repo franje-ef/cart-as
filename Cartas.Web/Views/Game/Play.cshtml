@@ -23,117 +23,53 @@
 <script type="text/javascript">
     var gameStarted = @Html.Raw(Model.Game.Started.ToString().ToLower());
     var isMasterUser = @Html.Raw((Model.Game.MasterPlayer.PlayerId == Model.ThisPlayer.PlayerId).ToString().ToLower());
+    var isPlaying = @Html.Raw(Model.ThisPlayer.IsPlaying.ToString().ToLower());
     var playerCards = [];
     @foreach (var d in Model.ThisPlayer.Cards)
     {
-        @:playerCards.push({ num: @d.Num, suit: @d.Suit });
+        @:playerCards.push(new Card(@d.Num, @d.Suit));
     }
+    var potentialWinnerPlayerId = null;
+    var winnerPlayerId = null;
+    @if (Model.Game.PotentialWinner != null)
+    {
+        var playerId = Model.Game.PotentialWinner.Player.PlayerId;
 
-    var resourceLoader = new ResourceLoader(document);
-    resourceLoader.init(() => init(resourceLoader.resources));
-
-    function init(resources) {
-        const gameHub = new GameHub('@Model.Game.GameId', '@Model.ThisPlayer.PlayerId');
-        gameHub.init();
-
-        const gameHubSender = new GameHubSender(gameHub);
-
-        const game = new Game('@Model.Game.GameId', document, window);
-        game.init();
-
-        @*@if (Model.Game.PotentialWinner?.HasWon == true)
+        if (Model.Game.PotentialWinner.HasWon)
         {
-            var winner = Model.Game.PotentialWinner.Player;
-            @:initWinner(game, resources, '@Html.Raw(winner.PlayerName)', '@winner.Avatar', @winner.WinCount);
+            @:winnerPlayerId = '@playerId';
         }
         else
         {
-            @:initBoard(resources, gameHubSender, game, gameHub);
-        }*@
-
-        initBoard(resources, gameHubSender, game, gameHub);
-
-        //initWinner(game, resources, "Jesús", "020-girl-4.png", 2, isMasterUser, gameHubSender);
+            @:potentialWinnerPlayerId = '@playerId';
+        }
     }
 
-    function initWinner(game, resources, name, avatar, winCount, isMasterUser, gameHubSender) {
-        var winner = new Winner(game, resources, name, '/Content/img/avatars/' + avatar, winCount);
-        winner.init();
-
-        var gameControls = new GameControls(game, isMasterUser, resources, gameHubSender, null, true);
-        gameControls.init();
+    var gamePlayers = [];
+    @foreach (var player in Model.Game.ActivePlayers.Union(Model.Game.WaitingPlayers))
+    {
+        @:gamePlayers.push(new Player('@player.PlayerId', '@Html.Raw(player.PlayerName)', '@player.Avatar', @player.Seat, @player.WinCount));
+    }
+    var lastPlayedCard = null;
+    @if (Model.Game.LastPlayedCard != null)
+    {
+        @:lastPlayedCard = new Card(@Model.Game.LastPlayedCard.Num, @Model.Game.LastPlayedCard.Suit);
     }
 
-    function initBoard(resources, gameHubSender, game, gameHub) {
-        const board = new Board();
-        board.init(game.app);
-
-        const players = new Players(game, isMasterUser, gameHubSender, '@Model.ThisPlayer.PlayerId');
-        @foreach (var player in Model.Game.ActivePlayers.Union(Model.Game.WaitingPlayers))
-        {
-            @:players.addPlayer('@player.PlayerId', '@Html.Raw(player.PlayerName)', '/Content/img/avatars/@player.Avatar', @player.Seat, @player.WinCount);
-        }
-        if (gameStarted) {
-            players.setCurrentTurn(@Model.Game.SeatTurn);
-        }
-
-        var allowDragAndDropPlayedCard = true;
-        var romi = new Romi(game, isMasterUser, resources, gameHubSender);
-        romi.init('@Html.Raw(Model.Game.Goal)');
-
-        var reactionService = new ReactionService(game, resources, gameHubSender);
-        reactionService.init();
-
-        var playerDeck = new PlayerDeck(game, playerCards, resources, gameHubSender);
-        playerDeck.init();
-
-        var gameControls = new GameControls(game, isMasterUser, resources, gameHubSender, playerDeck, '@Model.Game.GameId', false);
-        gameControls.init();
-
-        var playedCard = new PlayedCard(game, players, resources, allowDragAndDropPlayedCard, playerDeck, gameHubSender);
-        @{
-            var lastPlayedCard = Model.Game.LastPlayedCard;
-
-            if (Model.Game.LastPlayedCard != null)
-            {
-                @:playedCard.setPlayedCard(0, @lastPlayedCard.Num, @lastPlayedCard.Suit);
-            }
-        }
-
-
-        window.playedCard = playedCard;
-
-        var deck = new Deck(game, resources, playerDeck, gameHubSender);
-        deck.init();
-
-        var confirmVictory = new ConfirmVictory(game, board, playerDeck.width, deck, playedCard);
-        confirmVictory.init();
-        @if (Model.Game.PotentialWinner != null)
-        {
-            @:confirmVictory.show('@Html.Raw(Model.Game.PotentialWinner.Player.PlayerName)');
-        }
-
-        var gameHubReceiver = new GameHubReceiver(gameHub, players, romi, playedCard, reactionService, confirmVictory);
-        gameHubReceiver.init();
-
-        gameHub.connect();
+    var avatars = [];
+    @foreach (var avatar in Model.AvatarList)
+    {
+        @:avatars.push("@avatar");
     }
 
-    /**
-         * /TESTS
-         */
-    //function timeout() {
-    //    setTimeout(function() {
-    //            var randomNumber = Math.floor(Math.random() * (10 - 1) + 1);
-    //            players.setCurrentTurn(randomNumber);
-    //            timeout();
-    //        },
-    //        4000);
-    //}
+    var resourceLoader = new ResourceLoader(document, avatars);
+    resourceLoader.init(() => init(resourceLoader.resources));
 
-    //timeout();
-    /*END TESTS*/
-
+    function init(resources) {
+        const game = new Game('@Model.Game.GameId', document, window, '@Model.ThisPlayer.PlayerId', isMasterUser, gamePlayers, gameStarted, @Model.Game.SeatTurn,
+            resources, '@Html.Raw(Model.Game.Goal)', playerCards, lastPlayedCard, potentialWinnerPlayerId, winnerPlayerId, isPlaying);
+        game.init();
+    }
 </script>
 </body>
 

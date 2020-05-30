@@ -19,4 +19,11 @@
     {
         
     }
+
+    public enum ReactResponse
+    {
+        Neutral,
+        PotentialWinnerWon,
+        PotentialWinnerLost
+    }
 }

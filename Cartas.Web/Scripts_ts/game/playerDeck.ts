@@ -53,7 +53,7 @@
     }
 
     addCardToPlayer(num, suit, x) {
-        var card = new Card(this.resources[num + "_" + suit].texture);
+        var card = new CardSprite(this.resources[num + "_" + suit].texture);
         card.scale.x = 0.30;
         card.scale.y = 0.30;
 

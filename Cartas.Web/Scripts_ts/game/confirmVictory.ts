@@ -35,13 +35,12 @@
         this.playedCard.hide();
 
         const snapshot = PIXI.Sprite.from("/game/snapshot?gameid=" + this.game.gameId);
-        snapshot.scale.x = 0.5;
-        snapshot.scale.y = 0.5;
-        snapshot.y = 50;
+        snapshot.scale.x = 0.60;
+        snapshot.scale.y = 0.60;
+        snapshot.x = -80;
         this.container.addChild(snapshot);
 
-        this.
-            showPlayerName(playerName, this.container, this.playerDeckWidth);
+        this.showPlayerName(playerName, this.container, this.playerDeckWidth);
 
         this.container.visible = true;
     }
@@ -64,7 +63,7 @@
                 lineHeight: 4
             });
         potentialWinner.x = (width/2 - potentialWinner.width) / 2;
-        potentialWinner.y = 0;
+        potentialWinner.y = -50;
 
         container.addChild(potentialWinner);
     }

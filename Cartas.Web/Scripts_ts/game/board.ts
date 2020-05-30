@@ -1,8 +1,14 @@
 ﻿class Board {
+    private gameId: string;
     table: PIXI.Sprite;
     tableFrame: PIXI.Sprite;
 
-    init(parent) {
+    constructor(gameId: string) {
+        this.gameId = gameId;
+    }
+    
+
+    init(parent: PIXI.Application) {
         var tableInitHeight = 428;
         var tableInitWidth = 820;
         var tableScale = 1.5;
@@ -31,15 +37,18 @@
 
         this.addPlayedCardPlaceHolder(table);
         this.addLogo(parent.stage);
+        this.addGameId(parent.stage);
     }
 
     hide() {
         this.table.visible = false;
-        
+        this.tableFrame.visible = false;
+
     }
 
     show() {
         this.table.visible = true;
+        this.tableFrame.visible = true;
     }
 
     private addPlayedCardPlaceHolder(parent) {
@@ -58,6 +67,24 @@
         logo.scale.x = 0.4;
         logo.scale.y = 0.4;
 
+        console.log(logo.width);
+
         parent.addChild(logo);
+    }
+
+    private addGameId(parent: PIXI.Container) {
+        let gameIdText = new PIXI.Text(this.gameId,
+            {
+                fontFamily: 'Cabin Sketch',
+                fontSize: 42,
+                fill: 0xffffff,
+                fontWeight: "500",
+                lineHeight: 4
+            });
+
+        gameIdText.y = 150;
+        gameIdText.x = 240 / 2 - gameIdText.width / 2;
+
+        parent.addChild(gameIdText);
     }
 }

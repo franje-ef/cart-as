@@ -1,22 +1,24 @@
-﻿class Player extends PIXI.Container{
+﻿class PlayerContainer extends PIXI.Container{
     playerId: string
 }
 
 class Players {
+    resources: any;
     game: Game;
     isMasterUser: boolean;
     tweens: Array<any>;
-    players: Array<Player>;
+    players: Array<PlayerContainer>;
     gameHubSender: GameHubSender;
     thisPlayerId: string;
 
-    constructor(game: Game, isMasterUser: boolean, gameHubSender: GameHubSender, thisPlayerId: string) {
+    constructor(game: Game, isMasterUser: boolean, gameHubSender: GameHubSender, thisPlayerId: string, resources: any) {
         this.game = game;
         this.isMasterUser = isMasterUser;
         this.tweens = [];
         this.players = [];
         this.gameHubSender = gameHubSender;
         this.thisPlayerId = thisPlayerId;
+        this.resources = resources;
     }
 
     playerPositions = [{ x: 600, y: 600, seat: 1}, { x: 900, y: 600, seat: 2 }, { x: 1200, y: 600, seat: 3}
@@ -25,13 +27,13 @@ class Players {
         , { x: 600, y: 20, seat: 8 }, { x: 900, y: 20, seat: 7 }, { x: 1200, y: 20, seat: 6 }
     ];
 
-    addPlayer(playerId, playerName, avatarUrl, seat, winCount) { 
-        if (this.players.includes(playerId)) 
+    addPlayer(playerId, playerName, avatarId, seat, winCount) { 
+        if (this.players.filter(x => x.playerId == playerId).length > 0)  
             return;
         
-        var player = new Player();
+        var player = new PlayerContainer();
 
-        this.addAvatar(player, avatarUrl, seat);
+        this.addAvatar(player, avatarId, seat);
         this.addPlayerName(player, playerName);
         if (this.isMasterUser && this.thisPlayerId !== playerId) {
             this.addDeleteButton(player, seat);    
@@ -72,8 +74,8 @@ class Players {
         this.game.stage.removeChild(player);
     }
 
-    addAvatar(container, avatarUrl, seat) {
-        const avatar = PIXI.Sprite.from(avatarUrl);
+    addAvatar(container, avatarId, seat) {
+        const avatar = PIXI.Sprite.from(this.resources[avatarId].texture);
         avatar.height = 100;
         avatar.width = 100;
         avatar.x = 0;
@@ -103,10 +105,10 @@ class Players {
                 //lineHeight: 4,
                 breakWords: true,
                 wordWrap: true,
-                wordWrapWidth: playerNameBox.width - 2
+                wordWrapWidth: playerNameBox.width - 7
             });
 
-        name.x = (playerNameBox.width - name.width) / 2 - 22;
+        name.x = (playerNameBox.width - name.width) / 2 - 20;
         name.y = name.height > 30 ? 110 : 120;
 
         playerNameBox.addChild(name);
