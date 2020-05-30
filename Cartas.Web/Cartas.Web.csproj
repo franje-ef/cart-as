@@ -345,6 +345,7 @@
     <Content Include="Scripts\jquery-3.5.1.min.js" />
     <Content Include="Scripts\jquery.signalR-2.4.1.js" />
     <Content Include="Scripts\jquery.signalR-2.4.1.min.js" />
+    <Content Include="Scripts\pixi-legacy.min.js" />
     <Content Include="Scripts\pixi-particles.js" />
     <Content Include="Scripts\pixi-sound.js" />
     <Content Include="Scripts\pixi.min.js" />
