@@ -7,7 +7,7 @@
     "lib": [ "ES2016", "dom" ],
     "sourceMap": true,
     "target": "ES2016",
-    "outDir": "../Scripts_js",
+    "outDir": "../wwwroot/js",
     "rootDir": "./"
   },
   "exclude": [

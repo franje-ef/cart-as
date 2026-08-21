@@ -5,7 +5,7 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cart-As</title>
-    @Styles.Render("~/Content/css")
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
 </head>
 <body class="bg-secondary">
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
@@ -16,7 +16,7 @@
     <ul class="navbar-nav mr-auto"></ul>
     
     @{
-        var player = PlayerService.GetPlayer(Request.Cookies);
+        var player = PlayerService.GetPlayer(Context.Request.Cookies);
         if (player != null)
         {
             <a href="/Player/Register">
@@ -35,8 +35,9 @@
 
 </div>
 
-@Scripts.Render("~/bundles/jquery")
-@Scripts.Render("~/bundles/bootstrap")
+<script src="~/Scripts/jquery-3.5.1.min.js"></script>
+<script src="~/Scripts/bootstrap.min.js"></script>
+<script src="~/Scripts/respond.min.js"></script>
 @RenderSection("scripts", required: false)
 </body>
 </html>

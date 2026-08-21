@@ -1,15 +1,23 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Linq;
-using System.Web.Mvc;
 using Cartas.Web.Domain;
 using Cartas.Web.Domain.Logic;
 using Cartas.Web.Models;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Cartas.Web.Controllers
 {
     public class GameController : Controller
     {
+        private readonly IWebHostEnvironment _env;
+
+        public GameController(IWebHostEnvironment env)
+        {
+            _env = env;
+        }
+
         public ActionResult Index()
         {
             if (PlayerService.GetPlayer(Request.Cookies) == null)
@@ -23,17 +31,17 @@ namespace Cartas.Web.Controllers
                 Type = x.GameType.ToString(),
                 MasterPlayer = x.MasterPlayer.PlayerName
             });
-            
+
             return View(model);
         }
 
         [HttpPost]
-        public ActionResult Create(FormCollection form)
+        public ActionResult Create([FromForm(Name = "GameType")] string gameType)
         {
             var masterPlayer = PlayerService.GetPlayer(Request.Cookies);
-            var gameType = (GameType) Enum.Parse(typeof(GameType), form["GameType"]);
+            var parsedGameType = (GameType) Enum.Parse(typeof(GameType), gameType);
 
-            var game = App.CreateGame(gameType, masterPlayer);
+            var game = App.CreateGame(parsedGameType, masterPlayer);
 
             return RedirectToAction("Play", new {gameId = game.GameId});
         }
@@ -52,7 +60,7 @@ namespace Cartas.Web.Controllers
             {
                 Game = game,
                 ThisPlayer = game.GetPlayer(player.PlayerId),
-                AvatarList = Directory.GetFiles(Server.MapPath("~/Content/img/avatars")).Select(Path.GetFileName).ToList()
+                AvatarList = Directory.GetFiles(Path.Combine(_env.WebRootPath, "Content", "img", "avatars")).Select(Path.GetFileName).ToList()
         });
         }
 

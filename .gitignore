@@ -360,4 +360,4 @@ MigrationBackup/
 FodyWeavers.xsd
 
 # Folder with compiled typescript
-Scripts_js/
+Cartas.Web/wwwroot/js/

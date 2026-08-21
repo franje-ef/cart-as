@@ -94,7 +94,7 @@
         card.data = null;
 
         if (card.x > 1030 && card.x < 1130 && card.y < -340 && card.y > -460) {
-            self.gameHubSender.playCard(card.num, card.suit).done(function (result) {
+            self.gameHubSender.playCard(card.num, card.suit).then(function (result) {
                 if (result) {
                     card.parent.removeChild(card);
                 } else {

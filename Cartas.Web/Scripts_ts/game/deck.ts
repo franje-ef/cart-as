@@ -98,7 +98,7 @@
 
         //card grabbed to players Deck
         if (card.y >= 750 && card.x >= 150 && card.x <= 1810) {
-            self.gameHubSender.takeDeckCard().done(takenCard => {
+            self.gameHubSender.takeDeckCard().then(takenCard => {
                 if (takenCard != null) {
                     self.playerDeck.addCardToPlayer(takenCard.Num, takenCard.Suit, card.x - 150);
                 }

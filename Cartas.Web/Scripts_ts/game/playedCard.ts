@@ -131,7 +131,7 @@
 
         //card grabbed to players Deck
         if (card.y >= 800 && card.x >= 150 && card.x <= 1810) {
-            self.gameHubSender.takePlayedCard().done(function(playedCard) {
+            self.gameHubSender.takePlayedCard().then(function(playedCard) {
                 if (playedCard != null) {
                     self.playerDeck.addCardToPlayer(playedCard.Num, playedCard.Suit, card.x - 150);
                     self.removeCard(self);

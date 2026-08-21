@@ -1,4 +1,4 @@
-﻿class GameHubSender {
+class GameHubSender {
     gameHub: GameHub;
 
     constructor(gameHub : GameHub) {
@@ -6,35 +6,35 @@
     }
 
     startGame() {
-        this.gameHub.hub.server.startGame();
+        this.gameHub.hub.invoke("StartGame");
     }
 
     changeGoal() {
-        this.gameHub.hub.server.changeGoal();
+        this.gameHub.hub.invoke("ChangeGoal");
     }
 
     playCard(num, suit) {
-        return this.gameHub.hub.server.playCard(num, suit);
+        return this.gameHub.hub.invoke("PlayCard", num, suit);
     }
 
     takeDeckCard() {
-        return this.gameHub.hub.server.takeDeckCard();
+        return this.gameHub.hub.invoke("TakeDeckCard");
     }
 
     takePlayedCard() {
-        return this.gameHub.hub.server.takePlayedCard();
+        return this.gameHub.hub.invoke("TakePlayedCard");
     }
 
     sendReaction(reactionId) {
-        this.gameHub.hub.server.sendReaction(reactionId);
+        this.gameHub.hub.invoke("SendReaction", reactionId);
     }
 
     removePlayer(seat) {
-        this.gameHub.hub.server.removePlayer(seat);
+        this.gameHub.hub.invoke("RemovePlayer", seat);
     }
 
     claimVictory() {
-        this.gameHub.hub.server.claimVictory();
+        this.gameHub.hub.invoke("ClaimVictory");
     }
 
 }

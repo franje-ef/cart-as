@@ -1,4 +1,4 @@
-﻿class GameHub {
+class GameHub {
     hub: any;
     gameId: string;
     playerId: string;
@@ -9,15 +9,12 @@
     }
 
     init() {
-        this.hub = $.connection["gameHub"];
+        this.hub = new signalR.HubConnectionBuilder()
+            .withUrl(`/hubs/game?PlayerId=${this.playerId}&GameId=${this.gameId}`)
+            .build();
     }
 
     connect() {
-        $.connection.hub.qs = { "PlayerId": this.playerId, "GameId": this.gameId };
-        $.connection.hub.start().done(function () {
-            //lobby.server.playerConnected('@Model.ThisPlayer.PlayerId', '@Model.ThisPlayer.Name', '@Model.GameId');
-        });
+        this.hub.start();
     }
-
-   
 }

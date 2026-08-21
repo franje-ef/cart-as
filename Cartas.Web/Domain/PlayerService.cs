@@ -1,38 +1,39 @@
-﻿using System;
-using System.Web;
+using System;
+using System.Text.Json;
 using Cartas.Web.Domain.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace Cartas.Web.Domain
 {
     public static class PlayerService
     {
         private const string CookieName = "Username_avatar";
-        private const string CookiePlayerNameKey = "PlayerName";
-        private const string CookieAvatarKey = "Avatar";
-        private const string PlayerIdKey = "PlayerKey";
-        
-        public static HttpCookie CreatePlayerCookie(string playerName, string avatar)
-        {
-            var cookie = new HttpCookie(CookieName);
-            cookie.Values[CookiePlayerNameKey] = HttpUtility.UrlEncode(playerName);
-            cookie.Values[CookieAvatarKey] = avatar;
-            cookie.Values[PlayerIdKey] = Guid.NewGuid().ToString();
-            cookie.Expires = DateTime.MaxValue;
 
-            return cookie;
+        public static void SetPlayerCookie(IResponseCookies cookies, string playerName, string avatar)
+        {
+            var data = new CookieData(playerName, avatar, Guid.NewGuid().ToString());
+
+            cookies.Append(CookieName, JsonSerializer.Serialize(data), new CookieOptions
+            {
+                Expires = DateTimeOffset.MaxValue
+            });
         }
 
-        public static Player GetPlayer(HttpCookieCollection cookieCollection)
+        public static Player GetPlayer(IRequestCookieCollection cookieCollection)
         {
-            var cookie = cookieCollection[CookieName];
-            if (cookie == null) return null;
+            if (!cookieCollection.TryGetValue(CookieName, out var raw) || string.IsNullOrEmpty(raw))
+                return null;
+
+            var data = JsonSerializer.Deserialize<CookieData>(raw);
 
             return new Player
             {
-                Avatar = cookie[CookieAvatarKey],
-                PlayerName = HttpUtility.UrlDecode(cookie[CookiePlayerNameKey]),
-                PlayerId = cookie[PlayerIdKey]
+                Avatar = data.Avatar,
+                PlayerName = data.PlayerName,
+                PlayerId = data.PlayerId
             };
         }
+
+        private record CookieData(string PlayerName, string Avatar, string PlayerId);
     }
 }

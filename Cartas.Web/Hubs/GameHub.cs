@@ -1,59 +1,58 @@
-﻿using System;
 using System.Threading.Tasks;
 using Cartas.Web.Domain;
 using Cartas.Web.Domain.Logic;
 using Cartas.Web.Domain.Models;
-using Microsoft.AspNet.SignalR;
+using Microsoft.AspNetCore.SignalR;
 
 namespace Cartas.Web.Hubs
 {
     public class GameHub : Hub
     {
-        public override Task OnConnected()
+        public override async Task OnConnectedAsync()
         {
-            var playerId = Context.QueryString["PlayerId"];
-            var gameId = Context.QueryString["GameId"];
+            var playerId = Context.GetHttpContext().Request.Query["PlayerId"].ToString();
+            var gameId = Context.GetHttpContext().Request.Query["GameId"].ToString();
 
             var game = App.GetGame(gameId);
             var player = game.GetPlayer(playerId);
 
-            Clients.Group(gameId).playerConnected(player);
+            await Clients.Group(gameId).SendAsync("playerConnected", player);
 
-            Groups.Add(Context.ConnectionId, gameId);
+            await Groups.AddToGroupAsync(Context.ConnectionId, gameId);
 
-            return base.OnConnected();
+            await base.OnConnectedAsync();
         }
 
-        public void StartGame()
+        public async Task StartGame()
         {
-            var playerId = Context.QueryString["PlayerId"];
-            var gameId = Context.QueryString["GameId"];
+            var playerId = Context.GetHttpContext().Request.Query["PlayerId"].ToString();
+            var gameId = Context.GetHttpContext().Request.Query["GameId"].ToString();
             var game = App.GetGame(gameId);
 
             if (game.MasterPlayer.PlayerId == playerId)
             {
                 game.Start();
-                Clients.Group(gameId).onGameStarted();
+                await Clients.Group(gameId).SendAsync("onGameStarted");
             }
         }
 
-        public void ChangeGoal()
+        public async Task ChangeGoal()
         {
-            var playerId = Context.QueryString["PlayerId"];
-            var gameId = Context.QueryString["GameId"];
+            var playerId = Context.GetHttpContext().Request.Query["PlayerId"].ToString();
+            var gameId = Context.GetHttpContext().Request.Query["GameId"].ToString();
             var game = App.GetGame(gameId);
 
             if (game.MasterPlayer.PlayerId == playerId)
             {
                 var goal = game.ChangeGoal();
-                Clients.Group(gameId).onGoalChanged(goal);
+                await Clients.Group(gameId).SendAsync("onGoalChanged", goal);
             }
         }
 
-        public bool PlayCard(int num, int suit)
+        public async Task<bool> PlayCard(int num, int suit)
         {
-            var playerId = Context.QueryString["PlayerId"];
-            var gameId = Context.QueryString["GameId"];
+            var playerId = Context.GetHttpContext().Request.Query["PlayerId"].ToString();
+            var gameId = Context.GetHttpContext().Request.Query["GameId"].ToString();
 
             var game = App.GetGame(gameId);
             var player = game.GetPlayer(playerId);
@@ -61,30 +60,30 @@ namespace Cartas.Web.Hubs
 
             if (result)
             {
-                Clients.OthersInGroup(gameId).onCardPlayed(player.Seat, num, suit);
-                Clients.Caller.onCardPlayed(0, num, suit);
-                Clients.Group(gameId).onTurnChanged(game.SeatTurn);
+                await Clients.OthersInGroup(gameId).SendAsync("onCardPlayed", player.Seat, num, suit);
+                await Clients.Caller.SendAsync("onCardPlayed", 0, num, suit);
+                await Clients.Group(gameId).SendAsync("onTurnChanged", game.SeatTurn);
             }
 
             return result;
         }
 
-        public Card TakeDeckCard()
+        public Task<Card> TakeDeckCard()
         {
-            var playerId = Context.QueryString["PlayerId"];
-            var gameId = Context.QueryString["GameId"];
+            var playerId = Context.GetHttpContext().Request.Query["PlayerId"].ToString();
+            var gameId = Context.GetHttpContext().Request.Query["GameId"].ToString();
 
             var game = App.GetGame(gameId);
             var player = game.GetPlayer(playerId);
             var result = game.TakeDeckCard(player);
 
-            return result;
+            return Task.FromResult(result);
         }
 
-        public Card TakePlayedCard()
+        public async Task<Card> TakePlayedCard()
         {
-            var playerId = Context.QueryString["PlayerId"];
-            var gameId = Context.QueryString["GameId"];
+            var playerId = Context.GetHttpContext().Request.Query["PlayerId"].ToString();
+            var gameId = Context.GetHttpContext().Request.Query["GameId"].ToString();
 
             var game = App.GetGame(gameId);
             var player = game.GetPlayer(playerId);
@@ -92,62 +91,62 @@ namespace Cartas.Web.Hubs
 
             if (result != null)
             {
-                Clients.Group(gameId).onPlayedCardTaken();
+                await Clients.Group(gameId).SendAsync("onPlayedCardTaken");
             }
 
             return result;
         }
 
-        public void SendReaction(string reactionId)
+        public async Task SendReaction(string reactionId)
         {
-            var playerId = Context.QueryString["PlayerId"];
-            var gameId = Context.QueryString["GameId"];
+            var playerId = Context.GetHttpContext().Request.Query["PlayerId"].ToString();
+            var gameId = Context.GetHttpContext().Request.Query["GameId"].ToString();
 
             var game = App.GetGame(gameId);
             var player = game.GetPlayer(playerId);
 
-            Clients.Group(gameId).onReactionSent(player.Seat, reactionId);
+            await Clients.Group(gameId).SendAsync("onReactionSent", player.Seat, reactionId);
 
             var response = game.React(playerId, reactionId);
 
             switch (response)
             {
                 case ReactResponse.PotentialWinnerWon:
-                    Clients.Group(gameId).onPlayerWon(game.PotentialWinner.Player.PlayerId);
+                    await Clients.Group(gameId).SendAsync("onPlayerWon", game.PotentialWinner.Player.PlayerId);
                     break;
                 case ReactResponse.PotentialWinnerLost:
-                    Clients.Group(gameId).onPlayerClaimingVictoryLost();
+                    await Clients.Group(gameId).SendAsync("onPlayerClaimingVictoryLost");
                     break;
             }
         }
 
-        public void RemovePlayer(int seat)
+        public async Task RemovePlayer(int seat)
         {
-            var playerId = Context.QueryString["PlayerId"];
-            var gameId = Context.QueryString["GameId"];
+            var playerId = Context.GetHttpContext().Request.Query["PlayerId"].ToString();
+            var gameId = Context.GetHttpContext().Request.Query["GameId"].ToString();
 
             var game = App.GetGame(gameId);
             if (game.MasterPlayer.PlayerId == playerId)
             {
                 var removedPlayerId = game.RemovePlayer(seat);
 
-                Clients.Group(gameId).onPlayerRemoved(seat, removedPlayerId);
+                await Clients.Group(gameId).SendAsync("onPlayerRemoved", seat, removedPlayerId);
 
                 if(game.Started)
-                    Clients.Group(gameId).onTurnChanged(game.SeatTurn);
+                    await Clients.Group(gameId).SendAsync("onTurnChanged", game.SeatTurn);
             }
         }
 
-        public void ClaimVictory()
+        public async Task ClaimVictory()
         {
-            var playerId = Context.QueryString["PlayerId"];
-            var gameId = Context.QueryString["GameId"];
+            var playerId = Context.GetHttpContext().Request.Query["PlayerId"].ToString();
+            var gameId = Context.GetHttpContext().Request.Query["GameId"].ToString();
 
             var game = App.GetGame(gameId);
 
             if (game.PotentialWinner != null && game.PotentialWinner.Player.PlayerId == playerId)
             {
-                Clients.Group(gameId).onPlayerClaimedVictory(game.PotentialWinner.Player.PlayerId);
+                await Clients.Group(gameId).SendAsync("onPlayerClaimedVictory", game.PotentialWinner.Player.PlayerId);
             }
         }
     }

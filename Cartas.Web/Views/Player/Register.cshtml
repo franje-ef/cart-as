@@ -72,7 +72,7 @@
 
                     <div class="card-footer text-muted">
                         <button type="submit" class="btn btn-success">Guardar</button>
-                        @if (PlayerService.GetPlayer(Request.Cookies) != null)
+                        @if (PlayerService.GetPlayer(Context.Request.Cookies) != null)
                         {
                             <a href="/" role="button" class="btn btn-danger btn-sm">Cancelar</a>
                         }
