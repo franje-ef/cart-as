@@ -30,6 +30,8 @@ Cartas.Web/
 
 `Domain/Logic/App.cs` holds `Games` as a plain `static List<Game>` — no database, no DI-registered singleton. This is intentional: the app never had a persistence layer, and the game state doesn't need to survive a process restart. Don't introduce a database or convert this to DI-managed state unless a real requirement shows up; it'd be a bigger change than the app currently needs.
 
+**Deployment implication**: this state (and SignalR's connection groups) lives in a single process's memory with no backplane. If this ever runs as more than one container replica, requests/connections landing on different replicas won't see each other's games or players. See "Containers / deployment" below.
+
 ## Building the TypeScript client
 
 `Cartas.Web.csproj` has an MSBuild target that runs `npm install` then `npx tsc -p Scripts_ts` before every build, emitting to `wwwroot/js/game/*.js` (gitignored — regenerated on build, not committed).
@@ -60,6 +62,36 @@ Cartas.Web/
 
 - Application Insights (`Microsoft.ApplicationInsights.*`) — was unconfigured template boilerplate with no instrumentation key, confirmed unused before removal. Not migrated to `Microsoft.ApplicationInsights.AspNetCore`.
 - `System.Web.Optimization` bundling/minification — dropped in favor of plain `<script>`/`<link>` tags; app is small enough that this doesn't matter for load time.
+
+## Containers / deployment
+
+`Dockerfile` (repo root) is a multi-stage build:
+- **Build stage** (`mcr.microsoft.com/dotnet/sdk:10.0`): installs Node.js 20 via NodeSource (needed because `dotnet publish` triggers the `CompileTypeScript` MSBuild target, which shells out to `npm`/`tsc`), then runs `dotnet publish Cartas.Web/Cartas.Web.csproj -c Release -o /app/publish`.
+- **Runtime stage** (`mcr.microsoft.com/dotnet/aspnet:10.0`): just the published output, no SDK/Node/npm. Listens on plain HTTP port `8080` (`ASPNETCORE_HTTP_PORTS=8080` — Azure Container Apps and most platforms terminate TLS at their own ingress, so the container itself only needs HTTP). Runs as the image's built-in non-root `app` user.
+
+`.dockerignore` excludes `bin/`/`obj/`/`wwwroot/js/`/`node_modules/` so the build context doesn't ship stale host-platform build output into the image — the container does its own restore/publish/TS-compile from source.
+
+**Build and run locally:**
+```bash
+docker build -t cartas-web .
+docker run -p 8080:8080 cartas-web
+```
+
+**Deploying to Azure Container Apps**: the deploy itself (`az acr build`, `az containerapp create/update`) needs to be run by a human with the right Azure context — it wasn't run as part of this setup. Roughly:
+```bash
+az acr build --registry <registry> --image cartas-web:latest .
+az containerapp create \
+  --name cartas-web --resource-group <rg> --environment <env> \
+  --image <registry>.azurecr.io/cartas-web:latest \
+  --target-port 8080 --ingress external \
+  --min-replicas 1 --max-replicas 1
+```
+
+**Important**: keep `--min-replicas`/`--max-replicas` at `1` (no autoscaling) unless the in-memory game state described above is moved to something shared across instances (e.g. Redis + a SignalR backplane via `Microsoft.AspNetCore.SignalR.StackExchangeRedis`). Scaling this out today would silently split games/players across replicas that can't see each other.
+
+The Dockerfile has not been build-tested — this sandbox has no Docker daemon available. Run `docker build .` locally before deploying to catch anything environment-specific (proxy/network access to NodeSource and npm registry during build, etc.).
+
+**Visual Studio Docker Compose project**: `docker-compose.dcproj`, `docker-compose.yml`, and `docker-compose.override.yml` (repo root, referenced from `Cartas.sln`) replicate what VS's own "Add > Container Orchestrator Support > Docker Compose" wizard generates, so F5-with-Docker debugging works from the IDE. They point at the same root `Dockerfile`. `docker-compose.override.yml` just sets `ASPNETCORE_ENVIRONMENT=Development` and publishes port `8080` — it doesn't add HTTPS/dev-cert mounting like the VS default template does, to stay consistent with the HTTP-only container described above. `dotnet build`/CLI builds silently skip the `.dcproj` (it uses a VS-only MSBuild SDK); it only matters when opened in Visual Studio. After adding it, open the solution in VS and right-click `docker-compose` → **Set as Startup Project** if it isn't already.
 
 ## Verification note
 

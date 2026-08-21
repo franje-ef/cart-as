@@ -1,0 +1,6 @@
+services:
+  cartas.web:
+    image: ${DOCKER_REGISTRY-}cartasweb
+    build:
+      context: .
+      dockerfile: Dockerfile

@@ -1,0 +1,18 @@
+# Build outputs (platform/RID-specific, rebuilt inside the image)
+**/bin/
+**/obj/
+
+# Generated TypeScript output (recompiled during `dotnet publish` in the image)
+**/wwwroot/js/
+
+# Node
+**/node_modules/
+
+# IDE / VCS
+.git/
+.vs/
+*.user
+
+# Not needed inside the image
+README.md
+LICENSE
