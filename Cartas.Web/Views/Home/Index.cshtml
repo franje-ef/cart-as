@@ -1,0 +1,39 @@
+@using Cartas.Web.Domain
+@{
+    var player = PlayerService.GetPlayer(Context.Request.Cookies);
+}
+
+<div class="row justify-content-center" style="margin-top: 40px;">
+    <div class="col-10 col-sm-6 col-md-4 text-center mb-3">
+        <div class="card bg-dark text-light">
+            <div class="card-body">
+                <h3 class="card-title">Romi</h3>
+                <p class="card-text">El clásico juego de cartas.</p>
+                @if (player == null)
+                {
+                    <a href="/Player/Register" class="btn btn-primary btn-lg">Jugar</a>
+                }
+                else
+                {
+                    <a href="/Game" class="btn btn-primary btn-lg">Jugar</a>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="col-10 col-sm-6 col-md-4 text-center mb-3">
+        <div class="card bg-dark text-light">
+            <div class="card-body">
+                <h3 class="card-title">Catan</h3>
+                <p class="card-text">Hasta 4 jugadores. El tablero completo llega próximamente.</p>
+                @if (player == null)
+                {
+                    <a href="/Player/Register" class="btn btn-primary btn-lg">Jugar</a>
+                }
+                else
+                {
+                    <a href="/Catan" class="btn btn-primary btn-lg">Jugar</a>
+                }
+            </div>
+        </div>
+    </div>
+</div>

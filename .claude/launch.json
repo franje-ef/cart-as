@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "cartas-web",
+      "runtimeExecutable": "dotnet",
+      "runtimeArgs": ["run", "--project", "Cartas.Web/Cartas.Web.csproj", "--urls", "http://localhost:5289"],
+      "port": 5289
+    }
+  ]
+}

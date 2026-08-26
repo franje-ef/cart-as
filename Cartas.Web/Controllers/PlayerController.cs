@@ -31,7 +31,7 @@ namespace Cartas.Web.Controllers
         {
             PlayerService.SetPlayerCookie(Response.Cookies, model.Name, model.Avatar);
 
-            return RedirectToAction("Index", "Game");
+            return RedirectToAction("Index", "Home");
         }
     }
 }

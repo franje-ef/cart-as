@@ -31,8 +31,9 @@ app.UseRouting();
 
 app.MapControllerRoute(
     name: "Default",
-    pattern: "{controller=Game}/{action=Index}/{id?}");
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.MapHub<GameHub>("/hubs/game");
+app.MapHub<CatanHub>("/hubs/catan");
 
 app.Run();

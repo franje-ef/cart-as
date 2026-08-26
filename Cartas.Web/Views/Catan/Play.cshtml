@@ -1,0 +1,44 @@
+@model Cartas.Web.Models.Catan.PlayCatanGameViewModel
+@{
+    Layout = null;
+}
+<html>
+
+<head>
+    <link rel="stylesheet" href="~/Content/game.css" />
+</head>
+<body>
+
+<script src="~/Scripts/jquery-3.5.1.min.js"></script>
+<script src="~/Scripts/signalr.min.js"></script>
+<script type="text/javascript" src="~/js/catan/catanHub.js"></script>
+<script type="text/javascript" src="~/js/catan/catan.js"></script>
+
+<div id="catanRoot" style="padding: 20px; color: white; font-family: sans-serif;">
+    <h2>Catan - Partida @Model.Game.GameId</h2>
+    <p>El tablero de Catan estará disponible próximamente. Mientras tanto, esperen a los jugadores.</p>
+
+    <ul id="catanPlayerList"></ul>
+
+    @if (Model.Game.MasterPlayer.PlayerId == Model.ThisPlayer.PlayerId && !Model.Game.Started)
+    {
+        <button id="startGameBtn" type="button">Comenzar partida</button>
+    }
+</div>
+
+<script type="text/javascript">
+    var gamePlayers = [];
+    @foreach (var player in Model.Game.ActivePlayers.Union(Model.Game.WaitingPlayers))
+    {
+        @:gamePlayers.push({ playerId: '@player.PlayerId', playerName: '@Html.Raw(player.PlayerName)', avatar: '@player.Avatar', seat: @player.Seat });
+    }
+
+    var isMasterUser = @Html.Raw((Model.Game.MasterPlayer.PlayerId == Model.ThisPlayer.PlayerId).ToString().ToLower());
+    var gameStarted = @Html.Raw(Model.Game.Started.ToString().ToLower());
+
+    var catan = new Catan('@Model.Game.GameId', '@Model.ThisPlayer.PlayerId', isMasterUser, gameStarted, gamePlayers);
+    catan.init();
+</script>
+</body>
+
+</html>

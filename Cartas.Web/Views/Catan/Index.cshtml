@@ -1,0 +1,56 @@
+@using Cartas.Web.Domain.Catan
+@model Cartas.Web.Models.Catan.CatanIndexViewModel
+
+@section scripts
+{
+    <script>
+        function initRefresh() {
+            setTimeout(function () {
+                refresh();
+            },
+                5000);
+        }
+
+        function refresh() {
+            if (!$("#newGameModal").hasClass("show")) {
+                window.location.reload();
+            }
+
+            initRefresh();
+        }
+
+        initRefresh();
+    </script>
+}
+
+<table class="table table-hover table-sm table-dark table-responsive-sm">
+    <thead class="thead-light">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Creador</th>
+            <th scope="col">Jugadores</th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var gameItem in Model.ActiveGames.OrderByDescending(x => x.CanJoin))
+        {
+            <tr class="table-secondary">
+                <td>@gameItem.Id</td>
+                <td>@gameItem.MasterPlayer</td>
+                <td>@gameItem.PlayerCount/@CatanConstants.MaxPlayers</td>
+                <td>
+                    @if (gameItem.CanJoin)
+                    {
+                        <a href="/Catan/Play?gameId=@gameItem.Id" role="button" class="btn btn-success btn-sm">Unirse</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@using (Html.BeginForm("Create", "Catan", FormMethod.Post))
+{
+    <button type="submit" class="btn btn-info btn-lg">Crear nueva partida</button>
+}
